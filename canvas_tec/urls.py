@@ -17,9 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Mfeni.views import index
+from  Mfeni.views import Chatgpt
+
 import openai
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('Mfeni/', index)
+    path('Mfeni/', index),
+    path('Mfeni/',Chatgpt)
+
 
 ]
