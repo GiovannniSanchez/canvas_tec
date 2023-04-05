@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Mfeni',
-    'pdf_generate',
-    'usuario'
+    'usuario',
+    'pdf_generate'
 ]
 
 MIDDLEWARE = [
