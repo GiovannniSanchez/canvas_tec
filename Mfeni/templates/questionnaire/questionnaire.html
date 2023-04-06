@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Questionnaire</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="question1">Question 1:</label>
+        <input type="text" name="question1" id="question1" required>
+
+        <label for="question2">Question 2:</label>
+        <input type="text" name="question2" id="question2" required>
+
+        <label for="question3">Question 3:</label>
+        <input type="text" name="question3" id="question3" required>
+
+        <label for="question4">Question 4:</label>
+        <input type="text" name="question4" id="question4" required>
+
+        <label for="question5">Question 5:</label>
+        <input type="text" name="question5" id="question5" required>
+
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
