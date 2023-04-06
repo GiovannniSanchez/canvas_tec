@@ -1,34 +1,7 @@
-{% extends 'base.html' %}
+
+{% extends 'layout/base.html' %}
 {% block content %}
-<h1>PAGINA DE PRUEBAS PARA FORMULARIO CHATGPT</h1>
-    <title>Formulario con 10 campos de texto</title>
-  </head>
-  <body>
-    <h1>Formulario con 10 campos de texto</h1>
-    <form>
-      <label for="campo1">Que vas a ofrecer al mercado:</label>
-      <input type="text" id="campo1" name="campo1"><br>
-      <label for="campo2">¿Sabes como elaborarlo?:</label>
-      <input type="text" id="campo2" name="campo2"><br>
-      <label for="campo3">¿Que problema resuelve?:</label>
-      <input type="text" id="campo3" name="campo3"><br>
-      <label for="campo4">¿Cuanto va a costar?:</label>
-      <input type="text" id="campo4" name="campo4"><br>
-      <label for="campo5">¿Como lo vas a vender?:</label>
-      <input type="text" id="campo5" name="campo5"><br>
-      <label for="campo6">¿A quien se lo vas a vender?:</label>
-      <input type="text" id="campo6" name="campo6"><br>
-      <label for="campo7">Existen alternativas a tu producto/servicio?:</label>
-      <input type="text" id="campo7" name="campo7"><br>
-      <label for="campo8">¿Que hace a tu producto diferente de los demas?:</label>
-      <input type="text" id="campo8" name="campo8"><br>
-      <label for="campo9">¿Cual es la razon por la cual los clientes comprarán lo que ofreces?:</label>
-      <input type="text" id="campo9" name="campo9"><br>
-      <label for="campo10">¿Como te darás a conocer a tus clientes?:</label>
-      <input type="text" id="campo10" name="campo10"><br>
-      <input type="submit" value="Enviar">
-    </form>
-  </body>
-
+<h1>RESPUESTA DE CHATGPT</h1>
+    <h2>{{ contenido }}</h2>
+        <p>{{ contenido_respuesta }}</p>
 {% endblock %}
-

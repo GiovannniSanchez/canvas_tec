@@ -4,7 +4,7 @@ import openai
 
 
 def table(request):
-    return render(request, 'backds/table.html')
+    return render(request, 'table.html')
 
 def index(request):
     title= 'Hola desde python'
@@ -19,14 +19,16 @@ def about(request):
     return render(request,'about.html')
 
 def prueba(request):
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
+    variable='anime'
+    messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"+ 'y'+ variable}]
 
-    messages = [{"role": "system", "content": "Eres un experto en modelos de negocio y mercadotecnia"}]
-
-
-    contenido =("dame la lista de pasos para crear un modelo de negocio")
+    parte1='dame la lista de pasos'
+    parte2='para crear un modelo de:'
+    parte3='negocio'
+    contenido =parte1+parte2+parte3
 
 
     messages.append({"role": "user", "content": contenido})
@@ -34,6 +36,10 @@ def prueba(request):
     contenido_respuesta = respuesta.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta})
     return render(request,'chatgpt.html',{
-        'contenido_respuesta':contenido_respuesta
+        'contenido_respuesta':contenido_respuesta,
+        'contenido':contenido
     })
+
+def formulario(request):
+    return render(request,'formulario.html')
 
