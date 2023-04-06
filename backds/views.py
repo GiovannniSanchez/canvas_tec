@@ -19,8 +19,7 @@ def about(request):
     return render(request,'about.html')
 
 def prueba(request):
-    openai.api_key = "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" \
-                     ""
+    openai.api_key = "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"
 
     # Contexto del asistente
 
@@ -37,3 +36,4 @@ def prueba(request):
     return render(request,'chatgpt.html',{
         'contenido_respuesta':contenido_respuesta
     })
+
