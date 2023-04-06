@@ -19,7 +19,8 @@ def about(request):
     return render(request,'about.html')
 
 def prueba(request):
-    openai.api_key = "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"
+    openai.api_key = "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" \
+                     ""
 
     # Contexto del asistente
 
