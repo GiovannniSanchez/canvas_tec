@@ -1,7 +1,7 @@
 from django import forms
 
 class CreateNewTask(forms.Form):
-    title = forms.CharField(label = "Titulo de tarea", max_length=200,
+    title = forms.CharField(label = "Titulo de tarea", max_length=250,
                             widget=forms.TextInput(attrs={'class': 'input'}))
     description = forms.CharField(label="Descripcion de la tarea", widget=forms.Textarea(attrs={'class':'input'}))
 
