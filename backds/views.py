@@ -19,7 +19,8 @@ def about(request):
     return render(request,'about.html')
 
 def prueba(request):
-    openai.api_key = "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"
+    #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
+    openai.api_key = "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"
 
     # Contexto del asistente
     variable='anime'
@@ -42,4 +43,7 @@ def prueba(request):
 
 def formulario(request):
     return render(request,'formulario.html')
+
+def test01(request):
+        return render(request, "test01.html")
 
