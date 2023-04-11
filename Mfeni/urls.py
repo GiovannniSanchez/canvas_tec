@@ -3,5 +3,5 @@ from . import views
 
 
 urlpatterns = [
-path('questionnaire/', views.questionnaire, name='questionnaire')
+path('cuestionario/', views.cuestionario, name='cuestionario')
     ]

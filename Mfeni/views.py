@@ -1,5 +1,6 @@
 
 from django.shortcuts import render
+from django.http import HttpResponse
 
-def questionnaire(request):
-    return render(request, 'questionnaire.html')
+def cuestionario(request):
+    return render(request, 'cuestionario.html')

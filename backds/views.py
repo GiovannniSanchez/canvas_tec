@@ -47,3 +47,11 @@ def formulario(request):
 def test01(request):
         return render(request, "test01.html")
 
+def canvas(request):
+    variable1='este es'
+    variable2='un texto de prueba'
+    return  render(request, 'canvas.html',{
+        'texto1': variable1,
+        'texto2': variable2
+    })
+
