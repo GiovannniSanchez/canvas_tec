@@ -1,26 +1,14 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import openai
 
-
-def table(request):
-    return render(request, 'table.html')
-
-def index(request):
-    title= 'Hola desde python'
-    return render(request,'index.html',{
-        'title': title
-    })
-
-def hello(request):
-    return HttpResponse('<h1>Hello world</h1>')
-
 def about(request):
     return render(request,'about.html')
-
+@login_required
 def prueba(request):
     #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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     variable='anime'
@@ -40,19 +28,19 @@ def prueba(request):
         'contenido_respuesta':contenido_respuesta,
         'contenido':contenido
     })
-
+@login_required
 def formulario(request):
     return render(request,'formulario.html')
 
 def test01(request):
         return render(request, "test01.html")
-
+@login_required
 def canvas(request):
-    variable1='este es'
+    Problema='este es'
     variable2='un texto de prueba'
     variable3='prueba respuesta xddd'
     return  render(request, 'canvas.html',{
-        'texto1': variable1,
+        'texto1': Problema,
         'texto2': variable2,
         'texto3': variable3
     })

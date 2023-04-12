@@ -4,14 +4,9 @@ from django.contrib.auth import logout
 from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login
 # Create your views here.
-def regristro(request):
-    return render(request,'registro.html')
-
+@login_required()
 def home(request):
     return render(request,'home.html')
-@login_required
-def products(request):
-    return render(request, 'productos.html')
 
 def register(request):
     data = {
