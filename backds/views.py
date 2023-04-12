@@ -20,7 +20,7 @@ def about(request):
 
 def prueba(request):
     #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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     variable='anime'
@@ -50,8 +50,10 @@ def test01(request):
 def canvas(request):
     variable1='este es'
     variable2='un texto de prueba'
+    variable3='prueba respuesta xddd'
     return  render(request, 'canvas.html',{
         'texto1': variable1,
-        'texto2': variable2
+        'texto2': variable2,
+        'texto3': variable3
     })
 
