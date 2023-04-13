@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from .models import answers_user
 from django.http import HttpResponse
 import openai
 
@@ -33,7 +34,14 @@ def formulario(request):
     return render(request,'formulario.html')
 
 def test01(request):
-        return render(request, "test01.html")
+        answers= answers_user.objects.get(id=1)
+        data=(answers.answer1, answers.answer2,
+              answers.answer3, answers.answer4,
+              answers.answer5, answers.answer6,
+              answers.answer7)
+        return render(request, "test01.html",{
+            'answers': data
+        })
 @login_required
 def canvas(request):
     Problema='este es'
