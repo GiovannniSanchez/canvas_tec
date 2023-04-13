@@ -33,7 +33,7 @@ def prueba(request):
 @login_required
 def formulario(request):
     return render(request,'formulario.html')
-@login_required
+
 def test01(request):
         answers= answers_user.objects.all()
         if request.method =='GET':
