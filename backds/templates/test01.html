@@ -9,10 +9,18 @@
 </head>
 <body>
     <label>
-            {{ answers }}
+            {% for a in answers %}
+            <article>{{ a.answer1 }}</article>
+                <p>{{ a.answer2 }}</p>
+                <p>{{ a.answer3 }}</p>
+                <p>{{ a.answer4 }}</p>
+                <p>{{ a.answer5 }}</p>
+            {% endfor %}
     </label>
-    <form>
-
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>save</button>
     </form>
 </body>
 </html>

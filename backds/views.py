@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import answers_user
+from .forms import RegisterAnswer
 from django.http import HttpResponse
 import openai
 
@@ -32,16 +33,25 @@ def prueba(request):
 @login_required
 def formulario(request):
     return render(request,'formulario.html')
-
+@login_required
 def test01(request):
-        answers= answers_user.objects.get(id=1)
-        data=(answers.answer1, answers.answer2,
-              answers.answer3, answers.answer4,
-              answers.answer5, answers.answer6,
-              answers.answer7)
-        return render(request, "test01.html",{
-            'answers': data
-        })
+        answers= answers_user.objects.all()
+        if request.method =='GET':
+            answers = answers_user.objects.all()
+            return render(request,'test01.html',{'answers':answers,
+                                                 'form':RegisterAnswer()})
+        else:
+            answers_user.objects.create(answer1=request.POST['answer1'],
+                                        answer2=request.POST['answer2'],
+                                        answer3=request.POST['answer3'],
+                                        answer4=request.POST['answer4'],
+                                        answer5=request.POST['answer5'],
+                                        answer6=request.POST['answer6'],
+                                        answer7=request.POST['answer7'],
+                                        answer8=request.POST['answer8'],
+                                        answer9=request.POST['answer9'],
+                                        answer10=request.POST['answer10'])
+            return redirect('About')
 @login_required
 def canvas(request):
     Problema='este es'
