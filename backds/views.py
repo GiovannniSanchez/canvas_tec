@@ -42,19 +42,8 @@ def prueba(request):
 
 @login_required
 def formulario(request):
-    return render(request, 'formulario.html')
-
-
-@login_required
-def test01(request):
     if request.method == 'GET':
-        user = request.user
-        answers = answers_user.objects.filter(user=user)
-        answers_list = []
-        for a in answers:
-            answers_list.append(a)
-        return render(request, 'test01.html', {'respuestas': answers_list,
-                                               'form': RegisterAnswer()})
+        return render(request, 'formulario.html', {'form': RegisterAnswer()})
     else:
 
         user_id = request.user.id
@@ -69,6 +58,11 @@ def test01(request):
                                     answer9=request.POST['answer9'],
                                     answer10=request.POST['answer10'], user_id=user_id)
         return redirect('About')
+
+
+@login_required
+def test01(request):
+   return render(request,'test01.html')
 
 
 @login_required
