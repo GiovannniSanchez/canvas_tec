@@ -24,11 +24,21 @@ def prueba(request):
     # Contexto del asistente
     variable = 'anime'
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio" }]
+    preguntas=[
+        '¿Que vas a ofrecer al mercado?: ',
+        '¿Sabes como elaborarlo?: ',
+        '¿Como te daras a conocer a tus clientes?: '
+        '¿Que problema resuelve?: ',
+        '¿Cuanto va a costar?: ',
+        '¿Como lo vas a vender?: ',
+        '¿A quien se lo vas a vender?: '
+        '¿Existen alternativas a tu producto o servicio?: ',
+        '¿Que hace a tu producto diferente a los demas?: ',
+        '¿Cual es la razon por la cual los clientes comprarán lo que ofreces?: '
+    ]
+    Respuestas_usuario =str(preguntas[0])+str(answers_list[0])+str(preguntas[1])
 
-    parte1 = str(answers_list[0])
-    parte2 = 'para crear un modelo de:'
-    parte3 = 'negocio'
-    contenido = parte1
+    contenido = Respuestas_usuario
 
     messages.append({"role": "user", "content": contenido})
     respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=1000)

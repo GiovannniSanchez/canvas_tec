@@ -12,3 +12,4 @@ class QuestionnaireForm(forms.ModelForm):
             'question4': forms.Textarea(attrs={'rows': 3}),
             'question5': forms.Textarea(attrs={'rows': 3}),
         }
+
