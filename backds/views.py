@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import answers_user
 from .forms import RegisterAnswer
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 import openai
 
 
@@ -12,17 +12,23 @@ def about(request):
 
 @login_required
 def prueba(request):
+    user = request.user
+    answers = answers_user.objects.filter(user=user)
+    answers_list=[]
+    for a in answers:
+        answers_list.append(a)
+
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     variable = 'anime'
-    messages = [{"role": "system", "content": "Eres un experto en modelos de negocio" + 'y' + variable}]
+    messages = [{"role": "system", "content": "Eres un experto en modelos de negocio" }]
 
-    parte1 = 'dame la lista de pasos'
+    parte1 = str(answers_list[0])
     parte2 = 'para crear un modelo de:'
     parte3 = 'negocio'
-    contenido = parte1 + parte2 + parte3
+    contenido = parte1
 
     messages.append({"role": "user", "content": contenido})
     respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=1000)
@@ -44,8 +50,10 @@ def test01(request):
     if request.method == 'GET':
         user = request.user
         answers = answers_user.objects.filter(user=user)
-
-        return render(request, 'test01.html', {'answers': answers,
+        answers_list = []
+        for a in answers:
+            answers_list.append(a)
+        return render(request, 'test01.html', {'respuestas': answers_list,
                                                'form': RegisterAnswer()})
     else:
 
