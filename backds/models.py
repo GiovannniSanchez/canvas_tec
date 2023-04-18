@@ -25,9 +25,9 @@ class answers_user(models.Model):
         ordering=['id']
 
 class AnswersChatgpt(models.Model):
-    user = models.ForeignKey(answers_user, on_delete=models.CASCADE, null=True, blank=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
     problema = models.TextField(max_length=700, unique=False, verbose_name='problema')
-    cliente_ideal = models.TextField(max_length=700, unique=False, verbose_name='cliente_ideal')
+    cliente_ideal = models.TextField(max_length=1000, unique=False, verbose_name='cliente_ideal')
     propuesta_valor = models.TextField(max_length=700, unique=False, verbose_name='propuesta_valor')
     soluciones = models.TextField(max_length=700, unique=False, verbose_name='soluciones')
     canal = models.TextField(max_length=700, unique=False, verbose_name='canal')

@@ -74,13 +74,10 @@
 	<div class="container">
 		<div class="col">
 			<h2>PROBLEMA</h2>
-			<ul>
-                <li>
-                    <textarea class="tarea1">{{ texto1 }} {{ texto2 }}</textarea>
-                </li>
+            {% for i in respuestas_canvas %}
+                <textarea class="tarea1">{{ i.problema }}</textarea>
+            {% endfor %}
 
-
-			</ul>
 		</div>
 		<div class="col">
 			<h2>Soluciones</h2>
@@ -120,9 +117,9 @@
 		</div>
         <div class="col">
 			<h2>Cliente ideal</h2>
-
-            <textarea class="tarea1"></textarea>
-
+             {% for a in respuestas_canvas %}
+                <textarea class="tarea1">{{ a.cliente_ideal }}</textarea>
+            {% endfor%}
 		</div>
 	</div>
     <div class="container">
