@@ -13,9 +13,9 @@ class CreateNewProject(forms.Form):
 
 
 class RegisterAnswer(forms.Form):
-    answer1 = forms.CharField(label="¿Que vas a ofrecer al mercado?: ", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
-    answer2 = forms.CharField(label="¿Sabes como elaborarlo?: ", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
-    answer3 = forms.CharField(label="¿Como te daras a conocer a tus clientes?: ", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+    answer1 = forms.CharField(label="¿Que vas a ofrecer al mercado?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+    answer2 = forms.CharField(label="¿Sabes como elaborarlo?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+    answer3 = forms.CharField(label="¿Como te daras a conocer a tus clientes?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
     answer4 = forms.CharField(label="¿Que problema resuelve?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
     answer5 = forms.CharField(label="¿Cuanto va a costar?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
     answer6 = forms.CharField(label="¿Como lo vas a vender?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))

@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import answers_user
+from .models import answers_user, AnswersChatgpt
 from .forms import RegisterAnswer
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse, JsonResponse
 import openai
 
 
@@ -14,36 +14,65 @@ def about(request):
 def prueba(request):
     user = request.user
     answers = answers_user.objects.filter(user=user)
-    answers_list=[]
+    answers_user_instance = answers_user.objects.get(user=user)
+    answers_list = []
     for a in answers:
-        answers_list.append(a)
-
+        answers_list.append(a.answer1)
+        answers_list.append(a.answer2)
+        answers_list.append(a.answer3)
+        answers_list.append(a.answer4)
+        answers_list.append(a.answer5)
+        answers_list.append(a.answer6)
+        answers_list.append(a.answer7)
+        answers_list.append(a.answer8)
+        answers_list.append(a.answer9)
+        answers_list.append(a.answer10)
+        print(len(answers_list))
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
-    variable = 'anime'
-    messages = [{"role": "system", "content": "Eres un experto en modelos de negocio" }]
-    preguntas=[
+    messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
+
+    preguntas = [
         '¿Que vas a ofrecer al mercado?: ',
         '¿Sabes como elaborarlo?: ',
-        '¿Como te daras a conocer a tus clientes?: '
+        '¿Como te daras a conocer a tus clientes?: ',
         '¿Que problema resuelve?: ',
         '¿Cuanto va a costar?: ',
         '¿Como lo vas a vender?: ',
-        '¿A quien se lo vas a vender?: '
+        '¿A quien se lo vas a vender?: ',
         '¿Existen alternativas a tu producto o servicio?: ',
         '¿Que hace a tu producto diferente a los demas?: ',
         '¿Cual es la razon por la cual los clientes comprarán lo que ofreces?: '
     ]
-    Respuestas_usuario =str(preguntas[0])+str(answers_list[0])+str(preguntas[1])
 
-    contenido = Respuestas_usuario
+    prompt_default1 = 'dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
+                      'estos contienen a su vez una serie de puntos clave:' \
+                      'en el aspecto ¿Quien? se encuentran los puntos de: Segmento de clientes, ventaja diferencial y canales.' \
+                      'En el aspecto ¿Que? se encuentra el punto: Propuesta unica de valor.' \
+                      'En el aspecto ¿Como? se encuentran los puntos: problema, solución y metricas.' \
+                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.' \
+                      'Ahora segun la estrctura anterior puedes darme el segmento de clientes segun tu interpretacion como experto en modelo de negocios' \
+                      'haciendo referencia a las siguientes preguntas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
+                      'varios puntos?: '
+
+    preg_resp = '\n'.join([
+        f"{preguntas[i]}{str(answers_list[i])}"
+        for i in range(len(preguntas))
+    ])
+
+    contenido = prompt_default1+preg_resp
+
 
     messages.append({"role": "user", "content": contenido})
     respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=1000)
     contenido_respuesta = respuesta.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta})
+    # Guardar la respuesta en la base de datos
+    answer_chat = AnswersChatgpt(user=user, respuesta=contenido_respuesta)
+    answer_chat.save()
+
     return render(request, 'chatgpt.html', {
         'contenido_respuesta': contenido_respuesta,
         'contenido': contenido
@@ -72,7 +101,9 @@ def formulario(request):
 
 @login_required
 def test01(request):
-   return render(request,'test01.html')
+    user = request.user
+    answers = answers_user.objects.filter(user=user)
+    return render(request, 'test01.html',{'respuestas':answers})
 
 
 @login_required
