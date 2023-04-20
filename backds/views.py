@@ -30,7 +30,7 @@ def prueba(request):
 
         print(len(answers_list))
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
@@ -233,11 +233,11 @@ def prueba(request):
     respuesta8 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta8 = respuesta8.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta8})
-    # Guardar la respuesta en la base de datos
-    answer_chat = AnswersChatgpt.objects.create(user=User, ventaja_diferencial=contenido_respuesta8)
+    # Guardar la respuesta en la base de datos"""
+    answer_chat = AnswersChatgpt.objects.create(user=user, cliente_ideal=contenido_respuesta,problema=contenido_respuesta1)
     answer_chat.save()
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-"""""
+
     return redirect('canvas')
 
 @login_required
@@ -270,7 +270,11 @@ def test01(request):
 @login_required
 def canvas(request):
     user= request.user
-    answers_canvas=AnswersChatgpt.objects.filter(user=user)
+    last=AnswersChatgpt.objects.filter(user=user).last()
+    answers_canvas=[
+        last.problema,
+        last.cliente_ideal,
 
-
+    ]
+    print(answers_canvas)
     return render(request, 'canvas.html',{'respuestas_canvas':answers_canvas})

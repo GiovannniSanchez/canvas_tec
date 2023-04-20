@@ -1,15 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<h2>Inicio</h2>
-{% if request.user.is_authenticated %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            background-color: darkgrey;
+        }
+	</style>
+</head>
+<body>
+    <h2>Inicio</h2>
+    {% if request.user.is_authenticated %}
     <hr>
     <h4>
         {{ user.username | upper }}, bienvenido
     </h4>
-{% endif %}
-
-
-
+    {% endif %}
+</body>
+</html>
 {% endblock %}

@@ -19,22 +19,27 @@
 			flex-wrap: wrap;
 			margin: 20px;
 			padding: 20px;
-			background-color: #fff;
+			background-color: #484848;
 			border-radius: 5px;
 			box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 		}
 		.col {
 			flex: 1 0 30px;
 			margin: 10px;
+            mar
 			padding: 10px;
-			background-color: #fff;
+			background-color: #484848;
 			border-radius: 5px;
 			box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            color: white;
+            border: solid orange;
+
 		}
 		h2 {
 			font-size: 20px;
 			font-weight: bold;
 			margin-bottom: 10px;
+            text-decoration-color: white;
 		}
 		h3 {
 			font-size: 16px;
@@ -67,6 +72,11 @@
 			box-sizing: border-box;
 			resize: none;
         }
+        .p1{
+            white-space: pre-wrap;
+            white-space: pre-line;
+            color: white;
+        }
 
 	</style>
 </head>
@@ -74,10 +84,8 @@
 	<div class="container">
 		<div class="col">
 			<h2>PROBLEMA</h2>
-            {% for i in respuestas_canvas %}
-                <textarea class="tarea1">{{ i.problema }}</textarea>
-            {% endfor %}
 
+                <p class="p1">{{ respuestas_canvas.0 }}</p>
 		</div>
 		<div class="col">
 			<h2>Soluciones</h2>
@@ -117,9 +125,7 @@
 		</div>
         <div class="col">
 			<h2>Cliente ideal</h2>
-             {% for a in respuestas_canvas %}
-                <textarea class="tarea1">{{ a.cliente_ideal }}</textarea>
-            {% endfor%}
+                <textarea class="tarea1">{{ respuestas_canvas.1 }}</textarea>
 		</div>
 	</div>
     <div class="container">
