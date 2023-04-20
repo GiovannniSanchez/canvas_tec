@@ -273,8 +273,7 @@ def canvas(request):
     last=AnswersChatgpt.objects.filter(user=user).last()
     answers_canvas=[
         last.problema,
-        last.cliente_ideal,
-
+        last.cliente_ideal
     ]
     print(answers_canvas)
     return render(request, 'canvas.html',{'respuestas_canvas':answers_canvas})
