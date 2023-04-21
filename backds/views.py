@@ -14,23 +14,25 @@ def about(request):
 @login_required
 def prueba(request):
     user = request.user
-    answers = answers_user.objects.filter(user=user)
-    answers_list = []
-    for a in answers:
-        answers_list.append(a.answer1)
-        answers_list.append(a.answer2)
-        answers_list.append(a.answer3)
-        answers_list.append(a.answer4)
-        answers_list.append(a.answer5)
-        answers_list.append(a.answer6)
-        answers_list.append(a.answer7)
-        answers_list.append(a.answer8)
-        answers_list.append(a.answer9)
-        answers_list.append(a.answer10)
 
-        print(len(answers_list))
+    last=answers_user.objects.filter(user=user).last()
+
+    answers_list = [
+        last.answer1,
+        last.answer2,
+        last.answer3,
+        last.answer4,
+        last.answer5,
+        last.answer6,
+        last.answer7,
+        last.answer8,
+        last.answer9,
+        last.answer10
+    ]
+
+    print(len(answers_list))
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
@@ -257,7 +259,7 @@ def formulario(request):
                                     answer8=request.POST['answer8'],
                                     answer9=request.POST['answer9'],
                                     answer10=request.POST['answer10'], user_id=user_id)
-        return redirect('About')
+        return redirect('Chatgpt')
 
 
 @login_required

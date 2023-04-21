@@ -14,6 +14,7 @@ class answers_user(models.Model):
     answer8=models.TextField(max_length=1000, unique=False, verbose_name='Respuesta8')
     answer9=models.TextField(max_length=1000, unique=False, verbose_name='Respuesta9')
     answer10=models.TextField(max_length=1000, unique=False, verbose_name='Respuesta10')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.answer1
@@ -35,6 +36,7 @@ class AnswersChatgpt(models.Model):
     estructura_costes = models.TextField(max_length=700, unique=False, verbose_name='estructura_costes')
     metricas = models.TextField(max_length=700, unique=False, verbose_name='metricas')
     ventaja_diferencial = models.TextField(max_length=700, unique=False, verbose_name='ventaja_diferencial')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.problema

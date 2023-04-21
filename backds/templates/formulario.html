@@ -2,28 +2,14 @@
 {% block content %}
 <h2>PAGINA DE PRUEBAS PARA FORMULARIO CHATGPT</h2>
     <h3>Formulario con 10 campos de texto</h3>
+
   </head>
   <body>
-    <form>
-      {% csrf_token %}
+    <form method="POST">
+        {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Guardar</button>
+        <button TYPE="submit">save</button>
     </form>
-
-    <script>
-      const form = document.querySelector('form');
-      const responses = [];
-
-      form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const inputs = form.querySelectorAll('input[type=text]');
-        inputs.forEach((input) => {
-          responses.push(input.value);
-        });
-        console.log(responses); // Aquí se imprime la lista de respuestas en la consola del navegador
-        form.reset(); // Limpiar los campos del formulario
-      });
-    </script>
 
   </body>
 
