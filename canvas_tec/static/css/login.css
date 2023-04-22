@@ -1,0 +1,28 @@
+.card.mx-auto{
+    background-color: #09091e;
+    color: white;
+}
+.card-body{
+    background-color: rgba(43, 43, 87, 0.97);
+    border: white;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 0 #fff, 2px 2px 0 #ccc, 3px 3px 0 #bbb, 4px 4px 0 #aaa;
+
+}
+.card-title{
+    background-color: rgba(43, 43, 87, 0.97);
+    color: white;
+}
+.card-link{
+    color: white;
+}
+.card-link:hover{
+    color: #e5c60a;
+}
+.btn.btn-sm.btn-primary.float-end{
+    background-color: #09091e;
+}
+.btn.btn-sm.btn-primary.float-end:hover{
+    background-color: #e5c60a;
+    color: black;
+}

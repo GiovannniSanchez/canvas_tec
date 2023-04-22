@@ -1,0 +1,54 @@
+
+li{
+    color: white;
+    background-color: transparent;
+}
+.nav-link{
+    color: white;
+}
+.nav-item{
+    color: white;
+}
+.nav-link.active{
+    color: black;
+}
+.container{
+    background-color: transparent;
+}
+body{
+    background-color: transparent;
+}
+.navbar.navbar-expand-lg.navbar-light{
+    background-color: transparent;
+    text-align: right;
+}
+.container-fluid{
+    background-color: #09091e;
+    color: white;
+}
+.navbar-toggler{
+    background-color: #09091e;
+}
+.navbar-toggler-icon{
+    background-color: #09091e;
+}
+.collapse.navbar-collapse{
+    background-color: #09091e;
+}
+.navbar-nav{
+    background-color: #09091e;
+}
+.navbar-nav .nav-link.active {
+    color: white;
+}
+.nav-link.active:hover {
+    color: #e5c60a;
+    text-decoration: underline;
+}
+.nav-link:hover{
+    color: #e5c60a;
+    text-decoration: underline;
+}
+.btn.btn-outline-warning{
+    font-size: 13px;
+}

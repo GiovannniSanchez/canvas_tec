@@ -1,0 +1,28 @@
+{% load static %}
+
+h2{
+    text-align: left;
+    background-color:transparent;
+    color: white;
+}
+h3{
+    background-color: transparent;
+}
+
+h4{
+    color: white;
+    background-color: transparent;
+}
+
+head{
+    background-color: #09091e;
+}
+.container{
+    position: relative;
+}
+.container h2{
+  position: absolute;
+  top: 500%; /* ajusta la posición vertical */
+  left: 5%; /* ajusta la posición horizontal */
+  transform: translate(-50%, -50%); /* centra el elemento */
+}

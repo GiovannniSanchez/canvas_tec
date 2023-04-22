@@ -126,7 +126,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'canvas_tec/static/images')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'canvas_tec/static')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'canvas_tec/static'),)
 
 # Default primary key field type

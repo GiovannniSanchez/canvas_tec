@@ -4,8 +4,10 @@
 
 {% load crispy_forms_tags %}
 
-<h3>LOGIN</h3>
+{% load static %}
 
+<h3>LOGIN</h3>
+<link type="text/css" href="{% static 'css/login.css' %}" rel="stylesheet">
 <br>
 
 <form action="" method="post">
@@ -15,7 +17,7 @@
       <div class="card-body">
         <h5 class="card-title">Ingrese sus Credenciales</h5>
         {{ form | crispy }}
-        <a href={% url 'home' %} class="card-link">Inicio</a>
+        <a href={% url 'Usuario' %} class="card-link">Inicio</a>
         <a href={% url 'register' %} class="card-link">Registrarse</a>
         <button class="btn btn-sm btn-primary float-end" type="submit">Iniciar Sesión</button>
       </div>

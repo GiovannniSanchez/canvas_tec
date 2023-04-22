@@ -4,7 +4,7 @@ from django.contrib.auth import logout
 from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login
 # Create your views here.
-@login_required()
+
 def home(request):
     return render(request,'home.html')
 

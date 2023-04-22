@@ -5,18 +5,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link type="text/css" href="{% static "Usuario/css/style.css" %}" rel="stylesheet">
+    <link type="text/css" href="{% static "css/style.css" %}" rel="stylesheet">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+<style>
+    body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            background-color: #09091e;
+            background-image: url("{% static 'images/logoreal.png' %}");
+            background-size: 500px;
+            background-position: 100% 0;
+            background-repeat: no-repeat;
+        }
+
+</style>
 <body>
-    <h2>Inicio</h2>
-    {% if request.user.is_authenticated %}
-    <hr>
-    <h4>
-        {{ user.username | upper }}, bienvenido
-    </h4>
-    {% endif %}
+    <div class="container">
+        <h2>A TU ALCANCE</h2>
+
+        {% if request.user.is_authenticated %}
+        <h4>
+            {{ user.username | upper }}, bienvenido
+        </h4>
+        {% endif %}
+    </div>
 </body>
 </html>
 {% endblock %}
