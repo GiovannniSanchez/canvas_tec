@@ -32,7 +32,7 @@ def prueba(request):
 
     print(len(answers_list))
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]

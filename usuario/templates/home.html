@@ -22,17 +22,43 @@
             background-position: 100% 0;
             background-repeat: no-repeat;
         }
+    .H3{
+           color: white;
+        }
+    .H1{
+            color: white;
+        }
+    p{
+        color: white;
+    }
+    .btn.btn-primary{
+        background-color: #e5c60a;
+        color: black;
+    }
+    .btn.btn-primary:hover{
+        background-color: transparent;
+        color: white;
+    }
+
 
 </style>
 <body>
     <div class="container">
-        <h2>A TU ALCANCE</h2>
-
+        <p><br></p>
         {% if request.user.is_authenticated %}
         <h4>
-            {{ user.username | upper }}, bienvenido
+            USUARIO: {{ user.username | upper }}
         </h4>
         {% endif %}
+    <h1><br></h1>
+    <h3 class="H3">A TU ALCANCE</h3>
+    <h1 CLASS="H1">MODELO CANVAS CON IA</h1>
+    <h1><br></h1>
+    <p>Genera tu modelo canvas de manera facil y sencilla Solo contesta unas </p>
+    <p>sencillas preguntas y automaticamente</p>
+    <p>tendrás tu modelo canvas generado por inteligencia artificial</p>
+    <a href="{% url 'Formulario' %}"><button type="button" class="btn btn-primary"> INICIAR </button></a>
+
     </div>
 </body>
 </html>

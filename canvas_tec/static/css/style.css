@@ -14,15 +14,10 @@ h4{
     background-color: transparent;
 }
 
-head{
+head {
     background-color: #09091e;
 }
-.container{
-    position: relative;
-}
-.container h2{
-  position: absolute;
-  top: 500%; /* ajusta la posición vertical */
-  left: 5%; /* ajusta la posición horizontal */
-  transform: translate(-50%, -50%); /* centra el elemento */
+
+.btn.btn-primary{
+    background-color: #e5c60a;
 }
