@@ -1,30 +1,32 @@
-
-.card.mx-auto{
+body{
     background-color: #09091e;
     color: white;
 }
-.card-body{
+.card.mx-auto{
     background-color: rgba(43, 43, 87, 0.97);
-    border: white;
-    border: 1px solid #ccc;
-    box-shadow: 1px 1px 0 #fff, 2px 2px 0 #ccc, 3px 3px 0 #bbb, 4px 4px 0 #aaa;
-
+    color: white;
 }
-.card-title{
-    background-color: rgba(43, 43, 87, 0.97);
+.card-body{
     color: white;
 }
 .card-link{
     color: white;
 }
+label.required {
+    color: red;
+}
 .card-link:hover{
     color: #e5c60a;
 }
-.btn.btn-sm.btn-primary.float-end{
+.btn.btn-sm.btn-primary{
     background-color: #e5c60a;
     color: black;
+    border: 2px solid #e5c60a;
 }
-.btn.btn-sm.btn-primary.float-end:hover{
+.btn.btn-sm.btn-primary:hover{
     background-color: transparent;
     color: #e5c60a;
+}
+h3{
+    text-align: center;
 }

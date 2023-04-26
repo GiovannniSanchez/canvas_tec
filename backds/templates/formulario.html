@@ -1,17 +1,93 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<h2>PAGINA DE PRUEBAS PARA FORMULARIO CHATGPT</h2>
-    <h3>Formulario con 10 campos de texto</h3>
+<!-- HTML -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <link type="text/css" href="{% static "css/formulario.css" %}" rel="stylesheet">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1><br></h1>
+        <h1><br></h1>
+        <h1>Formulario</h1>
+        <h1><br></h1>
+        <h3>Contesta estas preguntas para generar tu canvas</h3>
+        <h1><br></h1>
+        <form method="POST" class="register-form" onsubmit="return validateForm()">
+          {% csrf_token %}
+          <div class="form-row">
+            <div class="form-col">
+              <label class="form-label" for="{{ form.answer1.id_for_label }}">{{ form.answer1.label }}</label>
+              {{ form.answer1 }}
+            </div>
+            <div class="form-col">
+              <label class="form-label" for="{{ form.answer2.id_for_label }}">{{ form.answer2.label }}</label>
+              {{ form.answer2 }}
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-col">
+              <label class="form-label" for="{{ form.answer3.id_for_label }}">{{ form.answer3.label }}</label>
+              {{ form.answer3 }}
+            </div>
+            <div class="form-col">
+              <label class="form-label" for="{{ form.answer4.id_for_label }}">{{ form.answer4.label }}</label>
+              {{ form.answer4 }}
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-col">
+              <label class="form-label" for="{{ form.answer5.id_for_label }}">{{ form.answer5.label }}</label>
+              {{ form.answer5 }}
+            </div>
+            <div class="form-col">
+              <label class="form-label" for="{{ form.answer6.id_for_label }}">{{ form.answer6.label }}</label>
+              {{ form.answer6 }}
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-col">
+              <label class="form-label" for="{{ form.answer7.id_for_label }}">{{ form.answer7.label }}</label>
+              {{ form.answer7 }}
+            </div>
+            <div class="form-col">
+              <label class="form-label" for="{{ form.answer8.id_for_label }}">{{ form.answer8.label }}</label>
+              {{ form.answer8 }}
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-col">
+              <label class="form-label" for="{{ form.answer9.id_for_label }}">{{ form.answer9.label }}</label>
+              {{ form.answer9 }}
+            </div>
+            <div class="form-col">
+              <label class="form-label" for="{{ form.answer10.id_for_label }}">{{ form.answer10.label }}</label>
+              {{ form.answer10 }}
+            </div>
+          </div>
+          <button type="submit" class="submit-button">Continuar</button>
+        </form>
 
-  </head>
-  <body>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button TYPE="submit">save</button>
-    </form>
+        <script>
+        function validateForm() {
+          var formValid = true;
+          var answerFields = document.querySelectorAll('.register-form input[type="text"]');
+          for (var i = 0; i < answerFields.length; i++) {
+            if (answerFields[i].value === '') {
+              answerFields[i].classList.add('error');
+              formValid = false;
+            } else {
+              answerFields[i].classList.remove('error');
+            }
+          }
+          return formValid;
+        }
+        </script>
 
-  </body>
-
+    </body>
+</html>
 {% endblock %}
 

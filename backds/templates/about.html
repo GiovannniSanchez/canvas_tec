@@ -1,5 +1,35 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-        <h2>Pagina de ABOUT</h2>
-            <p>Información del Proyecto</p>
+    <!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" href="{% static "css/about.css" %}" rel="stylesheet">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+    body{
+        background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.7)),   url("{% static 'images/tec1.jpeg' %}");
+        background-size: cover;
+        background-position: center;
+    }
+
+</style>
+<body>
+    <h1>Sobre Nosotros</h1>
+    <h1><br></h1>
+        <h2>MISIÓN</h2>
+            <p>aqui va a ir la misión del proyecto</p>
+    <h1><br></h1>
+    <h1><br></h1>
+        <h2>VISIÓN</h2>
+            <p>Aqui va a ir la visión del proyecto</p>
+    <h1><br></h1>
+    <h1><br></h1>
+        <h2>Propuesta de valor</h2>
+            <p>Aqui va a ir la propuesta de valor del proyecto</p>
+    <img class="u-image u-image-circle u-image-1" src="{% static 'images/tec1.jpeg' %}" alt="" data-image-width="768" data-image-height="479" style="max-width: 45%">
+</body>
+</html>
 {% endblock %}

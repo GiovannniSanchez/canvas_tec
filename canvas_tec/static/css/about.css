@@ -1,0 +1,23 @@
+h1{
+    color: #e5c60a;
+}
+h2{
+    color: #e5c60a;
+}
+p{
+    color: white;
+}
+
+.u-image-circle {
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+    max-width: 100px;
+    height: 370px;
+    width: 370px;
+}
+
+.u-image {
+    float: right;
+    margin-top: -450px;
+}

@@ -154,9 +154,6 @@ def prueba(request):
     respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta = respuesta.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta})
-     #Guardar la respuesta en la base de datos
-    answer_chat = AnswersChatgpt.objects.create(user=user, cliente_ideal=contenido_respuesta)
-    answer_chat.save()
     #///////////////////////////////////////////////////////////////////////////////////////////
     contenido1 = prompt_default2 + preg_resp
 
@@ -164,9 +161,6 @@ def prueba(request):
     respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta1 = respuesta1.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta1})
-    # Guardar la respuesta en la base de datos
-    answer_chat = AnswersChatgpt.objects.create(user=user, problema=contenido_respuesta1)
-    answer_chat.save()
     """""
     #////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido2 = prompt_default3 + preg_resp

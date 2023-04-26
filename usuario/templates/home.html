@@ -18,13 +18,11 @@
             padding: 0;
             background-color: #09091e;
             background-image: url("{% static 'images/logoreal.png' %}");
-            background-size: 500px;
-            background-position: 100% 0;
+            background-size: 530px;
+            background-position: 95% 70px;
             background-repeat: no-repeat;
         }
-    .H3{
-           color: white;
-        }
+    
     .H1{
             color: white;
         }
@@ -34,10 +32,13 @@
     .btn.btn-primary{
         background-color: #e5c60a;
         color: black;
+        border:2px solid #e5c60a;
+
     }
     .btn.btn-primary:hover{
         background-color: transparent;
-        color: white;
+        color: #e5c60a;
+        border: 2px solid #e5c60a;
     }
 
 
@@ -51,13 +52,14 @@
         </h4>
         {% endif %}
     <h1><br></h1>
-    <h3 class="H3">A TU ALCANCE</h3>
+    <h2 class="H2">A TU ALCANCE</h2>
     <h1 CLASS="H1">MODELO CANVAS CON IA</h1>
     <h1><br></h1>
-    <p>Genera tu modelo canvas de manera facil y sencilla Solo contesta unas </p>
-    <p>sencillas preguntas y automaticamente</p>
-    <p>tendrás tu modelo canvas generado por inteligencia artificial</p>
-    <a href="{% url 'Formulario' %}"><button type="button" class="btn btn-primary"> INICIAR </button></a>
+    <h4>Genera tu modelo canvas de manera facil y sencilla. </h4>
+    <h4>Solo contesta unas sencillas preguntas y automaticamente</h4>
+    <h4>tendrás tu modelo canvas generado por inteligencia artificial</h4>
+    <h1><br></h1>
+    <a href="{% url 'Formulario' %}"><button type="button" class="btn btn-primary btn-lg"> INICIAR </button></a>
 
     </div>
 </body>

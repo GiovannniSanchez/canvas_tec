@@ -51,6 +51,20 @@ body{
 }
 .btn.btn-outline-warning{
     background-color: #e5c60a;
-    font-size: 15px;
-
+    color: black;
+    font-size: 1.3rem;
+}
+.container-fluid{
+    background-color: #09091e;
+    color: white;
+    font-size: 1.3em;
+}
+.btn.btn-outline-warning{
+    background-color: #e5c60a;
+    color: black;
+    font-size: 1rem;
+}
+.btn.btn-outline-warning:hover{
+    background-color: transparent;
+    color: #e5c60a;
 }
