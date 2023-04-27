@@ -32,7 +32,7 @@ def prueba(request):
 
     print(len(answers_list))
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
@@ -161,7 +161,6 @@ def prueba(request):
     respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta1 = respuesta1.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta1})
-    """""
     #////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido2 = prompt_default3 + preg_resp
 
@@ -170,8 +169,6 @@ def prueba(request):
     contenido_respuesta2 = respuesta2.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta2})
     # Guardar la respuesta en la base de datos
-    answer_chat = AnswersChatgpt.objects.create(user=User, propuesta_valor=contenido_respuesta2)
-    answer_chat.save()
     #///////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido3 = prompt_default4 + preg_resp
 
@@ -179,9 +176,6 @@ def prueba(request):
     respuesta3 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta3 = respuesta3.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta3})
-    # Guardar la respuesta en la base de datos
-    answer_chat = AnswersChatgpt.objects.create(user=User, soluciones=contenido_respuesta3)
-    answer_chat.save()
     #/////////////////////////////////////////////////////////////////////////////////////////////////////7
     contenido4 = prompt_default5 + preg_resp
 
@@ -189,9 +183,6 @@ def prueba(request):
     respuesta4 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta4 = respuesta4.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta4})
-    # Guardar la respuesta en la base de datos
-    answer_chat = AnswersChatgpt.objects.create(user=User, canal=contenido_respuesta4)
-    answer_chat.save()
     #/////////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido5 = prompt_default6 + preg_resp
 
@@ -199,19 +190,14 @@ def prueba(request):
     respuesta5 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta5 = respuesta5.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta5})
-    # Guardar la respuesta en la base de datos
-    answer_chat = AnswersChatgpt.objects.create(user=User, flujo_ingresos=contenido_respuesta5)
-    answer_chat.save()
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    """
     contenido6 = prompt_default7 + preg_resp
 
     messages.append({"role": "user", "content": contenido6})
     respuesta6 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta6 = respuesta6.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta6})
-    # Guardar la respuesta en la base de datos
-    answer_chat = AnswersChatgpt.objects.create(user=User, estructura_costes=contenido_respuesta6)
-    answer_chat.save()
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido7 = prompt_default8 + preg_resp
 
@@ -219,9 +205,6 @@ def prueba(request):
     respuesta7 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta7 = respuesta7.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta7})
-    # Guardar la respuesta en la base de datos
-    answer_chat = AnswersChatgpt.objects.create(user=User, metricas=contenido_respuesta7)
-    answer_chat.save()
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido8 = prompt_default9 + preg_resp
 
@@ -230,7 +213,13 @@ def prueba(request):
     contenido_respuesta8 = respuesta8.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta8})
     # Guardar la respuesta en la base de datos"""
-    answer_chat = AnswersChatgpt.objects.create(user=user, cliente_ideal=contenido_respuesta,problema=contenido_respuesta1)
+    answer_chat = AnswersChatgpt.objects.create(user=user,
+                                                cliente_ideal=contenido_respuesta,
+                                                problema=contenido_respuesta1,
+                                                propuesta_valor=contenido_respuesta2,
+                                                soluciones=contenido_respuesta3,
+                                                canal=contenido_respuesta4,
+                                                flujo_ingresos=contenido_respuesta5)
     answer_chat.save()
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -269,7 +258,11 @@ def canvas(request):
     last=AnswersChatgpt.objects.filter(user=user).last()
     answers_canvas=[
         last.problema,
-        last.cliente_ideal
+        last.cliente_ideal,
+        last.propuesta_valor,
+        last.soluciones,
+        last.canal,
+        last.flujo_ingresos
     ]
     print(answers_canvas)
     return render(request, 'canvas.html',{'respuestas_canvas':answers_canvas})
