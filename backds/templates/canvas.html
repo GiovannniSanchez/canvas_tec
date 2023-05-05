@@ -7,6 +7,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style>
 		body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
 			font-family: Arial, Helvetica, sans-serif;
 			font-size: 14px;
 			line-height: 1.5;
@@ -18,15 +21,14 @@
 			display: flex;
 			flex-wrap: wrap;
 			margin: 20px;
-			padding: 20px;
-			background-color: #484848;
-			border-radius: 5px;
+			padding: 10px;
+			background-color: red;
+			border-radius: 50px;
 			box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 		}
 		.col {
 			flex: 1 0 30px;
 			margin: 10px;
-            mar
 			padding: 10px;
 			background-color: #484848;
 			border-radius: 5px;
@@ -77,15 +79,28 @@
             white-space: pre-line;
             color: white;
         }
+        .space{
+            color: transparent;
+        }
 
 	</style>
 </head>
 <body>
+    <div>
+        <p class="space">"Mfeni" Marca Registrada </p>
+    </div>
+    <div>
+        <h2><br></h2>
+        <h2>Nombre del proyecto/empresa</h2>
+    </div>
 	<div class="container">
 		<div class="col">
 			<h2>PROBLEMA</h2>
-
-                <p class="p1">{{ respuestas_canvas.0 }}</p>
+            <ul>
+                <li>
+                    <p class="p1">{{ respuestas_canvas.0 }}</p>
+                </li>
+            </ul>
 		</div>
 		<div class="col">
 			<h2>Soluciones</h2>
@@ -93,13 +108,11 @@
 				<li>
                     <p>{{ respuestas_canvas.3 }}</p>
 				</li>
-				<li>
             <h2>Metricas</h2>
-					<textarea></textarea>
+                <li>
+                     <p class="p1">{{ respuestas_canvas.7 }}</p>
 				</li>
-
 			</ul>
-
 		</div>
 		<div class="col">
 			<h2>Propuesta de valor</h2>
@@ -115,7 +128,7 @@
 			<h2>Ventaja diferiencial</h2>
 			<ul>
 				<li>
-					<textarea></textarea>
+					<p class="p1">{{ respuestas_canvas.8 }}</p>
 				</li>
             <h2>Canales</h2>
 				<li>
@@ -125,17 +138,29 @@
 		</div>
         <div class="col">
 			<h2>Cliente ideal</h2>
-                <textarea class="tarea1">{{ respuestas_canvas.1 }}</textarea>
+            <ul>
+                <li>
+                    <p class="p1">{{ respuestas_canvas.1 }}</p>
+                </li>
+            </ul>
 		</div>
 	</div>
     <div class="container">
         <div class="col">
 			<h2>Estructura de Costes</h2>
-            <textarea class="tarea2"></textarea>
+            <ul>
+                <li>
+                    <p class="p1">{{ respuestas_canvas.6 }}</p>
+                </li>
+            </ul>
 		</div>
         <div class="col">
 			<h2>Flujo de Ingresos</h2>
-            <p>{{ respuestas_canvas.5 }}</p>
+            <ul>
+                <li>
+                    <p class="p1">{{ respuestas_canvas.5 }}</p>
+                </li>
+            </ul>
 		</div>
     </div>
 </body>

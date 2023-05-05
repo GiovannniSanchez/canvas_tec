@@ -32,7 +32,7 @@ def prueba(request):
 
     print(len(answers_list))
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
@@ -51,20 +51,24 @@ def prueba(request):
     ]
 
 
-    prompt_default = 'dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
-                      'estos contienen a su vez una serie de puntos clave:' \
-                      'en el aspecto ¿Quien? se encuentran los puntos de: Segmento de clientes, ventaja diferencial y canales.' \
-                      'En el aspecto ¿Que? se encuentra el punto: Propuesta unica de valor.' \
-                      'En el aspecto ¿Como? se encuentran los puntos: problema, solución y metricas.' \
-                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.'
+    prompt_default = 'El formato Canvas tiene 4 aspectos clave: ¿Quién?, ¿Qué?, ¿Cómo? y ¿Cuánto?, cada uno con puntos clave:'\
+                    '¿Quién?: Segmento de clientes, ventaja diferencial y canales.'\
+                    '¿Qué?: Propuesta única de valor.'\
+                    '¿Cómo?: Problema, solución y métricas.'\
+                    '¿Cuánto?: Estructura de costes y flujo de ingresos.'
 
-    prompt_default1 = 'Ahora segun la estrctura anterior puedes darme el segmento de clientes segun tu interpretacion como experto en modelo de negocios' \
-                      'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
-                      'varios puntos?: '
+    prompt_default1 = 'Segmento de clientes según tu interpretación Referente a:'\
+                        'A quiénes va dirigido tu producto/servicio?'\
+                        'Cuáles son las necesidades de tus clientes?'\
+                        'Características demográficas de tus clientes.'\
+                        'Comportamiento de tus clientes.'\
+                        'Formato corto y en lista si aplica.'\
 
-    prompt_default2='Ahora segun la estrctura anterior puedes darme el punto "problema" del aspecto ¿Como? segun tu interpretacion como experto en modelo de negocios ' \
-                      'haciendo referencia a las siguientes preguntas cons sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
-                      'varios puntos?: '
+    prompt_default2='Punto "problema" del aspecto ¿Cómo? según tu interpretación? Referente a:'\
+                    '¿Cuál es el problema que enfrenta tu cliente?'\
+                    '¿Por qué es importante resolver ese problema?'\
+                    '¿Cómo afecta el problema a la vida del cliente?'\
+                    'Formato corto y en lista si aplica.'\
 
     prompt_default3='Ahora segun la estrctura anterior puedes darme el punto "propuesta unica de valor" segun tu interpretacion como experto en modelo de negocios ' \
                       'haciendo referencia a las siguientes preguntas con sus respectivas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
@@ -104,21 +108,21 @@ def prueba(request):
 #////////////////////////////////////////////////////////////////////////////////////////
     contenido = prompt_default+prompt_default1+preg_resp
     messages.append({"role": "user", "content": contenido})
-    respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
+    respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
     contenido_respuesta = respuesta.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta})
     #///////////////////////////////////////////////////////////////////////////////////////////
     contenido1 =prompt_default + prompt_default2 + preg_resp
 
     messages.append({"role": "user", "content": contenido1})
-    respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
+    respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
     contenido_respuesta1 = respuesta1.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta1})
     #////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido2 =prompt_default + prompt_default3 + preg_resp
 
     messages.append({"role": "user", "content": contenido2})
-    respuesta2 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
+    respuesta2 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
     contenido_respuesta2 = respuesta2.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta2})
     # Guardar la respuesta en la base de datos
@@ -126,42 +130,42 @@ def prueba(request):
     contenido3 =prompt_default + prompt_default4 + preg_resp
 
     messages.append({"role": "user", "content": contenido3})
-    respuesta3 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
+    respuesta3 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
     contenido_respuesta3 = respuesta3.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta3})
     #/////////////////////////////////////////////////////////////////////////////////////////////////////7
     contenido4 =prompt_default + prompt_default5 + preg_resp
 
     messages.append({"role": "user", "content": contenido4})
-    respuesta4 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
+    respuesta4 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
     contenido_respuesta4 = respuesta4.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta4})
     #/////////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido5 =prompt_default + prompt_default6 + preg_resp
 
     messages.append({"role": "user", "content": contenido5})
-    respuesta5 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
+    respuesta5 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
     contenido_respuesta5 = respuesta5.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta5})
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido6 = prompt_default7 + preg_resp
 
     messages.append({"role": "user", "content": contenido6})
-    respuesta6 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
+    respuesta6 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
     contenido_respuesta6 = respuesta6.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta6})
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido7 =prompt_default + prompt_default8 + preg_resp
 
     messages.append({"role": "user", "content": contenido7})
-    respuesta7 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
+    respuesta7 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
     contenido_respuesta7 = respuesta7.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta7})
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido8 =prompt_default + prompt_default9 + preg_resp
 
     messages.append({"role": "user", "content": contenido8})
-    respuesta8 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
+    respuesta8 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
     contenido_respuesta8 = respuesta8.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta8})
     # Guardar la respuesta en la base de datos"""
