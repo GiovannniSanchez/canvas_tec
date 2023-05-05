@@ -50,93 +50,48 @@ def prueba(request):
         '¿Cual es la razon por la cual los clientes comprarán lo que ofreces?: '
     ]
 
-    prompt_default1 = 'dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
+
+    prompt_default = 'dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
                       'estos contienen a su vez una serie de puntos clave:' \
                       'en el aspecto ¿Quien? se encuentran los puntos de: Segmento de clientes, ventaja diferencial y canales.' \
                       'En el aspecto ¿Que? se encuentra el punto: Propuesta unica de valor.' \
                       'En el aspecto ¿Como? se encuentran los puntos: problema, solución y metricas.' \
-                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.' \
-                      'Ahora segun la estrctura anterior puedes darme el segmento de clientes segun tu interpretacion como experto en modelo de negocios' \
+                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.'
+
+    prompt_default1 = 'Ahora segun la estrctura anterior puedes darme el segmento de clientes segun tu interpretacion como experto en modelo de negocios' \
                       'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
                       'varios puntos?: '
 
-    prompt_default2='dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
-                      'estos contienen a su vez una serie de puntos clave:' \
-                      'en el aspecto ¿Quien? se encuentran los puntos de: Segmento de clientes, ventaja diferencial y canales.' \
-                      'En el aspecto ¿Que? se encuentra el punto: Propuesta unica de valor.' \
-                      'En el aspecto ¿Como? se encuentran los puntos: problema, solución y metricas.' \
-                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.' \
-                      'Ahora segun la estrctura anterior puedes darme el punto "problema" del aspecto ¿Como? segun tu interpretacion como experto en modelo de negocios ' \
+    prompt_default2='Ahora segun la estrctura anterior puedes darme el punto "problema" del aspecto ¿Como? segun tu interpretacion como experto en modelo de negocios ' \
                       'haciendo referencia a las siguientes preguntas cons sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
                       'varios puntos?: '
 
-    prompt_default3='dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
-                      'estos contienen a su vez una serie de puntos clave:' \
-                      'en el aspecto ¿Quien? se encuentran los puntos de: Segmento de clientes, ventaja diferencial y canales.' \
-                      'En el aspecto ¿Que? se encuentra el punto: Propuesta unica de valor.' \
-                      'En el aspecto ¿Como? se encuentran los puntos: problema, solución y metricas.' \
-                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.' \
-                      'Ahora segun la estrctura anterior puedes darme el punto "propuesta unica de valor" segun tu interpretacion como experto en modelo de negocios ' \
+    prompt_default3='Ahora segun la estrctura anterior puedes darme el punto "propuesta unica de valor" segun tu interpretacion como experto en modelo de negocios ' \
                       'haciendo referencia a las siguientes preguntas con sus respectivas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
                       'varios puntos?: '
 
-    prompt_default4='dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
-                      'estos contienen a su vez una serie de puntos clave:' \
-                      'en el aspecto ¿Quien? se encuentran los puntos de: Segmento de clientes, ventaja diferencial y canales.' \
-                      'En el aspecto ¿Que? se encuentra el punto: Propuesta unica de valor.' \
-                      'En el aspecto ¿Como? se encuentran los puntos: problema, solución y metricas.' \
-                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.' \
-                      'Ahora segun la estrctura anterior puedes darme el punto "solución" segun tu interpretacion como experto en modelo de negocios ' \
+    prompt_default4=  'Ahora segun la estrctura anterior puedes darme el punto "solución" segun tu interpretacion como experto en modelo de negocios ' \
                       'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
                       'varios puntos?: '
 
-    prompt_default5='dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
-                      'estos contienen a su vez una serie de puntos clave:' \
-                      'en el aspecto ¿Quien? se encuentran los puntos de: Segmento de clientes, ventaja diferencial y canales.' \
-                      'En el aspecto ¿Que? se encuentra el punto: Propuesta unica de valor.' \
-                      'En el aspecto ¿Como? se encuentran los puntos: problema, solución y metricas.' \
-                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.' \
-                      'Ahora segun la estrctura anterior puedes darme el punto "canales" segun tu interpretacion como experto en modelo de negocios ' \
+    prompt_default5=  'Ahora segun la estrctura anterior puedes darme el punto "canales" segun tu interpretacion como experto en modelo de negocios ' \
                       'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
                       'varios puntos?: '
 
-    prompt_default6='dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
-                      'estos contienen a su vez una serie de puntos clave:' \
-                      'en el aspecto ¿Quien? se encuentran los puntos de: Segmento de clientes, ventaja diferencial y canales.' \
-                      'En el aspecto ¿Que? se encuentra el punto: Propuesta unica de valor.' \
-                      'En el aspecto ¿Como? se encuentran los puntos: problema, solución y metricas.' \
-                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.' \
-                      'Ahora segun la estrctura anterior puedes darme el punto "flujo de ingresos" segun tu interpretacion como experto en modelo de negocios ' \
+    prompt_default6=  'Ahora segun la estrctura anterior puedes darme el punto "flujo de ingresos" segun tu interpretacion como experto en modelo de negocios ' \
                       'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
                       'varios puntos?: '
 
-    prompt_default7='dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
-                      'estos contienen a su vez una serie de puntos clave:' \
-                      'en el aspecto ¿Quien? se encuentran los puntos de: Segmento de clientes, ventaja diferencial y canales.' \
-                      'En el aspecto ¿Que? se encuentra el punto: Propuesta unica de valor.' \
-                      'En el aspecto ¿Como? se encuentran los puntos: problema, solución y metricas.' \
-                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.' \
-                      'Ahora segun la estrctura anterior puedes darme el punto "estructura de costes" segun tu interpretacion como experto en modelo de negocios ' \
+    prompt_default7=  'Ahora segun la estrctura anterior puedes darme el punto "estructura de costes" segun tu interpretacion como experto en modelo de negocios ' \
                       'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
                       'varios puntos?: '
 
-    prompt_default8='dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
-                      'estos contienen a su vez una serie de puntos clave:' \
-                      'en el aspecto ¿Quien? se encuentran los puntos de: Segmento de clientes, ventaja diferencial y canales.' \
-                      'En el aspecto ¿Que? se encuentra el punto: Propuesta unica de valor.' \
-                      'En el aspecto ¿Como? se encuentran los puntos: problema, solución y metricas.' \
-                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.' \
-                      'Ahora segun la estrctura anterior puedes darme el punto "metricas" segun tu interpretacion como experto en modelo de negocios ' \
+    prompt_default8=  'Ahora segun la estrctura anterior puedes darme el punto "metricas" segun tu interpretacion como experto en modelo de negocios ' \
                       'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
                       'varios puntos?: '
 
-    prompt_default9='dado un formato canvas que contiene 4 aspectos clave los cuales son el ¿quien?,¿que?,¿como? y ¿cuanto? y se ' \
-                      'estos contienen a su vez una serie de puntos clave:' \
-                      'en el aspecto ¿Quien? se encuentran los puntos de: Segmento de clientes, ventaja diferencial y canales.' \
-                      'En el aspecto ¿Que? se encuentra el punto: Propuesta unica de valor.' \
-                      'En el aspecto ¿Como? se encuentran los puntos: problema, solución y metricas.' \
-                      'Y en el aspecto ¿Cuanto se encuentran los puntos: Estructura de costes y flujo de ingresos.' \
-                      'Ahora segun la estrctura anterior puedes darme el punto "ventaja diferencial" segun tu interpretacion como experto en modelo de negocios ' \
+
+    prompt_default9= 'Ahora segun la estrctura anterior puedes darme el punto "ventaja diferencial" segun tu interpretacion como experto en modelo de negocios ' \
                       'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
                       'varios puntos?: '
 
@@ -147,22 +102,20 @@ def prueba(request):
         for i in range(len(preguntas))
     ])
 #////////////////////////////////////////////////////////////////////////////////////////
-    contenido = prompt_default1+preg_resp
-
-
+    contenido = prompt_default+prompt_default1+preg_resp
     messages.append({"role": "user", "content": contenido})
     respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta = respuesta.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta})
     #///////////////////////////////////////////////////////////////////////////////////////////
-    contenido1 = prompt_default2 + preg_resp
+    contenido1 =prompt_default + prompt_default2 + preg_resp
 
     messages.append({"role": "user", "content": contenido1})
     respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta1 = respuesta1.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta1})
     #////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido2 = prompt_default3 + preg_resp
+    contenido2 =prompt_default + prompt_default3 + preg_resp
 
     messages.append({"role": "user", "content": contenido2})
     respuesta2 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
@@ -170,28 +123,27 @@ def prueba(request):
     messages.append({"role": "assistant", "content": contenido_respuesta2})
     # Guardar la respuesta en la base de datos
     #///////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido3 = prompt_default4 + preg_resp
+    contenido3 =prompt_default + prompt_default4 + preg_resp
 
     messages.append({"role": "user", "content": contenido3})
     respuesta3 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta3 = respuesta3.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta3})
     #/////////////////////////////////////////////////////////////////////////////////////////////////////7
-    contenido4 = prompt_default5 + preg_resp
+    contenido4 =prompt_default + prompt_default5 + preg_resp
 
     messages.append({"role": "user", "content": contenido4})
     respuesta4 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta4 = respuesta4.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta4})
     #/////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido5 = prompt_default6 + preg_resp
+    contenido5 =prompt_default + prompt_default6 + preg_resp
 
     messages.append({"role": "user", "content": contenido5})
     respuesta5 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta5 = respuesta5.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta5})
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    """
     contenido6 = prompt_default7 + preg_resp
 
     messages.append({"role": "user", "content": contenido6})
@@ -199,14 +151,14 @@ def prueba(request):
     contenido_respuesta6 = respuesta6.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta6})
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido7 = prompt_default8 + preg_resp
+    contenido7 =prompt_default + prompt_default8 + preg_resp
 
     messages.append({"role": "user", "content": contenido7})
     respuesta7 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta7 = respuesta7.choices[0].message.content
     messages.append({"role": "assistant", "content": contenido_respuesta7})
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido8 = prompt_default9 + preg_resp
+    contenido8 =prompt_default + prompt_default9 + preg_resp
 
     messages.append({"role": "user", "content": contenido8})
     respuesta8 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
@@ -219,7 +171,11 @@ def prueba(request):
                                                 propuesta_valor=contenido_respuesta2,
                                                 soluciones=contenido_respuesta3,
                                                 canal=contenido_respuesta4,
-                                                flujo_ingresos=contenido_respuesta5)
+                                                flujo_ingresos=contenido_respuesta5,
+                                                estructura_costes=contenido_respuesta6,
+                                                metricas=contenido_respuesta7,
+                                                ventaja_diferencial=contenido_respuesta8
+                                                )
     answer_chat.save()
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -262,7 +218,10 @@ def canvas(request):
         last.propuesta_valor,
         last.soluciones,
         last.canal,
-        last.flujo_ingresos
+        last.flujo_ingresos,
+        last.estructura_costes,
+        last.metricas,
+        last.ventaja_diferencial
     ]
     print(answers_canvas)
     return render(request, 'canvas.html',{'respuestas_canvas':answers_canvas})
