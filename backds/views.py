@@ -30,74 +30,57 @@ def prueba(request):
         last.answer10
     ]
 
-    print(len(answers_list))
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
 
     preguntas = [
-        '¿Que vas a ofrecer al mercado?: ',
+        '¿Que ofreces al mercado?: ',
         '¿Sabes como elaborarlo?: ',
-        '¿Como te daras a conocer a tus clientes?: ',
+        '¿Como te conoceran tus clientes?: ',
         '¿Que problema resuelve?: ',
         '¿Cuanto va a costar?: ',
         '¿Como lo vas a vender?: ',
-        '¿A quien se lo vas a vender?: ',
+        '¿A quien lo vas a vender?: ',
         '¿Existen alternativas a tu producto o servicio?: ',
-        '¿Que hace a tu producto diferente a los demas?: ',
-        '¿Cual es la razon por la cual los clientes comprarán lo que ofreces?: '
+        '¿Que hace a tu producto diferente?: ',
+        '¿porque los clientes compraran lo que ofreces?: '
     ]
 
 
-    prompt_default = 'El formato Canvas tiene 4 aspectos clave: ¿Quién?, ¿Qué?, ¿Cómo? y ¿Cuánto?, cada uno con puntos clave:'\
-                    '¿Quién?: Segmento de clientes, ventaja diferencial y canales.'\
-                    '¿Qué?: Propuesta única de valor.'\
-                    '¿Cómo?: Problema, solución y métricas.'\
-                    '¿Cuánto?: Estructura de costes y flujo de ingresos.'
+    prompt_default = 'una herramienta de planificación empresarial lean canvas que consta de nueve bloques:'\
+                     'problema,' \
+                     ' soluciones,' \
+                     ' propuesta de valor,' \
+                     ' ventaja diferiencial,' \
+                     ' métricas,' \
+                     ' cliente ideal,' \
+                     ' canales' \
+                     ' estructura de costos y' \
+                     'flujo de ingresos'
 
-    prompt_default1 = 'Segmento de clientes según tu interpretación Referente a:'\
-                        'A quiénes va dirigido tu producto/servicio?'\
-                        'Cuáles son las necesidades de tus clientes?'\
-                        'Características demográficas de tus clientes.'\
-                        'Comportamiento de tus clientes.'\
-                        'Formato corto y en lista si aplica.'\
-
-    prompt_default2='Punto "problema" del aspecto ¿Cómo? según tu interpretación? Referente a:'\
-                    '¿Cuál es el problema que enfrenta tu cliente?'\
-                    '¿Por qué es importante resolver ese problema?'\
-                    '¿Cómo afecta el problema a la vida del cliente?'\
-                    'Formato corto y en lista si aplica.'\
-
-    prompt_default3='Ahora segun la estrctura anterior puedes darme el punto "propuesta unica de valor" segun tu interpretacion como experto en modelo de negocios ' \
-                      'haciendo referencia a las siguientes preguntas con sus respectivas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
-                      'varios puntos?: '
-
-    prompt_default4=  'Ahora segun la estrctura anterior puedes darme el punto "solución" segun tu interpretacion como experto en modelo de negocios ' \
+    prompt_default1 = 'puedes darme el segmento de clientes segun tu interpretacion como experto en modelo de negocios' \
                       'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
                       'varios puntos?: '
 
-    prompt_default5=  'Ahora segun la estrctura anterior puedes darme el punto "canales" segun tu interpretacion como experto en modelo de negocios ' \
-                      'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
-                      'varios puntos?: '
+    prompt_default2= 'Ahora segun la estructura anterior puedes darme el  "problema"?'
 
-    prompt_default6=  'Ahora segun la estrctura anterior puedes darme el punto "flujo de ingresos" segun tu interpretacion como experto en modelo de negocios ' \
-                      'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
-                      'varios puntos?: '
+    prompt_default3= 'Ahora segun la estructura anterior, puedes darme la "ventaja diferiencial"?'
 
-    prompt_default7=  'Ahora segun la estrctura anterior puedes darme el punto "estructura de costes" segun tu interpretacion como experto en modelo de negocios ' \
-                      'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
-                      'varios puntos?: '
+    prompt_default4=  'Ahora segun la estrctura anterior puedes darme las "soluciones"?'
 
-    prompt_default8=  'Ahora segun la estrctura anterior puedes darme el punto "metricas" segun tu interpretacion como experto en modelo de negocios ' \
-                      'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
-                      'varios puntos?: '
+    prompt_default5=  'Ahora segun la estrctura anterior puedes darme los "canales"?'
+
+    prompt_default6=  'Ahora segun la estrctura anterior puedes darme el "flujo de ingresos"?'
+
+    prompt_default7=  'Ahora segun la estrctura anterior puedes darme la "estructura de costes"?'
+
+    prompt_default8=  'Ahora segun la estrctura anterior puedes darme las "metricas"'
 
 
-    prompt_default9= 'Ahora segun la estrctura anterior puedes darme el punto "ventaja diferencial" segun tu interpretacion como experto en modelo de negocios ' \
-                      'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
-                      'varios puntos?: '
+    prompt_default9= 'Ahora segun la estrctura anterior puedes darme la "ventaja diferencial"?'
 
 
 
@@ -108,67 +91,57 @@ def prueba(request):
 #////////////////////////////////////////////////////////////////////////////////////////
     contenido = prompt_default+prompt_default1+preg_resp
     messages.append({"role": "user", "content": contenido})
-    respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
+    respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta = respuesta.choices[0].message.content
-    messages.append({"role": "assistant", "content": contenido_respuesta})
     #///////////////////////////////////////////////////////////////////////////////////////////
-    contenido1 =prompt_default + prompt_default2 + preg_resp
+    contenido1 =contenido_respuesta+prompt_default + prompt_default2
 
     messages.append({"role": "user", "content": contenido1})
-    respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
+    respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta1 = respuesta1.choices[0].message.content
-    messages.append({"role": "assistant", "content": contenido_respuesta1})
     #////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido2 =prompt_default + prompt_default3 + preg_resp
+    contenido2 =contenido_respuesta + prompt_default + prompt_default3
 
     messages.append({"role": "user", "content": contenido2})
-    respuesta2 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
+    respuesta2 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta2 = respuesta2.choices[0].message.content
-    messages.append({"role": "assistant", "content": contenido_respuesta2})
     # Guardar la respuesta en la base de datos
     #///////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido3 =prompt_default + prompt_default4 + preg_resp
+    contenido3 =contenido_respuesta + prompt_default + prompt_default4
 
     messages.append({"role": "user", "content": contenido3})
-    respuesta3 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
+    respuesta3 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta3 = respuesta3.choices[0].message.content
-    messages.append({"role": "assistant", "content": contenido_respuesta3})
     #/////////////////////////////////////////////////////////////////////////////////////////////////////7
-    contenido4 =prompt_default + prompt_default5 + preg_resp
+    contenido4 =contenido_respuesta + prompt_default + prompt_default5
 
     messages.append({"role": "user", "content": contenido4})
-    respuesta4 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
+    respuesta4 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta4 = respuesta4.choices[0].message.content
-    messages.append({"role": "assistant", "content": contenido_respuesta4})
     #/////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido5 =prompt_default + prompt_default6 + preg_resp
+    contenido5 =contenido_respuesta + prompt_default + prompt_default6
 
     messages.append({"role": "user", "content": contenido5})
-    respuesta5 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
+    respuesta5 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta5 = respuesta5.choices[0].message.content
-    messages.append({"role": "assistant", "content": contenido_respuesta5})
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido6 = prompt_default7 + preg_resp
+    contenido6 =contenido_respuesta + prompt_default + prompt_default7
 
     messages.append({"role": "user", "content": contenido6})
-    respuesta6 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
+    respuesta6 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta6 = respuesta6.choices[0].message.content
-    messages.append({"role": "assistant", "content": contenido_respuesta6})
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido7 =prompt_default + prompt_default8 + preg_resp
+    contenido7 =contenido_respuesta +prompt_default + prompt_default8
 
     messages.append({"role": "user", "content": contenido7})
-    respuesta7 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
+    respuesta7 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta7 = respuesta7.choices[0].message.content
-    messages.append({"role": "assistant", "content": contenido_respuesta7})
-    # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido8 =prompt_default + prompt_default9 + preg_resp
-
+    #/////////////////////////////////////////////////////////////////////////////////////////////////////////
+    contenido8 =contenido_respuesta + prompt_default + prompt_default9
     messages.append({"role": "user", "content": contenido8})
-    respuesta8 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=100)
+    respuesta8 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta8 = respuesta8.choices[0].message.content
-    messages.append({"role": "assistant", "content": contenido_respuesta8})
-    # Guardar la respuesta en la base de datos"""
+    #Guardar la respuesta en la base de datos
     answer_chat = AnswersChatgpt.objects.create(user=user,
                                                 cliente_ideal=contenido_respuesta,
                                                 problema=contenido_respuesta1,
@@ -192,7 +165,8 @@ def formulario(request):
     else:
 
         user_id = request.user.id
-        answers_user.objects.create(answer1=request.POST['answer1'],
+        answers_user.objects.create(name_e_p=request.POST['name_e_p'],
+                                    answer1=request.POST['answer1'],
                                     answer2=request.POST['answer2'],
                                     answer3=request.POST['answer3'],
                                     answer4=request.POST['answer4'],
@@ -216,6 +190,9 @@ def test01(request):
 def canvas(request):
     user= request.user
     last=AnswersChatgpt.objects.filter(user=user).last()
+    lastname=answers_user.objects.filter(user=user).last()
+    proyect_name=lastname.name_e_p
+
     answers_canvas=[
         last.problema,
         last.cliente_ideal,
@@ -225,7 +202,7 @@ def canvas(request):
         last.flujo_ingresos,
         last.estructura_costes,
         last.metricas,
-        last.ventaja_diferencial
+        last.ventaja_diferencial,
     ]
-    print(answers_canvas)
-    return render(request, 'canvas.html',{'respuestas_canvas':answers_canvas})
+    return render(request, 'canvas.html',{'respuestas_canvas':answers_canvas,
+                                          'nombre': proyect_name})

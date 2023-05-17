@@ -13,6 +13,7 @@ class CreateNewProject(forms.Form):
 
 
 class RegisterAnswer(forms.Form):
+    name_e_p = forms.CharField(label="¿Como se llama tu proyecto/empresa?", max_length=30, widget=forms.Textarea(attrs={'class':'input'}))
     answer1 = forms.CharField(label="¿Que vas a ofrecer al mercado?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
     answer2 = forms.CharField(label="¿Sabes como elaborarlo?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
     answer3 = forms.CharField(label="¿Como te daras a conocer a tus clientes?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))

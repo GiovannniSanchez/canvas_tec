@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 class answers_user(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
+    name_e_p=models.TextField(max_length=30, unique=False, verbose_name='Nombre_empresa_proyecto')
     answer1=models.TextField(max_length=1000, unique=False, verbose_name='Respuesta1')
     answer2=models.TextField(max_length=1000, unique=False, verbose_name='Respuesta2')
     answer3=models.TextField(max_length=1000, unique=False, verbose_name='Respuesta3')

@@ -19,6 +19,12 @@
         <form method="POST" class="register-form" onsubmit="return validateForm()">
           {% csrf_token %}
           <div class="form-row">
+              <div class="form-col" style="width: auto">
+                  <label class="form-label" for="{{ form.name_e_p.id_for_label }}">{{ form.name_e_p.label }}</label>
+                  {{ form.name_e_p }}
+              </div>
+          </div>
+          <div class="form-row">
             <div class="form-col">
               <label class="form-label" for="{{ form.answer1.id_for_label }}">{{ form.answer1.label }}</label>
               {{ form.answer1 }}
