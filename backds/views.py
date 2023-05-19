@@ -31,7 +31,7 @@ def prueba(request):
     ]
 
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
