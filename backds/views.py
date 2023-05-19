@@ -31,7 +31,7 @@ def prueba(request):
     ]
 
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
@@ -67,7 +67,7 @@ def prueba(request):
 
     prompt_default2= 'Ahora segun la estructura anterior puedes darme el  "problema"?'
 
-    prompt_default3= 'Ahora segun la estructura anterior, puedes darme la "ventaja diferiencial"?'
+    prompt_default3= 'Ahora segun la estructura anterior, puedes darme la "Propuesta de valor"?'
 
     prompt_default4=  'Ahora segun la estrctura anterior puedes darme las "soluciones"?'
 
@@ -94,50 +94,50 @@ def prueba(request):
     respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta = respuesta.choices[0].message.content
     #///////////////////////////////////////////////////////////////////////////////////////////
-    contenido1 =contenido_respuesta+prompt_default + prompt_default2
+    contenido1 =prompt_default+prompt_default2+preg_resp
 
     messages.append({"role": "user", "content": contenido1})
     respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta1 = respuesta1.choices[0].message.content
     #////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido2 =contenido_respuesta + prompt_default + prompt_default3
+    contenido2 =prompt_default+prompt_default3+preg_resp
 
     messages.append({"role": "user", "content": contenido2})
     respuesta2 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta2 = respuesta2.choices[0].message.content
     # Guardar la respuesta en la base de datos
     #///////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido3 =contenido_respuesta + prompt_default + prompt_default4
+    contenido3 =prompt_default+prompt_default4+preg_resp
 
     messages.append({"role": "user", "content": contenido3})
     respuesta3 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta3 = respuesta3.choices[0].message.content
     #/////////////////////////////////////////////////////////////////////////////////////////////////////7
-    contenido4 =contenido_respuesta + prompt_default + prompt_default5
+    contenido4 =prompt_default+prompt_default5+preg_resp
 
     messages.append({"role": "user", "content": contenido4})
     respuesta4 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta4 = respuesta4.choices[0].message.content
     #/////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido5 =contenido_respuesta + prompt_default + prompt_default6
+    contenido5 =prompt_default+prompt_default6+preg_resp
 
     messages.append({"role": "user", "content": contenido5})
     respuesta5 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta5 = respuesta5.choices[0].message.content
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido6 =contenido_respuesta + prompt_default + prompt_default7
+    contenido6 =prompt_default+prompt_default7+preg_resp
 
     messages.append({"role": "user", "content": contenido6})
     respuesta6 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta6 = respuesta6.choices[0].message.content
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido7 =contenido_respuesta +prompt_default + prompt_default8
+    contenido7 =prompt_default+prompt_default8+preg_resp
 
     messages.append({"role": "user", "content": contenido7})
     respuesta7 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta7 = respuesta7.choices[0].message.content
     #/////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido8 =contenido_respuesta + prompt_default + prompt_default9
+    contenido8 =prompt_default+prompt_default9+preg_resp
     messages.append({"role": "user", "content": contenido8})
     respuesta8 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta8 = respuesta8.choices[0].message.content
