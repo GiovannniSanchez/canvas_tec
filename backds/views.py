@@ -31,7 +31,7 @@ def prueba(request):
     ]
 
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
@@ -188,21 +188,81 @@ def test01(request):
 
 @login_required
 def canvas(request):
-    user= request.user
-    last=AnswersChatgpt.objects.filter(user=user).last()
-    lastname=answers_user.objects.filter(user=user).last()
-    proyect_name=lastname.name_e_p
+    try:
+        user = request.user
+        last = AnswersChatgpt.objects.filter(user=user).last()
+        lastname = answers_user.objects.filter(user=user).last()
+        proyect_name = lastname.name_e_p
 
-    answers_canvas=[
-        last.problema,
-        last.cliente_ideal,
-        last.propuesta_valor,
-        last.soluciones,
-        last.canal,
-        last.flujo_ingresos,
-        last.estructura_costes,
-        last.metricas,
-        last.ventaja_diferencial,
-    ]
-    return render(request, 'canvas.html',{'respuestas_canvas':answers_canvas,
-                                          'nombre': proyect_name})
+        answers_canvas = [
+            last.problema,
+            last.cliente_ideal,
+            last.propuesta_valor,
+            last.soluciones,
+            last.canal,
+            last.flujo_ingresos,
+            last.estructura_costes,
+            last.metricas,
+            last.ventaja_diferencial,
+        ]
+
+        return render(request, 'canvas.html', {
+            'respuestas_canvas': answers_canvas,
+            'nombre': proyect_name
+        })
+
+    except AttributeError:
+        # Manejo del error
+        answers_canvas = []  # O cualquier otra lógica que desees utilizar en caso de error
+        proyect_name = None  # O cualquier otro valor o lógica que desees utilizar en caso de error
+
+        return render(request, 'canvas.html', {
+            'respuestas_canvas': answers_canvas,
+            'nombre': proyect_name
+        })
+
+import requests
+import pandas as pd
+
+def obtener_datos_inegi(clave_api, indicador_id):
+    # URL base de la API del INEGI
+    url_base = "https://api.datos.gob.mx/v2/"
+
+    # Endpoint para obtener los datos de un indicador específico
+    endpoint = f"series/{indicador_id}/datos"
+
+    # Parámetros de la consulta
+    params = {
+        "token": clave_api,
+        "pageSize": 10  # Número de resultados a obtener
+    }
+
+    # Realizar la solicitud GET a la API del INEGI
+    try:
+        response = requests.get(url_base + endpoint, params=params)
+        response.raise_for_status()  # Verificar si hubo errores en la respuesta
+
+        # Obtener los datos de la respuesta en formato JSON
+        datos = response.json()
+
+        # Crear un DataFrame de pandas con los datos
+        df = pd.DataFrame(datos["datos"])
+
+        # Procesar y manipular los datos como desees
+        # Por ejemplo, puedes realizar operaciones de limpieza, transformación, filtrado, etc.
+        # Aquí hay un ejemplo de cómo imprimir las fechas y valores del DataFrame
+        for index, row in df.iterrows():
+            fecha = row["fecha"]
+            valor = row["dato"]
+            print(f"Fecha: {fecha}, Valor: {valor}")
+
+        # También puedes realizar otros análisis y manipulaciones con pandas
+
+    except requests.exceptions.RequestException as e:
+        print("Error en la solicitud:", e)
+
+# Ejemplo de uso
+clave_api = "TU_CLAVE_API_DEL_INEGI"
+indicador_id = "INDICADOR_ID_DESEADO"
+
+obtener_datos_inegi(clave_api, indicador_id)
