@@ -47,3 +47,4 @@ class AnswersChatgpt(models.Model):
         verbose_name='Respuesta_Chatgpt'
         verbose_name_plural='Respuestas_Chatgpt'
         ordering=['id']
+

@@ -5,6 +5,10 @@ from .forms import RegisterAnswer
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 import openai
+import pandas as pd
+import requests
+import json
+
 
 
 def about(request):
@@ -221,48 +225,85 @@ def canvas(request):
             'nombre': proyect_name
         })
 
-import requests
-import pandas as pd
+def obtener_datos_inegi(request):
+    #//////////////////////////////////////////////////
+    #//////////////////////////////////////////////////
+    # Definir la URL que contiene los datos JSON
+    base_url = 'https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/INDICATOR/'
+    indicador1 = '1002000001'
+    indicador2 = '1002000003'
+    indicador3 = '1002000002'
+    url = base_url + indicador1 + ',' + indicador2 + ',' + indicador3 + '/es/0700/true/BISE/2.0/9fde1331-f4c3-4d45-95d6-e455a1aa9615?type=json'
+    # baseURL //////////////////////////////////////////////////////////////////
+    url_metabase = 'https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/CL_INDICATOR/'
+    urlmeta = url_metabase + indicador1 + ',' + indicador2 + ',' + indicador3 + '/es/BISE/2.0/9fde1331-f4c3-4d45-95d6-e455a1aa9615?type=json'
+    # Hacer la solicitud GET
+    response = requests.get(url)
+    responsemeta = requests.get(urlmeta)
+    # Obtener el contenido de la respuesta en formato JSON
+    data_jsonmeta = responsemeta.json()
+    data_json = response.json()
+    # Mostrar los datos en formato JSON
+    # ////////////////////////////////////////////////////////////////////
+    # Convertir JSON a un diccionario de python
 
-def obtener_datos_inegi(clave_api, indicador_id):
-    # URL base de la API del INEGI
-    url_base = "https://api.datos.gob.mx/v2/"
+    series = data_json["Series"]
+    # Crear una lista para almacenar los datos desglosados
+    data = []
+    df = pd.DataFrame(data,
+                      columns=["hola", "FREQ", "TOPIC", "UNIT", "LASTUPDATE", "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS",
+                               "OBS_NOTE", "COBER_GEO"])
+    data_poblacion = []
+    # Iterar sobre cada serie en data_json
+    for serie in data_json['Series']:
+        # Obtener el indicador de la serie
+        indicador = serie['INDICADOR']
 
-    # Endpoint para obtener los datos de un indicador específico
-    endpoint = f"series/{indicador_id}/datos"
+        # Buscar el nombre del indicador en data_jsonmeta
+        indicador_nombre = next((code['Description'] for code in data_jsonmeta['CODE'] if code['value'] == indicador),
+                                None)
 
-    # Parámetros de la consulta
-    params = {
-        "token": clave_api,
-        "pageSize": 10  # Número de resultados a obtener
+        # Si se encontró el nombre del indicador, mostrarlo
+        if indicador_nombre:
+            print(f'Indicador: {indicador} - {indicador_nombre}')
+
+        # Obtener el valor de la población de la serie
+        poblacion = serie['OBSERVATIONS'][0]['OBS_VALUE']
+
+        # Mostrar el valor de la población
+        data_poblacion.append(poblacion)
+
+    print("////////////////////////////////////////")
+    print(data_poblacion)
+
+    ruta= 'C:/Users/ghost/canvas_tec/datos.json'
+    # Abrir el archivo JSON
+    with open(ruta, 'r') as archivo:
+    # Cargar el contenido del archivo JSON
+        contenido_json = json.load(archivo)
+
+    return render(request, 'pruebadata.html',{'data':contenido_json})
+
+
+def guardar_json(request):
+    # Datos a guardar en formato JSON
+    data = {
+        "id": "CL_INDICATOR",
+        "agencyID": "INEGI",
+        "version": "1.0",
+        "lang": "es",
+        "CODE": [
+            {"value": "539260", "Description": "Indicadores económicos de coyuntura. Unidad de medida y actualización (UMA). Diario."},
+            {"value": "539261", "Description": "Indicadores económicos de coyuntura. Unidad de medida y actualización (UMA). Mensual."},
+            {"value": "539262", "Description": "Indicadores económicos de coyuntura. Unidad de medida y actualización (UMA). Anual."},
+            {"value": "653121", "Description": "Ingresos totales por suministro de bienes y servicios - 484 Autotransporte de carga"},
+            {"value": "653122", "Description": "Ingresos totales por suministro de bienes y servicios - 485111 Transporte colectivo urbano y suburbano de pasajeros en autobuses de ruta fija"}
+        ]
     }
 
-    # Realizar la solicitud GET a la API del INEGI
-    try:
-        response = requests.get(url_base + endpoint, params=params)
-        response.raise_for_status()  # Verificar si hubo errores en la respuesta
+    # Convertir los datos a JSON
+    json_data = json.dumps(data)
 
-        # Obtener los datos de la respuesta en formato JSON
-        datos = response.json()
+    # Guardar el JSON como respuesta HTTP
+    return JsonResponse(json_data, safe=False)
 
-        # Crear un DataFrame de pandas con los datos
-        df = pd.DataFrame(datos["datos"])
-
-        # Procesar y manipular los datos como desees
-        # Por ejemplo, puedes realizar operaciones de limpieza, transformación, filtrado, etc.
-        # Aquí hay un ejemplo de cómo imprimir las fechas y valores del DataFrame
-        for index, row in df.iterrows():
-            fecha = row["fecha"]
-            valor = row["dato"]
-            print(f"Fecha: {fecha}, Valor: {valor}")
-
-        # También puedes realizar otros análisis y manipulaciones con pandas
-
-    except requests.exceptions.RequestException as e:
-        print("Error en la solicitud:", e)
-
-# Ejemplo de uso
-clave_api = "TU_CLAVE_API_DEL_INEGI"
-indicador_id = "INDICADOR_ID_DESEADO"
-
-obtener_datos_inegi(clave_api, indicador_id)
