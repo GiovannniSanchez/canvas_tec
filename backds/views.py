@@ -3,12 +3,13 @@ from django.contrib.auth.decorators import login_required
 from .models import answers_user, AnswersChatgpt
 from .forms import RegisterAnswer
 from django.contrib.auth.models import User
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 import openai
 import pandas as pd
 import requests
 import json
-
+from fuzzywuzzy import fuzz
+from urllib.parse import urlencode
 
 
 def about(request):
@@ -226,84 +227,49 @@ def canvas(request):
         })
 
 def obtener_datos_inegi(request):
-    #//////////////////////////////////////////////////
-    #//////////////////////////////////////////////////
-    # Definir la URL que contiene los datos JSON
-    base_url = 'https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/INDICATOR/'
-    indicador1 = '1002000001'
-    indicador2 = '1002000003'
-    indicador3 = '1002000002'
-    url = base_url + indicador1 + ',' + indicador2 + ',' + indicador3 + '/es/0700/true/BISE/2.0/9fde1331-f4c3-4d45-95d6-e455a1aa9615?type=json'
-    # baseURL //////////////////////////////////////////////////////////////////
-    url_metabase = 'https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/CL_INDICATOR/'
-    urlmeta = url_metabase + indicador1 + ',' + indicador2 + ',' + indicador3 + '/es/BISE/2.0/9fde1331-f4c3-4d45-95d6-e455a1aa9615?type=json'
-    # Hacer la solicitud GET
-    response = requests.get(url)
-    responsemeta = requests.get(urlmeta)
-    # Obtener el contenido de la respuesta en formato JSON
-    data_jsonmeta = responsemeta.json()
-    data_json = response.json()
-    # Mostrar los datos en formato JSON
-    # ////////////////////////////////////////////////////////////////////
-    # Convertir JSON a un diccionario de python
+    if request.method == 'GET':
+        return render(request, 'pruebadata.html')
+    else:
+        ruta = 'C:/Users/ghost/canvas_tec/datos.json'
+        # Abrir el archivo JSON
+        with open(ruta, 'r') as file:
+            # Cargar el contenido del archivo JSON
+            contenido_json = json.load(file)
 
-    series = data_json["Series"]
-    # Crear una lista para almacenar los datos desglosados
-    data = []
-    df = pd.DataFrame(data,
-                      columns=["hola", "FREQ", "TOPIC", "UNIT", "LASTUPDATE", "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS",
-                               "OBS_NOTE", "COBER_GEO"])
-    data_poblacion = []
-    # Iterar sobre cada serie en data_json
-    for serie in data_json['Series']:
-        # Obtener el indicador de la serie
-        indicador = serie['INDICADOR']
+        var = request.POST.get('var')
+        inegi_code = ""
+        var1 = var.lower()  # Transformar en minúscula el valor de la variable
+        max_similarity = 0
+        for item in contenido_json['CODE']:
+            description_lower = item['Description'].lower()
+            keywords = var1.split()  # Obtener palabras clave de la búsqueda
+            similarity = sum(fuzz.partial_ratio(keyword, description_lower) for keyword in keywords)
+            if similarity > max_similarity:
+                max_similarity = similarity
+                inegi_code = item['value']
 
-        # Buscar el nombre del indicador en data_jsonmeta
-        indicador_nombre = next((code['Description'] for code in data_jsonmeta['CODE'] if code['value'] == indicador),
-                                None)
+        #/////////////////////////////////////////////////////////////////////////////////////
+        #consulta inegi
 
-        # Si se encontró el nombre del indicador, mostrarlo
-        if indicador_nombre:
-            print(f'Indicador: {indicador} - {indicador_nombre}')
+        url_base = "https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/INDICATOR/"
+        indicador = inegi_code
+        idioma = "/es/"
+        Area_geografica = "00/"
+        url_base_final = "true/BISE/2.0/9fde1331-f4c3-4d45-95d6-e455a1aa9615?type=json"
 
-        # Obtener el valor de la población de la serie
-        poblacion = serie['OBSERVATIONS'][0]['OBS_VALUE']
+        url_completa = url_base + indicador + idioma + Area_geografica + url_base_final
 
-        # Mostrar el valor de la población
-        data_poblacion.append(poblacion)
+        response = requests.get(url_completa)
+        data_json = response.json()
 
-    print("////////////////////////////////////////")
-    print(data_poblacion)
+        params = urlencode({'data_json': json.dumps(data_json)})  # Convertir a JSON y codificar como parámetro de consulta
+        url = '/resultado_inegi/?' + params  # Construir la URL con los parámetros de consulta
 
-    ruta= 'C:/Users/ghost/canvas_tec/datos.json'
-    # Abrir el archivo JSON
-    with open(ruta, 'r') as archivo:
-    # Cargar el contenido del archivo JSON
-        contenido_json = json.load(archivo)
-
-    return render(request, 'pruebadata.html',{'data':contenido_json})
+        return HttpResponseRedirect(url)
 
 
-def guardar_json(request):
-    # Datos a guardar en formato JSON
-    data = {
-        "id": "CL_INDICATOR",
-        "agencyID": "INEGI",
-        "version": "1.0",
-        "lang": "es",
-        "CODE": [
-            {"value": "539260", "Description": "Indicadores económicos de coyuntura. Unidad de medida y actualización (UMA). Diario."},
-            {"value": "539261", "Description": "Indicadores económicos de coyuntura. Unidad de medida y actualización (UMA). Mensual."},
-            {"value": "539262", "Description": "Indicadores económicos de coyuntura. Unidad de medida y actualización (UMA). Anual."},
-            {"value": "653121", "Description": "Ingresos totales por suministro de bienes y servicios - 484 Autotransporte de carga"},
-            {"value": "653122", "Description": "Ingresos totales por suministro de bienes y servicios - 485111 Transporte colectivo urbano y suburbano de pasajeros en autobuses de ruta fija"}
-        ]
-    }
+def resultado_inegi(request):
+    data_json_str = request.GET.get('data_json')
+    data_json = json.loads(data_json_str) if data_json_str else None
 
-    # Convertir los datos a JSON
-    json_data = json.dumps(data)
-
-    # Guardar el JSON como respuesta HTTP
-    return JsonResponse(json_data, safe=False)
-
+    return render(request, 'prueba_inegi.html', {'data': data_json})

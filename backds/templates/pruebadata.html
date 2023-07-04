@@ -1,3 +1,7 @@
-<h1>PRUEBA DATA API INEGI</h1>
-<h1><br></h1>
-{{ data }}
+<h1> prueba algoritmo de inegi</h1>
+
+<form method="POST" action="{% url 'data' %}">
+    {% csrf_token %}
+    <input type="text" name="var" placeholder="ingresa la consulta deseada">
+    <button type="submit">Enviar</button>
+</form>
