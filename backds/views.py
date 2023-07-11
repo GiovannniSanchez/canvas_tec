@@ -259,7 +259,6 @@ def obtener_datos_inegi(request):
 
         # /////////////////////////////////////////////////////////////////////////////////////
         # consulta inegi
-
         url_base = "https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/INDICATOR/"
         indicador = inegi_code
         idioma = "/es/"
@@ -285,21 +284,63 @@ def obtener_datos_inegi(request):
                             break
         print(valor_consulta)
 
+        #///////////////////////////////////////////////////////////////////////////////////////////////////////
+        #CONSULTA API DENUE
+        var_denue = request.POST.get('var_denue')
+        url_base = "https://www.inegi.org.mx/app/api/denue/v1/consulta/BuscarEntidad/"
+        condicion = var_denue
+        entidad = "/22"
+        inicio = "/1"
+        cantidad = "/3/"
+        token = "9fde1331-f4c3-4d45-95d6-e455a1aa9615"
+
+        url_completa = url_base + condicion + entidad + inicio + cantidad + token
+
+        response = requests.get(url_completa)
+
+        data_json = response.json()
+
+        sumatoria_ids = {}
+        nombres_ids = {}
+
+        # Almacenar el nombre de cada ID
+        for establecimiento in data_json:
+            id_establecimiento = establecimiento["Id"]
+            nombre_establecimiento = establecimiento["Nombre"]
+
+            sumatoria_ids[id_establecimiento] = 1
+
+            nombres_ids[id_establecimiento] = nombre_establecimiento
+
+        # Imprimir la sumatoria y el nombre de cada ID
+        for id_establecimiento, sumatoria in sumatoria_ids.items():
+            nombre = nombres_ids[id_establecimiento]
+            print(f"ID: {id_establecimiento}, Nombre: {nombre}")
+
+        print("///////////7")
+        cantidad = len(data_json)
+        print(cantidad)
+        print(nombre)
+#//////////////////////////////////////////////////////////////////////////////////////7
         params = urlencode({'data_json': json.dumps(data_json)})  # Convertir a JSON y codificar como parámetro de consulta
 
         if inegi_code:
-            url = reverse('resultado_inegi', kwargs={'inegi_code': indicador, 'nombre_indicador': nombre_indicador, 'valor_consulta': valor_consulta})
+            url = reverse('resultado_inegi', kwargs={'inegi_code': indicador, 'nombre_indicador': nombre_indicador,
+                                                     'valor_consulta': valor_consulta, 'cantidad': cantidad,
+                                                     'nombres_ids': nombres_ids})
             return redirect(url)
         else:
             message = "Valor no encontrado"
             return redirect('resultado_inegi', inegi_code=message)
-def resultado_inegi(request, inegi_code=None, nombre_indicador=None, valor_consulta=None):
+def resultado_inegi(request, inegi_code=None, nombre_indicador=None, valor_consulta=None, cantidad=None, nombres_ids=None ):
     data_json_str = request.GET.get('data_json')
     data_json = json.loads(data_json_str) if data_json_str else None
 
     context = {
         'data': inegi_code,
         'name': nombre_indicador,
-        'valor_consulta': valor_consulta
+        'valor_consulta': valor_consulta,
+        'canitdad': cantidad,
+        'nombres': nombres_ids
     }
     return render(request, 'prueba_inegi.html', context)

@@ -3,5 +3,6 @@
 <form method="POST" action="{% url 'data' %}">
     {% csrf_token %}
     <input type="text" name="var" placeholder="ingresa la consulta deseada">
+    <input type="text" name="var_denue" placeholder="ingresa el tipo de establecimiento">
     <button type="submit">Enviar</button>
 </form>
