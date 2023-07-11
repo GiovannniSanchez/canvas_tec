@@ -10,6 +10,7 @@ import requests
 import json
 from fuzzywuzzy import fuzz
 from urllib.parse import urlencode
+from django.urls import reverse
 
 
 def about(request):
@@ -36,7 +37,7 @@ def prueba(request):
     ]
 
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
@@ -96,7 +97,7 @@ def prueba(request):
 #////////////////////////////////////////////////////////////////////////////////////////
     contenido = prompt_default+prompt_default1+preg_resp
     messages.append({"role": "user", "content": contenido})
-    respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
+    respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
     contenido_respuesta = respuesta.choices[0].message.content
     #///////////////////////////////////////////////////////////////////////////////////////////
     contenido1 =prompt_default+prompt_default2+preg_resp
@@ -226,6 +227,9 @@ def canvas(request):
             'nombre': proyect_name
         })
 
+
+
+
 def obtener_datos_inegi(request):
     if request.method == 'GET':
         return render(request, 'pruebadata.html')
@@ -238,8 +242,10 @@ def obtener_datos_inegi(request):
 
         var = request.POST.get('var')
         inegi_code = ""
+        nombre_indicador = ""
         var1 = var.lower()  # Transformar en minúscula el valor de la variable
         max_similarity = 0
+
         for item in contenido_json['CODE']:
             description_lower = item['Description'].lower()
             keywords = var1.split()  # Obtener palabras clave de la búsqueda
@@ -247,29 +253,53 @@ def obtener_datos_inegi(request):
             if similarity > max_similarity:
                 max_similarity = similarity
                 inegi_code = item['value']
+                nombre_indicador = item['Description']  # Asignar el valor de "Description" a la variable "nombre_indicador"
+                print("$$$$$$", nombre_indicador, "$$$$$end")
+                print("!!!!!!!!!", inegi_code, "!!!!!!!end")
 
-        #/////////////////////////////////////////////////////////////////////////////////////
-        #consulta inegi
+        # /////////////////////////////////////////////////////////////////////////////////////
+        # consulta inegi
 
         url_base = "https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/INDICATOR/"
         indicador = inegi_code
         idioma = "/es/"
-        Area_geografica = "00/"
+        Area_geografica = "22/"
         url_base_final = "true/BISE/2.0/9fde1331-f4c3-4d45-95d6-e455a1aa9615?type=json"
 
         url_completa = url_base + indicador + idioma + Area_geografica + url_base_final
+        print(url_completa)
 
         response = requests.get(url_completa)
         data_json = response.json()
 
+        # Cálculo de valor_consulta
+        valor_consulta = None
+        if "Series" in data_json and isinstance(data_json["Series"], list):
+            series = data_json["Series"]
+            for serie in series:
+                if "OBSERVATIONS" in serie and isinstance(serie["OBSERVATIONS"], list):
+                    observations = serie["OBSERVATIONS"]
+                    for observation in observations:
+                        if "OBS_VALUE" in observation:
+                            valor_consulta = round(float(observation["OBS_VALUE"]), 2)
+                            break
+        print(valor_consulta)
+
         params = urlencode({'data_json': json.dumps(data_json)})  # Convertir a JSON y codificar como parámetro de consulta
-        url = '/resultado_inegi/?' + params  # Construir la URL con los parámetros de consulta
 
-        return HttpResponseRedirect(url)
-
-
-def resultado_inegi(request):
+        if inegi_code:
+            url = reverse('resultado_inegi', kwargs={'inegi_code': indicador, 'nombre_indicador': nombre_indicador, 'valor_consulta': valor_consulta})
+            return redirect(url)
+        else:
+            message = "Valor no encontrado"
+            return redirect('resultado_inegi', inegi_code=message)
+def resultado_inegi(request, inegi_code=None, nombre_indicador=None, valor_consulta=None):
     data_json_str = request.GET.get('data_json')
     data_json = json.loads(data_json_str) if data_json_str else None
 
-    return render(request, 'prueba_inegi.html', {'data': data_json})
+    context = {
+        'data': inegi_code,
+        'name': nombre_indicador,
+        'valor_consulta': valor_consulta
+    }
+    return render(request, 'prueba_inegi.html', context)
