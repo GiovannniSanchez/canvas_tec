@@ -344,3 +344,312 @@ def resultado_inegi(request, inegi_code=None, nombre_indicador=None, valor_consu
         'nombres': nombres_ids
     }
     return render(request, 'prueba_inegi.html', context)
+
+def corrida_financiera(request):
+    #////////////////////////////////////
+    #Definicion de diccionarios
+    memorias_calculo = {'ventas_semana': []}
+    salarios = {'salarios': [],
+                'importe_mensual':[]}
+    servicios_mantto = {}
+    costo_proyecto1_mensual = {}
+
+    #Definicion de variables
+    B2_Memorias_calculo_Total_venta_semana = [sum(memorias_calculo['ventas_semana'])]
+    B2_Salarios_Total_Sueldo_Mensual =  [sum(salarios['sueldo_mensual'])]
+    B2_Servicios_Total_Mensual = [sum(salarios['importe_mensual'])]
+    B2_Servicios_Mantto_Mensual_Total = [sum(servicios_mantto['importe_mensual'])]
+    B2_Costo_Materiales_Por_Dia = []
+    B3_Costo_Proyecto1_Mensual_Por_Dia = []
+
+    unidad_value = ''
+    cantidad_value = 0
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #//Definicion de diccionarios
+    #BLOQUE 1: PRESUPUESTO DE INVERSION
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    activo_fijo = {'concepto': [],
+                   'unidad': [],
+                   'cantidad': [],
+                   'costo_unitario': []}
+    activo_fijo['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad in
+                              zip(activo_fijo['costo_unitario'], activo_fijo['cantidad'])]
+    activo_fijo['programa'] = [activo_fijo['montos']]
+    activo_fijo['socios'] = [activo_fijo['montos']]
+    activo_fijo['total'] = [programa + socios for programa, socios in zip(activo_fijo['programa'],
+                                                                        activo_fijo['socios'])]
+
+
+
+    Activo_diferido = {'concepto': [],
+                       'unidad': [],
+                       'cantidad':[],
+                       'consumo_unitario': []}
+    # Calculamos el monto multiplicando cantidad por consumo_unitario
+    Activo_diferido['montos'] = [cantidad * consumo_unitario for cantidad, consumo_unitario in
+                                 zip(Activo_diferido['cantidad'], Activo_diferido['consumo_unitario'])]
+    # Asignamos el valor de montos a programa y socios (no está claro si realmente deseas esto)
+    Activo_diferido['programa'] = Activo_diferido['montos']
+    Activo_diferido['socios'] = Activo_diferido['montos']
+    # Calculamos el total sumando programa y socios
+    Activo_diferido['total'] = [programa + socio for programa, socio in
+                                zip(Activo_diferido['programa'], Activo_diferido['socios'])]
+
+
+    #NOTA: Se elimina diccionario 'capital_trabajo_servicio'
+
+
+
+    capital_trabajo_mano_obra = {'unidad':[],
+                                 'cantidad':[],
+                                 'costo_unitario': B2_Salarios_Total_Sueldo_Mensual}
+    capital_trabajo_mano_obra['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad in
+                                           zip(capital_trabajo_mano_obra['costo_unitario'],
+                                               capital_trabajo_mano_obra['cantidad'])]
+    capital_trabajo_mano_obra['programa'] = [capital_trabajo_mano_obra['montos']]
+    capital_trabajo_mano_obra['socios'] = [capital_trabajo_mano_obra['montos']]
+    capital_trabajo_mano_obra['total'] = [sum(capital_trabajo_mano_obra['programa']
+                                           + capital_trabajo_mano_obra['socios'])]
+
+
+
+    capital_trabajo_servicios ={'unidad': [],
+                                'cantidad': [],
+                                'costo_unitario': B2_Servicios_Total_Mensual}
+    capital_trabajo_servicios['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad in
+                                         zip(capital_trabajo_servicios['costo_unitario'],
+                                             capital_trabajo_servicios['cantidad'])]
+    capital_trabajo_servicios['programa'] = [capital_trabajo_servicios['montos']]
+    capital_trabajo_servicios['socios'] = [capital_trabajo_servicios['montos']]
+    capital_trabajo_servicios['total'] = [sum(capital_trabajo_servicios['programa']
+                                           + capital_trabajo_servicios['socios'])]
+
+
+
+    capital_trabajo_servicios_mantto={'unidad':[],
+                                      'cantidad':[],
+                                      'costo_unitario':B2_Servicios_Mantto_Mensual_Total}
+    capital_trabajo_servicios_mantto['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad in
+                                                  zip(capital_trabajo_servicios_mantto['costo_unitario'],
+                                                      capital_trabajo_servicios_mantto['cantidad'])]
+    capital_trabajo_servicios_mantto['programa'] = [capital_trabajo_servicios_mantto['montos']]
+    capital_trabajo_servicios_mantto['socios'] = [capital_trabajo_servicios_mantto['montos']]
+    capital_trabajo_servicios_mantto['total'] = [sum(capital_trabajo_servicios_mantto['programas']
+                                                  + capital_trabajo_servicios_mantto['socios'])]
+
+
+    total_presupuesto_inversion={'total_monto':sum(capital_trabajo_servicios['montos']
+                                 + capital_trabajo_mano_obra['montos']+capital_trabajo_servicios_mantto['montos']
+                                 + activo_fijo['montos']+Activo_diferido['montos']),
+
+                                 'total_programa': sum(capital_trabajo_servicios['programa']
+                                 + capital_trabajo_mano_obra['programa']+ capital_trabajo_servicios_mantto['programa']
+                                 + activo_fijo['programa']+Activo_diferido['programa']),
+
+                                 'total_socios': sum(capital_trabajo_servicios['socios']
+                                 + capital_trabajo_mano_obra['socios']+capital_trabajo_servicios_mantto['socios']
+                                 + activo_fijo['socios']+Activo_diferido['socios']),
+                                 }
+    total_presupuesto_inversion={'total_B1': sum(total_presupuesto_inversion['total_programa']
+                                 + total_presupuesto_inversion['total_socios'])}
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # BLOQUE 2: MEMORIAS DE CALCULO
+    #///////////////////////////////
+    #Deficicion de diccionarios
+
+    #Definicion de variables
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    memorias_calculo = {'concepto': [],
+                        'presentacion': [],
+                        'costo_insumo': [B2_Costo_Materiales_Por_Dia],
+                        'ventas_semana': []}
+    memorias_calculo['costo_semanal'] = [costo_insumo * ventas_semana for costo_insumo, ventas_semana in zip(
+                                        memorias_calculo['costo_insumo'], memorias_calculo['ventas_semana'])]
+    memorias_calculo['costo_mensual'] = [costo_semanal * 4 for costo_semanal in memorias_calculo['ventas_semana']]
+    memorias_calculo['precio_venta'] = [costo_insumo * 1.35 for costo_insumo in memorias_calculo['costo_insumo']]
+    memorias_calculo['ingreso_semanal'] = [precio_venta * ventas_semana for precio_venta, ventas_semana in
+                                           zip(memorias_calculo['precio_venta'], memorias_calculo['ventas_semana'])]
+    memorias_calculo['ingreso_mensual'] = [ingreso_semanal * 4 for ingreso_semanal in memorias_calculo['ingreso_semanal']]
+    memorias_calculo['ingreso_anual'] = [ingreso_mensual * 12 for ingreso_mensual in memorias_calculo['ingreso_mensual']]
+    memorias_calculo['total_ventas_semana'] = [sum(memorias_calculo['ventas_semana'])]
+    memorias_calculo['total_costo_semana'] = [sum(memorias_calculo['costo_semanal'])]
+    memorias_calculo['total_costo_mensual'] = [sum(memorias_calculo['costo_mensual'])]
+    memorias_calculo['total_ingreso_semanal'] = [sum(memorias_calculo['ingreso_semanal'])]
+    memorias_calculo['total_ingreso_mensual'] = [sum(memorias_calculo['ingreso_mensual'])]
+    memorias_calculo['total_ingreso_anual'] = [sum(memorias_calculo['ingreso_anual'])]
+    memorias_calculo['ganacia_semanal'] = [total_ingreso_semanal - total_costo_semana
+                                           for total_ingreso_semanal, total_costo_semana in
+                                           zip(memorias_calculo['total_ingreso_semanal'],
+                                               memorias_calculo['total_costo_semana'])]
+    memorias_calculo['ganancia_mensual'] = [ganancia_semanal * 4 for ganancia_semanal in memorias_calculo['ganacia_semanal']]
+    memorias_calculo['ganancia_anual'] = [ganancia_mensual * 12 for ganancia_mensual in memorias_calculo['ganancia_mensual']]
+
+    registro_propiedad_intelectual = {'concepto': [],
+                                      'cantidad': [],
+                                      'precio_unitario': []}
+    registro_propiedad_intelectual['precio_total'] = [cantidad * precio_unitario for cantidad, precio_unitario
+                                                      in zip(registro_propiedad_intelectual['cantidad'],
+                                                             registro_propiedad_intelectual['precio_unitario'])]
+    registro_propiedad_intelectual['total'] = [sum(registro_propiedad_intelectual['precio_total'])]
+
+
+
+
+    servicios_administrativos = {'concepto': [],
+                                 'cantidad': [],
+                                 'precio_unitario': []}
+    servicios_administrativos['precio_total'] = [cantidad * precio_unitario for cantidad, precio_unitario
+                                                 in zip(servicios_administrativos['cantidad'],
+                                                        servicios_administrativos['precio_unitario'])]
+    servicios_administrativos['total'] = [sum(servicios_administrativos['precio_total'])]
+
+
+
+
+    servicios = {'concepto': [],
+                 'importe_mensual': []}
+    servicios['importe_2meses'] = [importe_mensual * 2 for importe_mensual in zip(servicios['importe_mensual'])]
+    servicios['importe_anual'] = [importe_anual * 12 for importe_anual in zip(servicios['importe_mensual'])]
+    servicios['mensual_total'] = [sum(servicios['importe_mensual'])]
+    servicios['anual_total'] = [sum(servicios['importe_anual'])]
+
+
+
+
+    servicios_mantto={'concepto': [],
+                      'importe_mensual': []}
+    servicios_mantto['importe_2meses'] = [importe_mensual * 2 for importe_mensual
+                                          in servicios_mantto['importe_mensual']]
+    servicios_mantto['importe_anual'] = [importe_anual * 12 for importe_anual
+                                         in servicios_mantto['importe_mensual']]
+    servicios_mantto['mensual_total'] = [sum(servicios_mantto['importe_mensual'])]
+    servicios_mantto['anual_total'] = [sum(servicios_mantto['importe_anual'])]
+
+
+
+
+    salarios = {'puesto': [],
+                'cantidad': [],
+                'sueldo_mensual': []}
+    salarios['sueldo_diario'] = [sueldo_diario / 30 for sueldo_diario
+                                 in salarios['sueldo_mensual']]
+    salarios['sueldo_anual'] = [sueldo_anual * 12 for sueldo_anual
+                                in salarios['sueldo_mensual']]
+    salarios['total_sueldo_mensual'] = [sum(salarios['sueldo_mensual'])]
+    salarios['total_sueldo_anual'] = [sum(salarios['sueldo_anual'])]
+
+
+
+
+    #/////////////////////////////////////////////////////////////
+    costo_proyecto1_mensual = {'costo_mensual': [sum(servicios['importe_mensual']+salarios['sueldo_mensual']
+                                                     + servicios_administrativos['precio_unitario'])
+                                                + servicios_mantto['mensual_total']]}
+    #////////////////////////////////////////////////////////////
+    costo_materiales = {'materiales': [],
+                        'unidad': []}
+    costo_materiales['por_dia'] =[costo_proyecto1_mensual['costo_mensual'] / 30]
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # BLOQUE 3: PROYECCION DE COSTOS
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    costos_proyecto1 = {'concepto': [concepto for concepto in servicios['concepto']],
+                        'costo_mensual': [importe_mensual for importe_mensual in servicios['importe_mensual']]}
+    costos_proyecto1['año1'] = [costo_mensual * 12 for costo_mensual in costos_proyecto1['costo_mensual']]
+    costos_proyecto1['año2'] = [año1 * 1.02 for año1 in costos_proyecto1['año1']]
+    costos_proyecto1['año3'] = [año2 * 1.02 for año2 in costos_proyecto1['año2']]
+    costos_proyecto1['año4'] = [año3 * 1.02 for año3 in costos_proyecto1['año3']]
+    costos_proyecto1['año5'] = [año4 * 1.02 for año4 in costos_proyecto1['año4']]
+
+
+
+
+    costos_proyecto2 = {'concepto': [concepto for concepto in memorias_calculo['concepto']],
+                        'costo_mensual': [costo_mensual for costo_mensual in memorias_calculo['costo_mensual']]}
+    costos_proyecto2['año1'] = [costo_mensual * 12 for costo_mensual in costos_proyecto2['costo_mensual']]
+    costos_proyecto2['año2'] = [año1 * 1.02 for año1 in costos_proyecto2['año1']]
+    costos_proyecto2['año3'] = [año2 * 1.02 for año2 in costos_proyecto2['año2']]
+    costos_proyecto2['año4'] = [año3 * 1.02 for año3 in costos_proyecto2['año3']]
+    costos_proyecto2['año5'] = [año4 * 1.02 for año4 in costos_proyecto2['año4']]
+
+
+
+    totales = {'total_costo_mensual': [sum(costos_proyecto1['costo_mensual'] + costos_proyecto2['costo_mensual'])],
+               'total_año1': [sum(costos_proyecto1['año1'] + costos_proyecto2['año1'])],
+               'total_año2': [sum(costos_proyecto1['año2'] + costos_proyecto2['año2'])],
+               'total_año3': [sum(costos_proyecto1['año3'] + costos_proyecto2['año3'])],
+               'total_año4': [sum(costos_proyecto1['año4'] + costos_proyecto2['año4'])],
+               'total_año5': [sum(costos_proyecto1['año5'] + costos_proyecto2['año5'])]}
+
+
+
+
+    costo_proyecto1_mensual['costo_dia'] = [costo_proyecto1_mensual['costo_mensual'] / 30]
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # BLOQUE 4: COSTOS TOTALES
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    costos_fijos = {'concepto': [concepto for concepto in costos_proyecto1['concepto']],
+                    'año1': [año1 for año1 in costos_proyecto1['año1']],
+                    'año2': [año2 for año2 in costos_proyecto1['año2']],
+                    'año3': [año3 for año3 in costos_proyecto1['año3']],
+                    'año4': [año4 for año4 in costos_proyecto1['año4']],
+                    'año5': [año5 for año5 in costos_proyecto1['año5']]}
+    costos_fijos['total_año1'] = [sum(costos_fijos['año1'])]
+    costos_fijos['total_año2'] = [sum(costos_fijos['año2'])]
+    costos_fijos['total_año3'] = [sum(costos_fijos['año3'])]
+    costos_fijos['total_año4'] = [sum(costos_fijos['año4'])]
+    costos_fijos['total_año5'] = [sum(costos_fijos['año5'])]
+
+
+
+    costos_variables = {'concepto': [concepto for concepto in costos_proyecto2['concepto']],
+                        'año1': [año1 for año1 in costos_proyecto2['año1']],
+                        'año2': [año2 for año2 in costos_proyecto2['año2']],
+                        'año3': [año3 for año3 in costos_proyecto2['año3']],
+                        'año4': [año4 for año4 in costos_proyecto2['año4']],
+                        'año5': [año5 for año5 in costos_proyecto2['año5']]}
+    costos_variables['total_año1'] = [sum(costos_variables['año1'])]
+    costos_variables['total_año2'] = [sum(costos_variables['año2'])]
+    costos_variables['total_año3'] = [sum(costos_variables['año3'])]
+    costos_variables['total_año4'] = [sum(costos_variables['año4'])]
+    costos_variables['total_año5'] = [sum(costos_variables['año5'])]
+
+
+
+
+    costos_totales = {'costo_fijo_año1': [total_año1 for total_año1 in costos_fijos['total_año1']],
+                      'costo_fijo_año2': [total_año2 for total_año2 in costos_fijos['total_año2']],
+                      'costo_fijo_año3': [total_año3 for total_año3 in costos_fijos['total_año3']],
+                      'costo_fijo_año4': [total_año4 for total_año4 in costos_fijos['total_año4']],
+                      'costo_fijo_año5': [total_año5 for total_año5 in costos_fijos['total_año5']],
+                      'costo_variable_año1': [total_año1 for total_año1 in costos_variables['total_año1']],
+                      'costo_variable_año2': [total_año2 for total_año2 in costos_variables['total_año2']],
+                      'costo_variable_año3': [total_año3 for total_año3 in costos_variables['total_año3']],
+                      'costo_variable_año4': [total_año4 for total_año4 in costos_variables['total_año4']],
+                      'costo_variable_año5': [total_año5 for total_año5 in costos_variables['total_año5']]}
+    costos_totales['costos_totales_año1'] = [sum(costos_totales['costo_fijo_año1'] + costos_totales['costo_variable_año1'])]
+    costos_totales['costos_totales_año2'] = [sum(costos_totales['costo_fijo_año2'] + costos_totales['costo_variable_año2'])]
+    costos_totales['costos_totales_año3'] = [sum(costos_totales['costo_fijo_año3'] + costos_totales['costo_variable_año3'])]
+    costos_totales['costos_totales_año4'] = [sum(costos_totales['costo_fijo_año4'] + costos_totales['costo_variable_año4'])]
+    costos_totales['costos_totales_año5'] = [sum(costos_totales['costo_fijo_año5'] + costos_totales['costo_variable_año5'])]
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # BLOQUE 5: PROYECCIÓN DE INGRESOS
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    proyeccion_ingresos = {'concepto': [concepto for concepto in memorias_calculo['concepto']],
+                           'volumen_venta_mensual': [ventas_semana * 4 for ventas_semana in memorias_calculo['ventas_semana']],
+                           'precio_unitario': [precio_venta for precio_venta in memorias_calculo['precio_venta']]}
+    return render(request, 'prueba_inegi.html')
