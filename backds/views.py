@@ -869,4 +869,5 @@ def corrida_financiera(request):
     #pendiente continuar diccionario flujo_efectivo
     #xd
 
+
     return render(request, 'prueba_inegi.html')
