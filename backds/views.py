@@ -11,6 +11,7 @@ import json
 from fuzzywuzzy import fuzz
 from urllib.parse import urlencode
 from django.urls import reverse
+from numpy import np
 
 
 def about(request):
@@ -21,7 +22,7 @@ def about(request):
 def prueba(request):
     user = request.user
 
-    last=answers_user.objects.filter(user=user).last()
+    last = answers_user.objects.filter(user=user).last()
 
     answers_list = [
         last.answer1,
@@ -55,8 +56,7 @@ def prueba(request):
         '¿porque los clientes compraran lo que ofreces?: '
     ]
 
-
-    prompt_default = 'una herramienta de planificación empresarial lean canvas que consta de nueve bloques:'\
+    prompt_default = 'una herramienta de planificación empresarial lean canvas que consta de nueve bloques:' \
                      'problema,' \
                      ' soluciones,' \
                      ' propuesta de valor,' \
@@ -71,83 +71,80 @@ def prueba(request):
                       'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
                       'varios puntos?: '
 
-    prompt_default2= 'Ahora segun la estructura anterior puedes darme el  "problema"?'
+    prompt_default2 = 'Ahora segun la estructura anterior puedes darme el  "problema"?'
 
-    prompt_default3= 'Ahora segun la estructura anterior, puedes darme la "Propuesta de valor"?'
+    prompt_default3 = 'Ahora segun la estructura anterior, puedes darme la "Propuesta de valor"?'
 
-    prompt_default4=  'Ahora segun la estrctura anterior puedes darme las "soluciones"?'
+    prompt_default4 = 'Ahora segun la estrctura anterior puedes darme las "soluciones"?'
 
-    prompt_default5=  'Ahora segun la estrctura anterior puedes darme los "canales"?'
+    prompt_default5 = 'Ahora segun la estrctura anterior puedes darme los "canales"?'
 
-    prompt_default6=  'Ahora segun la estrctura anterior puedes darme el "flujo de ingresos"?'
+    prompt_default6 = 'Ahora segun la estrctura anterior puedes darme el "flujo de ingresos"?'
 
-    prompt_default7=  'Ahora segun la estrctura anterior puedes darme la "estructura de costes"?'
+    prompt_default7 = 'Ahora segun la estrctura anterior puedes darme la "estructura de costes"?'
 
-    prompt_default8=  'Ahora segun la estrctura anterior puedes darme las "metricas"'
+    prompt_default8 = 'Ahora segun la estrctura anterior puedes darme las "metricas"'
 
-
-    prompt_default9= 'Ahora segun la estrctura anterior puedes darme la "ventaja diferencial"?'
-
-
+    prompt_default9 = 'Ahora segun la estrctura anterior puedes darme la "ventaja diferencial"?'
 
     preg_resp = '\n'.join([
         f"{preguntas[i]}{str(answers_list[i])}"
         for i in range(len(preguntas))
     ])
-#////////////////////////////////////////////////////////////////////////////////////////
-    contenido = prompt_default+prompt_default1+preg_resp
+    # ////////////////////////////////////////////////////////////////////////////////////////
+    contenido = prompt_default + prompt_default1 + preg_resp
     messages.append({"role": "user", "content": contenido})
     respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
     contenido_respuesta = respuesta.choices[0].message.content
-    #///////////////////////////////////////////////////////////////////////////////////////////
-    contenido1 =prompt_default+prompt_default2+preg_resp
+    # ///////////////////////////////////////////////////////////////////////////////////////////
+    contenido1 = prompt_default + prompt_default2 + preg_resp
 
     messages.append({"role": "user", "content": contenido1})
     respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta1 = respuesta1.choices[0].message.content
-    #////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido2 =prompt_default+prompt_default3+preg_resp
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////
+    contenido2 = prompt_default + prompt_default3 + preg_resp
 
     messages.append({"role": "user", "content": contenido2})
     respuesta2 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta2 = respuesta2.choices[0].message.content
     # Guardar la respuesta en la base de datos
-    #///////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido3 =prompt_default+prompt_default4+preg_resp
+    # ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    contenido3 = prompt_default + prompt_default4 + preg_resp
 
     messages.append({"role": "user", "content": contenido3})
     respuesta3 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta3 = respuesta3.choices[0].message.content
-    #/////////////////////////////////////////////////////////////////////////////////////////////////////7
-    contenido4 =prompt_default+prompt_default5+preg_resp
+    # /////////////////////////////////////////////////////////////////////////////////////////////////////7
+    contenido4 = prompt_default + prompt_default5 + preg_resp
 
     messages.append({"role": "user", "content": contenido4})
     respuesta4 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta4 = respuesta4.choices[0].message.content
-    #/////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido5 =prompt_default+prompt_default6+preg_resp
+    # /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    contenido5 = prompt_default + prompt_default6 + preg_resp
 
     messages.append({"role": "user", "content": contenido5})
     respuesta5 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta5 = respuesta5.choices[0].message.content
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido6 =prompt_default+prompt_default7+preg_resp
+    contenido6 = prompt_default + prompt_default7 + preg_resp
 
     messages.append({"role": "user", "content": contenido6})
     respuesta6 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta6 = respuesta6.choices[0].message.content
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido7 =prompt_default+prompt_default8+preg_resp
+    contenido7 = prompt_default + prompt_default8 + preg_resp
 
     messages.append({"role": "user", "content": contenido7})
     respuesta7 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta7 = respuesta7.choices[0].message.content
-    #/////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido8 =prompt_default+prompt_default9+preg_resp
+    # /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    contenido8 = prompt_default + prompt_default9 + preg_resp
     messages.append({"role": "user", "content": contenido8})
     respuesta8 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
     contenido_respuesta8 = respuesta8.choices[0].message.content
-    #Guardar la respuesta en la base de datos
+    # Guardar la respuesta en la base de datos
     answer_chat = AnswersChatgpt.objects.create(user=user,
                                                 cliente_ideal=contenido_respuesta,
                                                 problema=contenido_respuesta1,
@@ -163,6 +160,7 @@ def prueba(request):
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return redirect('canvas')
+
 
 @login_required
 def formulario(request):
@@ -189,7 +187,7 @@ def formulario(request):
 def test01(request):
     user = request.user
     answers = answers_user.objects.filter(user=user)
-    return render(request, 'test01.html',{'respuestas':answers})
+    return render(request, 'test01.html', {'respuestas': answers})
 
 
 @login_required
@@ -228,8 +226,6 @@ def canvas(request):
         })
 
 
-
-
 def obtener_datos_inegi(request):
     if request.method == 'GET':
         return render(request, 'pruebadata.html')
@@ -253,7 +249,8 @@ def obtener_datos_inegi(request):
             if similarity > max_similarity:
                 max_similarity = similarity
                 inegi_code = item['value']
-                nombre_indicador = item['Description']  # Asignar el valor de "Description" a la variable "nombre_indicador"
+                nombre_indicador = item[
+                    'Description']  # Asignar el valor de "Description" a la variable "nombre_indicador"
                 print("$$$$$$", nombre_indicador, "$$$$$end")
                 print("!!!!!!!!!", inegi_code, "!!!!!!!end")
 
@@ -284,8 +281,8 @@ def obtener_datos_inegi(request):
                             break
         print(valor_consulta)
 
-        #///////////////////////////////////////////////////////////////////////////////////////////////////////
-        #CONSULTA API DENUE
+        # ///////////////////////////////////////////////////////////////////////////////////////////////////////
+        # CONSULTA API DENUE
         var_denue = request.POST.get('var_denue')
         url_base = "https://www.inegi.org.mx/app/api/denue/v1/consulta/BuscarEntidad/"
         condicion = var_denue
@@ -321,8 +318,9 @@ def obtener_datos_inegi(request):
         cantidad = len(data_json)
         print(cantidad)
         print(nombre)
-#//////////////////////////////////////////////////////////////////////////////////////7
-        params = urlencode({'data_json': json.dumps(data_json)})  # Convertir a JSON y codificar como parámetro de consulta
+        # //////////////////////////////////////////////////////////////////////////////////////7
+        params = urlencode(
+            {'data_json': json.dumps(data_json)})  # Convertir a JSON y codificar como parámetro de consulta
 
         if inegi_code:
             url = reverse('resultado_inegi', kwargs={'inegi_code': indicador, 'nombre_indicador': nombre_indicador,
@@ -332,7 +330,10 @@ def obtener_datos_inegi(request):
         else:
             message = "Valor no encontrado"
             return redirect('resultado_inegi', inegi_code=message)
-def resultado_inegi(request, inegi_code=None, nombre_indicador=None, valor_consulta=None, cantidad=None, nombres_ids=None ):
+
+
+def resultado_inegi(request, inegi_code=None, nombre_indicador=None, valor_consulta=None, cantidad=None,
+                    nombres_ids=None):
     data_json_str = request.GET.get('data_json')
     data_json = json.loads(data_json_str) if data_json_str else None
 
@@ -345,18 +346,19 @@ def resultado_inegi(request, inegi_code=None, nombre_indicador=None, valor_consu
     }
     return render(request, 'prueba_inegi.html', context)
 
+
 def corrida_financiera(request):
-    #////////////////////////////////////
-    #Definicion de diccionarios
+    # ////////////////////////////////////
+    # Definicion de diccionarios
     memorias_calculo = {'ventas_semana': []}
     salarios = {'salarios': [],
-                'importe_mensual':[]}
+                'importe_mensual': []}
     servicios_mantto = {}
     costo_proyecto1_mensual = {}
 
-    #Definicion de variables
+    # Definicion de variables
     B2_Memorias_calculo_Total_venta_semana = [sum(memorias_calculo['ventas_semana'])]
-    B2_Salarios_Total_Sueldo_Mensual =  [sum(salarios['sueldo_mensual'])]
+    B2_Salarios_Total_Sueldo_Mensual = [sum(salarios['sueldo_mensual'])]
     B2_Servicios_Total_Mensual = [sum(salarios['importe_mensual'])]
     B2_Servicios_Mantto_Mensual_Total = [sum(servicios_mantto['importe_mensual'])]
     B2_Costo_Materiales_Por_Dia = []
@@ -366,25 +368,23 @@ def corrida_financiera(request):
     cantidad_value = 0
 
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    #//Definicion de diccionarios
-    #BLOQUE 1: PRESUPUESTO DE INVERSION
+    # //Definicion de diccionarios
+    # BLOQUE 1: PRESUPUESTO DE INVERSION
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     activo_fijo = {'concepto': [],
                    'unidad': [],
                    'cantidad': [],
                    'costo_unitario': []}
     activo_fijo['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad in
-                              zip(activo_fijo['costo_unitario'], activo_fijo['cantidad'])]
+                             zip(activo_fijo['costo_unitario'], activo_fijo['cantidad'])]
     activo_fijo['programa'] = [activo_fijo['montos']]
     activo_fijo['socios'] = [activo_fijo['montos']]
     activo_fijo['total'] = [programa + socios for programa, socios in zip(activo_fijo['programa'],
-                                                                        activo_fijo['socios'])]
-
-
+                                                                          activo_fijo['socios'])]
 
     Activo_diferido = {'concepto': [],
                        'unidad': [],
-                       'cantidad':[],
+                       'cantidad': [],
                        'consumo_unitario': []}
     # Calculamos el monto multiplicando cantidad por consumo_unitario
     Activo_diferido['montos'] = [cantidad * consumo_unitario for cantidad, consumo_unitario in
@@ -396,13 +396,10 @@ def corrida_financiera(request):
     Activo_diferido['total'] = [programa + socio for programa, socio in
                                 zip(Activo_diferido['programa'], Activo_diferido['socios'])]
 
+    # NOTA: Se elimina diccionario 'capital_trabajo_servicio'
 
-    #NOTA: Se elimina diccionario 'capital_trabajo_servicio'
-
-
-
-    capital_trabajo_mano_obra = {'unidad':[],
-                                 'cantidad':[],
+    capital_trabajo_mano_obra = {'unidad': [],
+                                 'cantidad': [],
                                  'costo_unitario': B2_Salarios_Total_Sueldo_Mensual}
     capital_trabajo_mano_obra['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad in
                                            zip(capital_trabajo_mano_obra['costo_unitario'],
@@ -410,58 +407,56 @@ def corrida_financiera(request):
     capital_trabajo_mano_obra['programa'] = [capital_trabajo_mano_obra['montos']]
     capital_trabajo_mano_obra['socios'] = [capital_trabajo_mano_obra['montos']]
     capital_trabajo_mano_obra['total'] = [sum(capital_trabajo_mano_obra['programa']
-                                           + capital_trabajo_mano_obra['socios'])]
+                                              + capital_trabajo_mano_obra['socios'])]
 
-
-
-    capital_trabajo_servicios ={'unidad': [],
-                                'cantidad': [],
-                                'costo_unitario': B2_Servicios_Total_Mensual}
+    capital_trabajo_servicios = {'unidad': [],
+                                 'cantidad': [],
+                                 'costo_unitario': B2_Servicios_Total_Mensual}
     capital_trabajo_servicios['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad in
-                                         zip(capital_trabajo_servicios['costo_unitario'],
-                                             capital_trabajo_servicios['cantidad'])]
+                                           zip(capital_trabajo_servicios['costo_unitario'],
+                                               capital_trabajo_servicios['cantidad'])]
     capital_trabajo_servicios['programa'] = [capital_trabajo_servicios['montos']]
     capital_trabajo_servicios['socios'] = [capital_trabajo_servicios['montos']]
     capital_trabajo_servicios['total'] = [sum(capital_trabajo_servicios['programa']
-                                           + capital_trabajo_servicios['socios'])]
+                                              + capital_trabajo_servicios['socios'])]
 
-
-
-    capital_trabajo_servicios_mantto={'unidad':[],
-                                      'cantidad':[],
-                                      'costo_unitario':B2_Servicios_Mantto_Mensual_Total}
+    capital_trabajo_servicios_mantto = {'unidad': [],
+                                        'cantidad': [],
+                                        'costo_unitario': B2_Servicios_Mantto_Mensual_Total}
     capital_trabajo_servicios_mantto['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad in
                                                   zip(capital_trabajo_servicios_mantto['costo_unitario'],
                                                       capital_trabajo_servicios_mantto['cantidad'])]
     capital_trabajo_servicios_mantto['programa'] = [capital_trabajo_servicios_mantto['montos']]
     capital_trabajo_servicios_mantto['socios'] = [capital_trabajo_servicios_mantto['montos']]
     capital_trabajo_servicios_mantto['total'] = [sum(capital_trabajo_servicios_mantto['programas']
-                                                  + capital_trabajo_servicios_mantto['socios'])]
+                                                     + capital_trabajo_servicios_mantto['socios'])]
 
+    total_presupuesto_inversion = {'total_monto': sum(capital_trabajo_servicios['montos']
+                                                      + capital_trabajo_mano_obra['montos'] +
+                                                      capital_trabajo_servicios_mantto['montos']
+                                                      + activo_fijo['montos'] + Activo_diferido['montos']),
 
-    total_presupuesto_inversion={'total_monto':sum(capital_trabajo_servicios['montos']
-                                 + capital_trabajo_mano_obra['montos']+capital_trabajo_servicios_mantto['montos']
-                                 + activo_fijo['montos']+Activo_diferido['montos']),
+                                   'total_programa': sum(capital_trabajo_servicios['programa']
+                                                         + capital_trabajo_mano_obra['programa'] +
+                                                         capital_trabajo_servicios_mantto['programa']
+                                                         + activo_fijo['programa'] + Activo_diferido['programa']),
 
-                                 'total_programa': sum(capital_trabajo_servicios['programa']
-                                 + capital_trabajo_mano_obra['programa']+ capital_trabajo_servicios_mantto['programa']
-                                 + activo_fijo['programa']+Activo_diferido['programa']),
-
-                                 'total_socios': sum(capital_trabajo_servicios['socios']
-                                 + capital_trabajo_mano_obra['socios']+capital_trabajo_servicios_mantto['socios']
-                                 + activo_fijo['socios']+Activo_diferido['socios']),
-                                 }
-    total_presupuesto_inversion={'total_B1': sum(total_presupuesto_inversion['total_programa']
-                                 + total_presupuesto_inversion['total_socios'])}
+                                   'total_socios': sum(capital_trabajo_servicios['socios']
+                                                       + capital_trabajo_mano_obra['socios'] +
+                                                       capital_trabajo_servicios_mantto['socios']
+                                                       + activo_fijo['socios'] + Activo_diferido['socios']),
+                                   }
+    total_presupuesto_inversion = {'total_B1': sum(total_presupuesto_inversion['total_programa']
+                                                   + total_presupuesto_inversion['total_socios'])}
 
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     # BLOQUE 2: MEMORIAS DE CALCULO
-    #///////////////////////////////
-    #Deficicion de diccionarios
+    # ///////////////////////////////
+    # Deficicion de diccionarios
 
-    #Definicion de variables
+    # Definicion de variables
 
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     memorias_calculo = {'concepto': [],
@@ -469,13 +464,15 @@ def corrida_financiera(request):
                         'costo_insumo': [B2_Costo_Materiales_Por_Dia],
                         'ventas_semana': []}
     memorias_calculo['costo_semanal'] = [costo_insumo * ventas_semana for costo_insumo, ventas_semana in zip(
-                                        memorias_calculo['costo_insumo'], memorias_calculo['ventas_semana'])]
+        memorias_calculo['costo_insumo'], memorias_calculo['ventas_semana'])]
     memorias_calculo['costo_mensual'] = [costo_semanal * 4 for costo_semanal in memorias_calculo['ventas_semana']]
     memorias_calculo['precio_venta'] = [costo_insumo * 1.35 for costo_insumo in memorias_calculo['costo_insumo']]
     memorias_calculo['ingreso_semanal'] = [precio_venta * ventas_semana for precio_venta, ventas_semana in
                                            zip(memorias_calculo['precio_venta'], memorias_calculo['ventas_semana'])]
-    memorias_calculo['ingreso_mensual'] = [ingreso_semanal * 4 for ingreso_semanal in memorias_calculo['ingreso_semanal']]
-    memorias_calculo['ingreso_anual'] = [ingreso_mensual * 12 for ingreso_mensual in memorias_calculo['ingreso_mensual']]
+    memorias_calculo['ingreso_mensual'] = [ingreso_semanal * 4 for ingreso_semanal in
+                                           memorias_calculo['ingreso_semanal']]
+    memorias_calculo['ingreso_anual'] = [ingreso_mensual * 12 for ingreso_mensual in
+                                         memorias_calculo['ingreso_mensual']]
     memorias_calculo['total_ventas_semana'] = [sum(memorias_calculo['ventas_semana'])]
     memorias_calculo['total_costo_semana'] = [sum(memorias_calculo['costo_semanal'])]
     memorias_calculo['total_costo_mensual'] = [sum(memorias_calculo['costo_mensual'])]
@@ -486,11 +483,10 @@ def corrida_financiera(request):
                                            for total_ingreso_semanal, total_costo_semana in
                                            zip(memorias_calculo['total_ingreso_semanal'],
                                                memorias_calculo['total_costo_semana'])]
-    memorias_calculo['ganancia_mensual'] = [ganancia_semanal * 4 for ganancia_semanal in memorias_calculo['ganacia_semanal']]
-    memorias_calculo['ganancia_anual'] = [ganancia_mensual * 12 for ganancia_mensual in memorias_calculo['ganancia_mensual']]
-
-
-
+    memorias_calculo['ganancia_mensual'] = [ganancia_semanal * 4 for ganancia_semanal in
+                                            memorias_calculo['ganacia_semanal']]
+    memorias_calculo['ganancia_anual'] = [ganancia_mensual * 12 for ganancia_mensual in
+                                          memorias_calculo['ganancia_mensual']]
 
     registro_propiedad_intelectual = {'concepto': [],
                                       'cantidad': [],
@@ -500,9 +496,6 @@ def corrida_financiera(request):
                                                              registro_propiedad_intelectual['precio_unitario'])]
     registro_propiedad_intelectual['total'] = [sum(registro_propiedad_intelectual['precio_total'])]
 
-
-
-
     servicios_administrativos = {'concepto': [],
                                  'cantidad': [],
                                  'precio_unitario': []}
@@ -511,9 +504,6 @@ def corrida_financiera(request):
                                                         servicios_administrativos['precio_unitario'])]
     servicios_administrativos['total'] = [sum(servicios_administrativos['precio_total'])]
 
-
-
-
     servicios = {'concepto': [],
                  'importe_mensual': []}
     servicios['importe_2meses'] = [importe_mensual * 2 for importe_mensual in zip(servicios['importe_mensual'])]
@@ -521,20 +511,14 @@ def corrida_financiera(request):
     servicios['mensual_total'] = [sum(servicios['importe_mensual'])]
     servicios['anual_total'] = [sum(servicios['importe_anual'])]
 
-
-
-
-    servicios_mantto={'concepto': [],
-                      'importe_mensual': []}
+    servicios_mantto = {'concepto': [],
+                        'importe_mensual': []}
     servicios_mantto['importe_2meses'] = [importe_mensual * 2 for importe_mensual
                                           in servicios_mantto['importe_mensual']]
     servicios_mantto['importe_anual'] = [importe_anual * 12 for importe_anual
                                          in servicios_mantto['importe_mensual']]
     servicios_mantto['mensual_total'] = [sum(servicios_mantto['importe_mensual'])]
     servicios_mantto['anual_total'] = [sum(servicios_mantto['importe_anual'])]
-
-
-
 
     salarios = {'puesto': [],
                 'cantidad': [],
@@ -546,17 +530,14 @@ def corrida_financiera(request):
     salarios['total_sueldo_mensual'] = [sum(salarios['sueldo_mensual'])]
     salarios['total_sueldo_anual'] = [sum(salarios['sueldo_anual'])]
 
-
-
-
-    #/////////////////////////////////////////////////////////////
-    costo_proyecto1_mensual = {'costo_mensual': [sum(servicios['importe_mensual']+salarios['sueldo_mensual']
+    # /////////////////////////////////////////////////////////////
+    costo_proyecto1_mensual = {'costo_mensual': [sum(servicios['importe_mensual'] + salarios['sueldo_mensual']
                                                      + servicios_administrativos['precio_unitario'])
-                                                + servicios_mantto['mensual_total']]}
-    #////////////////////////////////////////////////////////////
+                                                 + servicios_mantto['mensual_total']]}
+    # ////////////////////////////////////////////////////////////
     costo_materiales = {'materiales': [],
                         'unidad': []}
-    costo_materiales['por_dia'] =[costo_proyecto1_mensual['costo_mensual'] / 30]
+    costo_materiales['por_dia'] = [costo_proyecto1_mensual['costo_mensual'] / 30]
 
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -565,34 +546,26 @@ def corrida_financiera(request):
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     costos_proyecto1 = {'concepto': [concepto for concepto in servicios['concepto']],
                         'costo_mensual': [importe_mensual for importe_mensual in servicios['importe_mensual']]}
-    costos_proyecto1['año1'] = [costo_mensual * 12 for costo_mensual in costos_proyecto1['costo_mensual']]
-    costos_proyecto1['año2'] = [año1 * 1.02 for año1 in costos_proyecto1['año1']]
-    costos_proyecto1['año3'] = [año2 * 1.02 for año2 in costos_proyecto1['año2']]
-    costos_proyecto1['año4'] = [año3 * 1.02 for año3 in costos_proyecto1['año3']]
-    costos_proyecto1['año5'] = [año4 * 1.02 for año4 in costos_proyecto1['año4']]
-
-
-
+    costos_proyecto1['ano1'] = [costo_mensual * 12 for costo_mensual in costos_proyecto1['costo_mensual']]
+    costos_proyecto1['ano2'] = [ano1 * 1.02 for ano1 in costos_proyecto1['ano1']]
+    costos_proyecto1['ano3'] = [ano2 * 1.02 for ano2 in costos_proyecto1['ano2']]
+    costos_proyecto1['ano4'] = [ano3 * 1.02 for ano3 in costos_proyecto1['ano3']]
+    costos_proyecto1['ano5'] = [ano4 * 1.02 for ano4 in costos_proyecto1['ano4']]
 
     costos_proyecto2 = {'concepto': [concepto for concepto in memorias_calculo['concepto']],
                         'costo_mensual': [costo_mensual for costo_mensual in memorias_calculo['costo_mensual']]}
-    costos_proyecto2['año1'] = [costo_mensual * 12 for costo_mensual in costos_proyecto2['costo_mensual']]
-    costos_proyecto2['año2'] = [año1 * 1.02 for año1 in costos_proyecto2['año1']]
-    costos_proyecto2['año3'] = [año2 * 1.02 for año2 in costos_proyecto2['año2']]
-    costos_proyecto2['año4'] = [año3 * 1.02 for año3 in costos_proyecto2['año3']]
-    costos_proyecto2['año5'] = [año4 * 1.02 for año4 in costos_proyecto2['año4']]
-
-
+    costos_proyecto2['ano1'] = [costo_mensual * 12 for costo_mensual in costos_proyecto2['costo_mensual']]
+    costos_proyecto2['ano2'] = [ano1 * 1.02 for ano1 in costos_proyecto2['ano1']]
+    costos_proyecto2['ano3'] = [ano2 * 1.02 for ano2 in costos_proyecto2['ano2']]
+    costos_proyecto2['ano4'] = [ano3 * 1.02 for ano3 in costos_proyecto2['ano3']]
+    costos_proyecto2['ano5'] = [ano4 * 1.02 for ano4 in costos_proyecto2['ano4']]
 
     totales = {'total_costo_mensual': [sum(costos_proyecto1['costo_mensual'] + costos_proyecto2['costo_mensual'])],
-               'total_año1': [sum(costos_proyecto1['año1'] + costos_proyecto2['año1'])],
-               'total_año2': [sum(costos_proyecto1['año2'] + costos_proyecto2['año2'])],
-               'total_año3': [sum(costos_proyecto1['año3'] + costos_proyecto2['año3'])],
-               'total_año4': [sum(costos_proyecto1['año4'] + costos_proyecto2['año4'])],
-               'total_año5': [sum(costos_proyecto1['año5'] + costos_proyecto2['año5'])]}
-
-
-
+               'total_ano1': [sum(costos_proyecto1['ano1'] + costos_proyecto2['ano1'])],
+               'total_ano2': [sum(costos_proyecto1['ano2'] + costos_proyecto2['ano2'])],
+               'total_ano3': [sum(costos_proyecto1['ano3'] + costos_proyecto2['ano3'])],
+               'total_ano4': [sum(costos_proyecto1['ano4'] + costos_proyecto2['ano4'])],
+               'total_ano5': [sum(costos_proyecto1['ano5'] + costos_proyecto2['ano5'])]}
 
     costo_proyecto1_mensual['costo_dia'] = [costo_proyecto1_mensual['costo_mensual'] / 30]
 
@@ -603,55 +576,56 @@ def corrida_financiera(request):
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     costos_fijos = {'concepto': [concepto for concepto in costos_proyecto1['concepto']],
-                    'año1': [año1 for año1 in costos_proyecto1['año1']],
-                    'año2': [año2 for año2 in costos_proyecto1['año2']],
-                    'año3': [año3 for año3 in costos_proyecto1['año3']],
-                    'año4': [año4 for año4 in costos_proyecto1['año4']],
-                    'año5': [año5 for año5 in costos_proyecto1['año5']]}
-    costos_fijos['total_año1'] = [sum(costos_fijos['año1'])]
-    costos_fijos['total_año2'] = [sum(costos_fijos['año2'])]
-    costos_fijos['total_año3'] = [sum(costos_fijos['año3'])]
-    costos_fijos['total_año4'] = [sum(costos_fijos['año4'])]
-    costos_fijos['total_año5'] = [sum(costos_fijos['año5'])]
-
-
+                    'ano1': [ano1 for ano1 in costos_proyecto1['ano1']],
+                    'ano2': [ano2 for ano2 in costos_proyecto1['ano2']],
+                    'ano3': [ano3 for ano3 in costos_proyecto1['ano3']],
+                    'ano4': [ano4 for ano4 in costos_proyecto1['ano4']],
+                    'ano5': [ano5 for ano5 in costos_proyecto1['ano5']]}
+    costos_fijos['total_ano1'] = [sum(costos_fijos['ano1'])]
+    costos_fijos['total_ano2'] = [sum(costos_fijos['ano2'])]
+    costos_fijos['total_ano3'] = [sum(costos_fijos['ano3'])]
+    costos_fijos['total_ano4'] = [sum(costos_fijos['ano4'])]
+    costos_fijos['total_ano5'] = [sum(costos_fijos['ano5'])]
 
     costos_variables = {'concepto': [concepto for concepto in costos_proyecto2['concepto']],
-                        'año1': [año1 for año1 in costos_proyecto2['año1']],
-                        'año2': [año2 for año2 in costos_proyecto2['año2']],
-                        'año3': [año3 for año3 in costos_proyecto2['año3']],
-                        'año4': [año4 for año4 in costos_proyecto2['año4']],
-                        'año5': [año5 for año5 in costos_proyecto2['año5']]}
-    costos_variables['total_año1'] = [sum(costos_variables['año1'])]
-    costos_variables['total_año2'] = [sum(costos_variables['año2'])]
-    costos_variables['total_año3'] = [sum(costos_variables['año3'])]
-    costos_variables['total_año4'] = [sum(costos_variables['año4'])]
-    costos_variables['total_año5'] = [sum(costos_variables['año5'])]
+                        'ano1': [ano1 for ano1 in costos_proyecto2['ano1']],
+                        'ano2': [ano2 for ano2 in costos_proyecto2['ano2']],
+                        'ano3': [ano3 for ano3 in costos_proyecto2['ano3']],
+                        'ano4': [ano4 for ano4 in costos_proyecto2['ano4']],
+                        'ano5': [ano5 for ano5 in costos_proyecto2['ano5']]}
+    costos_variables['total_ano1'] = [sum(costos_variables['ano1'])]
+    costos_variables['total_ano2'] = [sum(costos_variables['ano2'])]
+    costos_variables['total_ano3'] = [sum(costos_variables['ano3'])]
+    costos_variables['total_ano4'] = [sum(costos_variables['ano4'])]
+    costos_variables['total_ano5'] = [sum(costos_variables['ano5'])]
 
-
-
-
-    costos_totales = {'costo_fijo_año1': [total_año1 for total_año1 in costos_fijos['total_año1']],
-                      'costo_fijo_año2': [total_año2 for total_año2 in costos_fijos['total_año2']],
-                      'costo_fijo_año3': [total_año3 for total_año3 in costos_fijos['total_año3']],
-                      'costo_fijo_año4': [total_año4 for total_año4 in costos_fijos['total_año4']],
-                      'costo_fijo_año5': [total_año5 for total_año5 in costos_fijos['total_año5']],
-                      'costo_variable_año1': [total_año1 for total_año1 in costos_variables['total_año1']],
-                      'costo_variable_año2': [total_año2 for total_año2 in costos_variables['total_año2']],
-                      'costo_variable_año3': [total_año3 for total_año3 in costos_variables['total_año3']],
-                      'costo_variable_año4': [total_año4 for total_año4 in costos_variables['total_año4']],
-                      'costo_variable_año5': [total_año5 for total_año5 in costos_variables['total_año5']]}
-    costos_totales['costos_totales_año1'] = [sum(costos_totales['costo_fijo_año1'] + costos_totales['costo_variable_año1'])]
-    costos_totales['costos_totales_año2'] = [sum(costos_totales['costo_fijo_año2'] + costos_totales['costo_variable_año2'])]
-    costos_totales['costos_totales_año3'] = [sum(costos_totales['costo_fijo_año3'] + costos_totales['costo_variable_año3'])]
-    costos_totales['costos_totales_año4'] = [sum(costos_totales['costo_fijo_año4'] + costos_totales['costo_variable_año4'])]
-    costos_totales['costos_totales_año5'] = [sum(costos_totales['costo_fijo_año5'] + costos_totales['costo_variable_año5'])]
+    costos_totales = {'costo_fijo_ano1': [total_ano1 for total_ano1 in costos_fijos['total_ano1']],
+                      'costo_fijo_ano2': [total_ano2 for total_ano2 in costos_fijos['total_ano2']],
+                      'costo_fijo_ano3': [total_ano3 for total_ano3 in costos_fijos['total_ano3']],
+                      'costo_fijo_ano4': [total_ano4 for total_ano4 in costos_fijos['total_ano4']],
+                      'costo_fijo_ano5': [total_ano5 for total_ano5 in costos_fijos['total_ano5']],
+                      'costo_variable_ano1': [total_ano1 for total_ano1 in costos_variables['total_ano1']],
+                      'costo_variable_ano2': [total_ano2 for total_ano2 in costos_variables['total_ano2']],
+                      'costo_variable_ano3': [total_ano3 for total_ano3 in costos_variables['total_ano3']],
+                      'costo_variable_ano4': [total_ano4 for total_ano4 in costos_variables['total_ano4']],
+                      'costo_variable_ano5': [total_ano5 for total_ano5 in costos_variables['total_ano5']]}
+    costos_totales['costos_totales_ano1'] = [
+        sum(costos_totales['costo_fijo_ano1'] + costos_totales['costo_variable_ano1'])]
+    costos_totales['costos_totales_ano2'] = [
+        sum(costos_totales['costo_fijo_ano2'] + costos_totales['costo_variable_ano2'])]
+    costos_totales['costos_totales_ano3'] = [
+        sum(costos_totales['costo_fijo_ano3'] + costos_totales['costo_variable_ano3'])]
+    costos_totales['costos_totales_ano4'] = [
+        sum(costos_totales['costo_fijo_ano4'] + costos_totales['costo_variable_ano4'])]
+    costos_totales['costos_totales_ano5'] = [
+        sum(costos_totales['costo_fijo_ano5'] + costos_totales['costo_variable_ano5'])]
 
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     # BLOQUE 5: PROYECCIÓN DE INGRESOS
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     proyeccion_ingresos = {'concepto': [concepto for concepto in memorias_calculo['concepto']],
                            'volumen_venta_mensual': [ventas_semana * 4 for ventas_semana
                                                      in memorias_calculo['ventas_semana']],
@@ -661,22 +635,22 @@ def corrida_financiera(request):
                                              for precio_unitario, volumen_venta_mensual
                                              in zip(proyeccion_ingresos['precio_unitario'],
                                                     proyeccion_ingresos['volumen_venta_mensual'])]
-    proyeccion_ingresos['año1'] = [ventas_mensual * 12 for ventas_mensual
+    proyeccion_ingresos['ano1'] = [ventas_mensual * 12 for ventas_mensual
                                    in proyeccion_ingresos['ventas_mensual']]
-    proyeccion_ingresos['año2'] = [año1 * 1.05 for año1
-                                   in proyeccion_ingresos['año1']]
-    proyeccion_ingresos['año3'] = [año2 * 1.05 for año2
-                                   in proyeccion_ingresos['año2']]
-    proyeccion_ingresos['año4'] = [año3 * 1.05 for año3
-                                   in proyeccion_ingresos['año3']]
-    proyeccion_ingresos['año5'] = [año4 * 1.05 for año4
-                                   in proyeccion_ingresos['año4']]
+    proyeccion_ingresos['ano2'] = [ano1 * 1.05 for ano1
+                                   in proyeccion_ingresos['ano1']]
+    proyeccion_ingresos['ano3'] = [ano2 * 1.05 for ano2
+                                   in proyeccion_ingresos['ano2']]
+    proyeccion_ingresos['ano4'] = [ano3 * 1.05 for ano3
+                                   in proyeccion_ingresos['ano3']]
+    proyeccion_ingresos['ano5'] = [ano4 * 1.05 for ano4
+                                   in proyeccion_ingresos['ano4']]
     proyeccion_ingresos['total_ventas_mensual'] = [sum(proyeccion_ingresos['ventas_mensual'])]
-    proyeccion_ingresos['total_año1'] = [sum(proyeccion_ingresos['año1'])]
-    proyeccion_ingresos['total_año2'] = [sum(proyeccion_ingresos['año2'])]
-    proyeccion_ingresos['total_año3'] = [sum(proyeccion_ingresos['año3'])]
-    proyeccion_ingresos['total_año4'] = [sum(proyeccion_ingresos['año4'])]
-    proyeccion_ingresos['total_año5'] = [sum(proyeccion_ingresos['año5'])]
+    proyeccion_ingresos['total_ano1'] = [sum(proyeccion_ingresos['ano1'])]
+    proyeccion_ingresos['total_ano2'] = [sum(proyeccion_ingresos['ano2'])]
+    proyeccion_ingresos['total_ano3'] = [sum(proyeccion_ingresos['ano3'])]
+    proyeccion_ingresos['total_ano4'] = [sum(proyeccion_ingresos['ano4'])]
+    proyeccion_ingresos['total_ano5'] = [sum(proyeccion_ingresos['ano5'])]
 
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -689,11 +663,11 @@ def corrida_financiera(request):
                              'valor_original': [montos for montos in
                                                 activo_fijo['montos']],
                              'tasa': 0.10,
-                             'años': 5}
+                             'anos': 5}
     costos_depreciaciones['depreciacion_anual'] = [valor_original * costos_depreciaciones['tasa']
                                                    for valor_original, tasa
                                                    in costos_depreciaciones['valor_original']]
-    costos_depreciaciones['valor_rescate'] = [valor_original - (depreciacion_anual * costos_depreciaciones['años'])
+    costos_depreciaciones['valor_rescate'] = [valor_original - (depreciacion_anual * costos_depreciaciones['anos'])
                                               for valor_original, depreciacion_anual
                                               in zip(costos_depreciaciones['valor_original'],
                                                      costos_depreciaciones['depreciacion_anual'])]
@@ -701,173 +675,475 @@ def corrida_financiera(request):
     costos_depreciaciones['total_depreciacion_anual'] = [sum(costos_depreciaciones['depreciacion_anual'])]
     costos_depreciaciones['total_valor_rescate'] = sum(costos_depreciaciones['valor_rescate'])
 
-
-
-    estado_resultados = {'ventas_año1': [total_ventas_año1 for total_ventas_año1
-                                         in proyeccion_ingresos['total_año1']],
-                         'ventas_año2': [total_ventas_año2 for total_ventas_año2
-                                         in proyeccion_ingresos['total_año2']],
-                         'ventas_año3': [total_ventas_año3 for total_ventas_año3
-                                         in proyeccion_ingresos['total_año3']],
-                         'ventas_año4': [total_ventas_año4 for total_ventas_año4
-                                         in proyeccion_ingresos['total_año4']],
-                         'ventas_año5': [total_ventas_año5 for total_ventas_año5
-                                        in proyeccion_ingresos['total_año5']],
-                         'costos_fijos_año1': [total_costos_año1 for total_costos_año1
-                                         in costos_fijos['total_año1']],
-                         'costos_fijos_año2': [total_costos_año2 for total_costos_año2
-                                         in costos_fijos['total_año2']],
-                         'costos_fijos_año3': [total_costos_año3 for total_costos_año3
-                                         in costos_fijos['total_año3']],
-                         'costos_fijos_año4': [total_costos_año4 for total_costos_año4
-                                         in costos_fijos['total_año4']],
-                         'costos_fijos_año5': [total_costos_año5 for total_costos_año5
-                                         in costos_fijos['total_año5']],
-                         'costos_variables_año1': [costos_variables_año1 for costos_variables_año1
-                                                   in costos_variables['total_año1']],
-                         'costos_variables_año2': [costos_variables_año2 for costos_variables_año2
-                                                   in costos_variables['total_año2']],
-                         'costos_variables_año3': [costos_variables_año3 for costos_variables_año3
-                                                   in costos_variables['total_año3']],
-                         'costos_variables_año4': [costos_variables_año4 for costos_variables_año4
-                                                   in costos_variables['total_año4']],
-                         'costos_variables_año5': [costos_variables_año5 for costos_variables_año5
-                                                   in costos_variables['total_año5']]}
-    estado_resultados['costos_totales_año1'] = [costos_fijos_año1 + costos_variables_año1
-                                                 for costos_fijos_año1, costos_variables_año1
-                                                 in zip(estado_resultados['costos_fijos_año1'],
-                                                        estado_resultados['costos_variables_año1'])]
-    estado_resultados['costos_totales_año2'] = [costos_fijos_año2 + costos_variables_año2
-                                                for costos_fijos_año2, costos_variables_año2
-                                                in zip(estado_resultados['costos_fijos_año2'],
-                                                       estado_resultados['costos_variables_año2'])]
-    estado_resultados['costos_totales_año3'] = [costos_fijos_año3 + costos_variables_año3
-                                                for costos_fijos_año3, costos_variables_año3
-                                                in zip(estado_resultados['costos_fijos_año3'],
-                                                       estado_resultados['costos_variables_año3'])]
-    estado_resultados['costos_totales_año4'] = [costos_fijos_año4 + costos_varibales_año4
-                                                for costos_fijos_año4, costos_varibales_año4
-                                                in zip(estado_resultados['costos_fijos_año4'],
-                                                        estado_resultados['costos_variables_año4'])]
-    estado_resultados['costos_totales_año5'] = [costos_fijos_año5 + costos_variables_año5
-                                                for costos_fijos_año5, costos_variables_año5
-                                                in zip(estado_resultados['costos_fijos_año5'])]
-    estado_resultados['utilidad_bruta_año1'] = [ventas_año1 - costos_totales_año1
-                                                for ventas_año1, costos_totales_año1
-                                                in zip(estado_resultados['ventas_año1'],
-                                                       estado_resultados['costos_totales_año1'])]
-    estado_resultados['utilidad_bruta_año2'] = [ventas_año2 - costos_totales_año2
-                                                for ventas_año2, costos_totales_año2
-                                                in zip(estado_resultados['ventas_año2'],
-                                                       estado_resultados['costos_totales_año2'])]
-    estado_resultados['utilidad_bruta_año3'] = [ventas_año3 - costos_totales_año3
-                                                for ventas_año3, costos_totales_año3
-                                                in zip(estado_resultados['ventas_año3'],
-                                                       estado_resultados['costos_totales_año3'])]
-    estado_resultados['utilidad_bruta_año4'] = [ventas_año4 - costos_totales_año4
-                                                for ventas_año4, costos_totales_año4
-                                                in zip(estado_resultados['ventas_año4'],
-                                                       estado_resultados['costos_totales_año4'])]
-    estado_resultados['utilidad_bruta_año5'] = [ventas_año5 - costos_totales_año5
-                                                for ventas_año5, costos_totales_año5
-                                                in zip(estado_resultados['ventas_año5'],
-                                                       estado_resultados['costos_totales_año5'])]
-    estado_resultados['depreciacion_año1'] = [total_depreciacion_anual for total_depreciacion_anual
+    estado_resultados = {'ventas_ano1': [total_ventas_ano1 for total_ventas_ano1
+                                         in proyeccion_ingresos['total_ano1']],
+                         'ventas_ano2': [total_ventas_ano2 for total_ventas_ano2
+                                         in proyeccion_ingresos['total_ano2']],
+                         'ventas_ano3': [total_ventas_ano3 for total_ventas_ano3
+                                         in proyeccion_ingresos['total_ano3']],
+                         'ventas_ano4': [total_ventas_ano4 for total_ventas_ano4
+                                         in proyeccion_ingresos['total_ano4']],
+                         'ventas_ano5': [total_ventas_ano5 for total_ventas_ano5
+                                         in proyeccion_ingresos['total_ano5']],
+                         'costos_fijos_ano1': [total_costos_ano1 for total_costos_ano1
+                                               in costos_fijos['total_ano1']],
+                         'costos_fijos_ano2': [total_costos_ano2 for total_costos_ano2
+                                               in costos_fijos['total_ano2']],
+                         'costos_fijos_ano3': [total_costos_ano3 for total_costos_ano3
+                                               in costos_fijos['total_ano3']],
+                         'costos_fijos_ano4': [total_costos_ano4 for total_costos_ano4
+                                               in costos_fijos['total_ano4']],
+                         'costos_fijos_ano5': [total_costos_ano5 for total_costos_ano5
+                                               in costos_fijos['total_ano5']],
+                         'costos_variables_ano1': [costos_variables_ano1 for costos_variables_ano1
+                                                   in costos_variables['total_ano1']],
+                         'costos_variables_ano2': [costos_variables_ano2 for costos_variables_ano2
+                                                   in costos_variables['total_ano2']],
+                         'costos_variables_ano3': [costos_variables_ano3 for costos_variables_ano3
+                                                   in costos_variables['total_ano3']],
+                         'costos_variables_ano4': [costos_variables_ano4 for costos_variables_ano4
+                                                   in costos_variables['total_ano4']],
+                         'costos_variables_ano5': [costos_variables_ano5 for costos_variables_ano5
+                                                   in costos_variables['total_ano5']]}
+    estado_resultados['costos_totales_ano1'] = [costos_fijos_ano1 + costos_variables_ano1
+                                                for costos_fijos_ano1, costos_variables_ano1
+                                                in zip(estado_resultados['costos_fijos_ano1'],
+                                                       estado_resultados['costos_variables_ano1'])]
+    estado_resultados['costos_totales_ano2'] = [costos_fijos_ano2 + costos_variables_ano2
+                                                for costos_fijos_ano2, costos_variables_ano2
+                                                in zip(estado_resultados['costos_fijos_ano2'],
+                                                       estado_resultados['costos_variables_ano2'])]
+    estado_resultados['costos_totales_ano3'] = [costos_fijos_ano3 + costos_variables_ano3
+                                                for costos_fijos_ano3, costos_variables_ano3
+                                                in zip(estado_resultados['costos_fijos_ano3'],
+                                                       estado_resultados['costos_variables_ano3'])]
+    estado_resultados['costos_totales_ano4'] = [costos_fijos_ano4 + costos_varibales_ano4
+                                                for costos_fijos_ano4, costos_varibales_ano4
+                                                in zip(estado_resultados['costos_fijos_ano4'],
+                                                       estado_resultados['costos_variables_ano4'])]
+    estado_resultados['costos_totales_ano5'] = [costos_fijos_ano5 + costos_variables_ano5
+                                                for costos_fijos_ano5, costos_variables_ano5
+                                                in zip(estado_resultados['costos_fijos_ano5'])]
+    estado_resultados['utilidad_bruta_ano1'] = [ventas_ano1 - costos_totales_ano1
+                                                for ventas_ano1, costos_totales_ano1
+                                                in zip(estado_resultados['ventas_ano1'],
+                                                       estado_resultados['costos_totales_ano1'])]
+    estado_resultados['utilidad_bruta_ano2'] = [ventas_ano2 - costos_totales_ano2
+                                                for ventas_ano2, costos_totales_ano2
+                                                in zip(estado_resultados['ventas_ano2'],
+                                                       estado_resultados['costos_totales_ano2'])]
+    estado_resultados['utilidad_bruta_ano3'] = [ventas_ano3 - costos_totales_ano3
+                                                for ventas_ano3, costos_totales_ano3
+                                                in zip(estado_resultados['ventas_ano3'],
+                                                       estado_resultados['costos_totales_ano3'])]
+    estado_resultados['utilidad_bruta_ano4'] = [ventas_ano4 - costos_totales_ano4
+                                                for ventas_ano4, costos_totales_ano4
+                                                in zip(estado_resultados['ventas_ano4'],
+                                                       estado_resultados['costos_totales_ano4'])]
+    estado_resultados['utilidad_bruta_ano5'] = [ventas_ano5 - costos_totales_ano5
+                                                for ventas_ano5, costos_totales_ano5
+                                                in zip(estado_resultados['ventas_ano5'],
+                                                       estado_resultados['costos_totales_ano5'])]
+    estado_resultados['depreciacion_ano1'] = [total_depreciacion_anual for total_depreciacion_anual
                                               in costos_depreciaciones['total_depreciacion_anual']]
-    estado_resultados['depreciacion_año2'] = [depreciacion_año1 * 1.05 for depreciacion_año1
-                                              in estado_resultados['depreciacion_año1']]
-    estado_resultados['depreciacion_año3'] = [depreciacion_año2 * 1.05 for depreciacion_año2
-                                              in estado_resultados['depreciacion_año2']]
-    estado_resultados['depreciacion_año4'] = [depreciacion_año3 * 1.05 for depreciacion_año3
-                                              in estado_resultados['depreciacion_año3']]
-    estado_resultados['depreciacion_año5'] = [depreciacion_año4 * 1.05 for depreciacion_año4
-                                              in estado_resultados['depreciacion_año4']]
-    estado_resultados['utilidad_antes_impuestos_año1'] = [utilidad_bruta_año1 - depreciacion_año1
-                                                          for utilidad_bruta_año1, depreciacion_año1
-                                                          in zip(estado_resultados['utilidad_bruta_año1'],
-                                                                 estado_resultados['depreciacion_año1'])]
-    estado_resultados['utilidad_antes_impuestos_año2'] = [utilidad_bruta_año2 - depreciacion_año2
-                                                          for utilidad_bruta_año2, depreciacion_año2
-                                                          in zip(estado_resultados['utilidad_bruta_año2'],
-                                                                 estado_resultados['depreciacion_año2'])]
-    estado_resultados['utilidad_antes_impuestos_año3'] = [utilidad_bruta_año3 - depreciacion_año3
-                                                          for utilidad_bruta_año3, depreciacion_año3
-                                                          in zip(estado_resultados['utilidad_bruta_año3'],
-                                                                 estado_resultados['depreciacion_año3'])]
-    estado_resultados['utilidad_antes_impuestos_año4'] = [utilidad_bruta_año4 - depreciacion_año4
-                                                          for utilidad_bruta_año4, depreciacion_año4
-                                                          in zip(estado_resultados['utilidad_bruta_año4'],
-                                                                 estado_resultados['depreciaion_año4'])]
-    estado_resultados['utilidad_antes_impuestos_año5'] = [utilidad_bruta_año5 - depreciacion_año5
-                                                          for utilidad_bruta_año5, depreciacion_año5
-                                                          in zip(estado_resultados['utilidad_bruta_año5'],
-                                                                 estado_resultados['depreciacion_año5'])]
-    estado_resultados['impuestos_año1'] = [utilidad_antes_impuestos_año1 * costos_depreciaciones['tasa']
-                                           for utilidad_antes_impuestos_año1
-                                           in estado_resultados['utilidad_antes_impuestos_año1']]
-    estado_resultados['impuestos_año2'] = [utilidad_antes_impuestos_año2 * costos_depreciaciones['tasa']
-                                           for utilidad_antes_impuestos_año2
-                                           in estado_resultados['utiliddad_antes_impuestos_año2']]
-    estado_resultados['impuestos_año3'] = [utilidad_antes_impuestos_año3 * costos_depreciaciones['tasa']
-                                           for utilidad_antes_impuestos_año3
-                                           in estado_resultados['utilidad_antes_impuestos_año3']]
-    estado_resultados['impuestos_año4'] = [utilidad_antes_impuestos_año4 * costos_depreciaciones['tasa']
-                                           for utilidad_antes_impuestos_año4
-                                           in estado_resultados['utilidad_antes_impuestos_año4']]
-    estado_resultados['impuestos_año5'] = [utilidad_antes_impuestos_año5 * costos_depreciaciones['tasa']
-                                           for utilidad_antes_impuestos_año5
-                                           in estado_resultados['utilidad_antes_impuestos_año5']]
-    estado_resultados['utilidad_ejercicio_año1'] = [utilidad_antes_impuestos_año1 - impuestos_año1
-                                                    for utilidad_antes_impuestos_año1, impuestos_año1
-                                                    in zip(estado_resultados['utilidad_antes_impuestos_año1'],
-                                                           estado_resultados['impuestos_año1'])]
-    estado_resultados['utilidad_ejercicio_año2'] = [utilidad_antes_impuestos_año2 - impuestos_año2
-                                                    for utilidad_antes_impuestos_año2, impuestos_año2
-                                                    in zip(estado_resultados['utilidad_antes_impuestos_año2'],
-                                                           estado_resultados['impuestos_año2'])]
-    estado_resultados['utilidad_ejercicio_año3'] = [utilidad_antes_impuestos_año3 - impuestos_año3
-                                                    for utilidad_antes_impuestos_año3, impuestos_año3
-                                                    in zip(estado_resultados['utilidad_antes_impuestos_año3'],
-                                                           estado_resultados['impuestos_año3'])]
-    estado_resultados['utilidad_ejercicio_año4'] = [utilidad_antes_impuestos_año4 - impuestos_año4
-                                                    for utilidad_antes_impuestos_año4, impuestos_año4
-                                                    in zip(estado_resultados['utilidad_antes_impuestos_año4'],
-                                                           estado_resultados['impuestos_año4'])]
-    estado_resultados['utilidad_ejercicio_año5'] = [utilidad_antes_impuestos_año5 - impuestos_año5
-                                                    for utilidad_antes_impuestos_año5, impuestos_año5
-                                                    in zip(estado_resultados['utilidad_antes_impuestos_año5'],
-                                                           estado_resultados['impuestos_año5'])]
+    estado_resultados['depreciacion_ano2'] = [depreciacion_ano1 * 1.05 for depreciacion_ano1
+                                              in estado_resultados['depreciacion_ano1']]
+    estado_resultados['depreciacion_ano3'] = [depreciacion_ano2 * 1.05 for depreciacion_ano2
+                                              in estado_resultados['depreciacion_ano2']]
+    estado_resultados['depreciacion_ano4'] = [depreciacion_ano3 * 1.05 for depreciacion_ano3
+                                              in estado_resultados['depreciacion_ano3']]
+    estado_resultados['depreciacion_ano5'] = [depreciacion_ano4 * 1.05 for depreciacion_ano4
+                                              in estado_resultados['depreciacion_ano4']]
+    estado_resultados['utilidad_antes_impuestos_ano1'] = [utilidad_bruta_ano1 - depreciacion_ano1
+                                                          for utilidad_bruta_ano1, depreciacion_ano1
+                                                          in zip(estado_resultados['utilidad_bruta_ano1'],
+                                                                 estado_resultados['depreciacion_ano1'])]
+    estado_resultados['utilidad_antes_impuestos_ano2'] = [utilidad_bruta_ano2 - depreciacion_ano2
+                                                          for utilidad_bruta_ano2, depreciacion_ano2
+                                                          in zip(estado_resultados['utilidad_bruta_ano2'],
+                                                                 estado_resultados['depreciacion_ano2'])]
+    estado_resultados['utilidad_antes_impuestos_ano3'] = [utilidad_bruta_ano3 - depreciacion_ano3
+                                                          for utilidad_bruta_ano3, depreciacion_ano3
+                                                          in zip(estado_resultados['utilidad_bruta_ano3'],
+                                                                 estado_resultados['depreciacion_ano3'])]
+    estado_resultados['utilidad_antes_impuestos_ano4'] = [utilidad_bruta_ano4 - depreciacion_ano4
+                                                          for utilidad_bruta_ano4, depreciacion_ano4
+                                                          in zip(estado_resultados['utilidad_bruta_ano4'],
+                                                                 estado_resultados['depreciaion_ano4'])]
+    estado_resultados['utilidad_antes_impuestos_ano5'] = [utilidad_bruta_ano5 - depreciacion_ano5
+                                                          for utilidad_bruta_ano5, depreciacion_ano5
+                                                          in zip(estado_resultados['utilidad_bruta_ano5'],
+                                                                 estado_resultados['depreciacion_ano5'])]
+    estado_resultados['impuestos_ano1'] = [utilidad_antes_impuestos_ano1 * costos_depreciaciones['tasa']
+                                           for utilidad_antes_impuestos_ano1
+                                           in estado_resultados['utilidad_antes_impuestos_ano1']]
+    estado_resultados['impuestos_ano2'] = [utilidad_antes_impuestos_ano2 * costos_depreciaciones['tasa']
+                                           for utilidad_antes_impuestos_ano2
+                                           in estado_resultados['utiliddad_antes_impuestos_ano2']]
+    estado_resultados['impuestos_ano3'] = [utilidad_antes_impuestos_ano3 * costos_depreciaciones['tasa']
+                                           for utilidad_antes_impuestos_ano3
+                                           in estado_resultados['utilidad_antes_impuestos_ano3']]
+    estado_resultados['impuestos_ano4'] = [utilidad_antes_impuestos_ano4 * costos_depreciaciones['tasa']
+                                           for utilidad_antes_impuestos_ano4
+                                           in estado_resultados['utilidad_antes_impuestos_ano4']]
+    estado_resultados['impuestos_ano5'] = [utilidad_antes_impuestos_ano5 * costos_depreciaciones['tasa']
+                                           for utilidad_antes_impuestos_ano5
+                                           in estado_resultados['utilidad_antes_impuestos_ano5']]
+    estado_resultados['utilidad_ejercicio_ano1'] = [utilidad_antes_impuestos_ano1 - impuestos_ano1
+                                                    for utilidad_antes_impuestos_ano1, impuestos_ano1
+                                                    in zip(estado_resultados['utilidad_antes_impuestos_ano1'],
+                                                           estado_resultados['impuestos_ano1'])]
+    estado_resultados['utilidad_ejercicio_ano2'] = [utilidad_antes_impuestos_ano2 - impuestos_ano2
+                                                    for utilidad_antes_impuestos_ano2, impuestos_ano2
+                                                    in zip(estado_resultados['utilidad_antes_impuestos_ano2'],
+                                                           estado_resultados['impuestos_ano2'])]
+    estado_resultados['utilidad_ejercicio_ano3'] = [utilidad_antes_impuestos_ano3 - impuestos_ano3
+                                                    for utilidad_antes_impuestos_ano3, impuestos_ano3
+                                                    in zip(estado_resultados['utilidad_antes_impuestos_ano3'],
+                                                           estado_resultados['impuestos_ano3'])]
+    estado_resultados['utilidad_ejercicio_ano4'] = [utilidad_antes_impuestos_ano4 - impuestos_ano4
+                                                    for utilidad_antes_impuestos_ano4, impuestos_ano4
+                                                    in zip(estado_resultados['utilidad_antes_impuestos_ano4'],
+                                                           estado_resultados['impuestos_ano4'])]
+    estado_resultados['utilidad_ejercicio_ano5'] = [utilidad_antes_impuestos_ano5 - impuestos_ano5
+                                                    for utilidad_antes_impuestos_ano5, impuestos_ano5
+                                                    in zip(estado_resultados['utilidad_antes_impuestos_ano5'],
+                                                           estado_resultados['impuestos_ano5'])]
 
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    # BLOQUE : FLUJO DE EFECTIVO
+    # BLOQUE 7: FLUJO DE EFECTIVO
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    flujo_efectivo = {'ventas_año1': [total_año1 for total_año1
-                                      in proyeccion_ingresos['total_año1']],
-                      'ventas_año2': [total_año2 for total_año2
-                                      in proyeccion_ingresos['total_año2']],
-                      'ventas_año3': [total_año3 for total_año3
-                                      in proyeccion_ingresos['total_año3']],
-                      'ventas_año4': [total_año4 for total_año4
-                                      in proyeccion_ingresos['total_año4']],
-                      'ventas_año5': [total_año5 for total_año5
-                                      in proyeccion_ingresos['total_año5']],
+    flujo_efectivo = {'ventas_ano1': [total_ano1 for total_ano1
+                                      in proyeccion_ingresos['total_ano1']],
+                      'ventas_ano2': [total_ano2 for total_ano2
+                                      in proyeccion_ingresos['total_ano2']],
+                      'ventas_ano3': [total_ano3 for total_ano3
+                                      in proyeccion_ingresos['total_ano3']],
+                      'ventas_ano4': [total_ano4 for total_ano4
+                                      in proyeccion_ingresos['total_ano4']],
+                      'ventas_ano5': [total_ano5 for total_ano5
+                                      in proyeccion_ingresos['total_ano5']],
                       'valor_rescate': costos_depreciaciones['total_valor_rescate']}
-    flujo_efectivo['ingresos_totales_año1'] = [ventas_año1 for ventas_año1
-                                               in flujo_efectivo['ventas_año1']]
-    flujo_efectivo['ingresos_totales_año2'] = [ventas_año2 for ventas_año2
-                                               in flujo_efectivo['ventas_año2']]
-    flujo_efectivo['ingresos_totales_año3'] = [ventas_año3 for ventas_año3
-                                               in flujo_efectivo['ventas_año3']]
-    flujo_efectivo['ingresos_totales_año4'] = [ventas_año4 for ventas_año4
-                                               in flujo_efectivo['ventas_año4']]
-    flujo_efectivo['ingresos_totales_año5'] = [ventas_año5 + valor_rescate
-                                               for ventas_año5, valor_rescate
-                                               in zip(flujo_efectivo['ventas_año5'],
+    flujo_efectivo['ingresos_totales_ano1'] = [ventas_ano1 for ventas_ano1
+                                               in flujo_efectivo['ventas_ano1']]
+    flujo_efectivo['ingresos_totales_ano2'] = [ventas_ano2 for ventas_ano2
+                                               in flujo_efectivo['ventas_ano2']]
+    flujo_efectivo['ingresos_totales_ano3'] = [ventas_ano3 for ventas_ano3
+                                               in flujo_efectivo['ventas_ano3']]
+    flujo_efectivo['ingresos_totales_ano4'] = [ventas_ano4 for ventas_ano4
+                                               in flujo_efectivo['ventas_ano4']]
+    flujo_efectivo['ingresos_totales_ano5'] = [ventas_ano5 + valor_rescate
+                                               for ventas_ano5, valor_rescate
+                                               in zip(flujo_efectivo['ventas_ano5'],
                                                       flujo_efectivo['valor_rescate'])]
-    #pendiente continuar diccionario flujo_efectivo
-    #xd
+    flujo_efectivo['costos_fijos_ano1'] = [total_ano1 for total_ano1
+                                           in costos_fijos['total_ano1']]
+    flujo_efectivo['costos_fijos_ano2'] = [total_ano2 for total_ano2
+                                           in costos_fijos['total_ano2']]
+    flujo_efectivo['costos_fijos_ano3'] = [total_ano3 for total_ano3
+                                           in costos_fijos['total_ano3']]
+    flujo_efectivo['costos_fijos_ano4'] = [total_ano4 for total_ano4
+                                           in costos_fijos['total_ano4']]
+    flujo_efectivo['costos_fijos_ano5'] = [total_ano5 for total_ano5
+                                           in costos_fijos['total_ano5']]
+    flujo_efectivo['costos_variables_ano1'] = [total_ano1 for total_ano1
+                                               in costos_variables['total_ano1']]
+    flujo_efectivo['costos_variables_ano2'] = [total_ano2 for total_ano2
+                                               in costos_variables['total_ano2']]
+    flujo_efectivo['costos_variables_ano3'] = [total_ano3 for total_ano3
+                                               in costos_variables['total_ano3']]
+    flujo_efectivo['costos_variables_ano4'] = [total_ano5 for total_ano5
+                                               in costos_variables['total_ano5']]
+    flujo_efectivo['costos_totales_ano1'] = [costos_fijos_ano1 + costos_variables_ano1
+                                             for costos_fijos_ano1, costos_variables_ano1
+                                             in zip(flujo_efectivo['costos_fijos_ano1'],
+                                                    flujo_efectivo['costos_variables_ano1'])]
+    flujo_efectivo['costos_totales_ano2'] = [costos_fijos_ano2 + costos_variables_ano2
+                                             for costos_fijos_ano2, costos_variables_ano2
+                                             in zip(flujo_efectivo['costos_fijos_ano2'],
+                                                    flujo_efectivo['costos_variables_ano2'])]
+    flujo_efectivo['costos_totales_ano3'] = [costos_fijos_ano3 + costos_variables_ano3
+                                             for costos_fijos_ano3, costos_variables_ano3
+                                             in zip(flujo_efectivo['costos_fijos_ano3'],
+                                                    flujo_efectivo['costos_variables_ano3'])]
+    flujo_efectivo['costos_totales_ano4'] = [costos_fijos_ano4 + costos_variables_ano4
+                                             for costos_fijos_ano4, costos_variables_ano4
+                                             in zip(flujo_efectivo['costos_fijos_ano4'],
+                                                    flujo_efectivo['costos_variables_ano4'])]
+    flujo_efectivo['costos_totales_ano5'] = [costos_fijos_ano5 + costos_variables_ano5
+                                             for costos_fijos_ano5, costos_variables_ano5
+                                             in zip(flujo_efectivo['costos_fijos_ano5'],
+                                                    flujo_efectivo['costos_variables_ano5'])]
+    flujo_efectivo['compra_activo_fijo'] = [sum(activo_fijo['montos'])]
+    flujo_efectivo['compra_activo_diferido'] = [sum(Activo_diferido['montos'])]
+    flujo_efectivo['compra_capital_trabajo'] = [sum(capital_trabajo_servicios['montos']
+                                                    + capital_trabajo_servicios_mantto['montos']
+                                                    + capital_trabajo_mano_obra['montos'])]
+    flujo_efectivo['saldo_final_ano0'] = [compra_activo_fijo - compra_activo_diferido - compra_capital_trabajo
+                                          for compra_activo_fijo, compra_activo_diferido, compra_capital_trabajo
+                                          in zip(flujo_efectivo['compra_activo_fijo'],
+                                                 flujo_efectivo['compra_activo_diferido'],
+                                                 flujo_efectivo['compra_capital_trabajo'])]
+    flujo_efectivo['saldo_final_ano1'] = [ingresos_totales_ano1 - costos_totales_ano1
+                                          for ingresos_totales_ano1, costos_totales_ano1
+                                          in zip(flujo_efectivo['ingresos_totales_ano1'],
+                                                 flujo_efectivo['costos_totales_ano1'])]
+    flujo_efectivo['saldo_final_ano2'] = [ingresos_totales_ano2 - costos_totales_ano2
+                                          for ingresos_totales_ano2, costos_totales_ano2
+                                          in zip(flujo_efectivo['ingresos_totales_ano2'],
+                                                 flujo_efectivo['costos_totales_ano2'])]
+    flujo_efectivo['saldo_final_ano3'] = [ingresos_totales_ano3 - costos_totales_ano3
+                                          for ingresos_totales_ano3, costos_totales_ano3
+                                          in zip(flujo_efectivo['ingresos_totales_ano3'],
+                                                 flujo_efectivo['costos_totales_ano3'])]
+    flujo_efectivo['saldo_final_ano4'] = [ingresos_totales_ano4 - costos_totales_ano4
+                                          for ingresos_totales_ano4, costos_totales_ano4
+                                          in zip(flujo_efectivo['ingresos_totales_ano4'],
+                                                 flujo_efectivo['costos_totales_ano4'])]
+    flujo_efectivo['saldo_final_ano5'] = [ingresos_totales_ano5 - costos_totales_ano5
+                                          for ingresos_totales_ano5, costos_totales_ano5
+                                          in zip(flujo_efectivo['ingresos_totales_ano5'],
+                                                 flujo_efectivo['costos_totales_ano5'])]
 
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # BLOQUE8 : PUNTO DE EQUILIBRIO
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    punto_equilibrio = {'ventas_ano1': [total_ano1 for total_ano1
+                                        in proyeccion_ingresos['total_ano1']],
+                        'ventas_ano2': [total_ano2 for total_ano2
+                                        in proyeccion_ingresos['total_ano2']],
+                        'ventas_ano3': [total_ano3 for total_ano3
+                                        in proyeccion_ingresos['total_ano3']],
+                        'ventas_ano4': [total_ano4 for total_ano4
+                                        in proyeccion_ingresos['total_ano4']],
+                        'ventas_ano5': [total_ano5 for total_ano5
+                                        in proyeccion_ingresos['total_ano5']],
+                        'costos_fijos_ano1': [total_ano1 for total_ano1
+                                              in costos_fijos['total_ano1']],
+                        'costos_fijos_ano2': [total_ano2 for total_ano2
+                                              in costos_fijos['total_ano2']],
+                        'csotos_fijos_ano3': [total_ano3 for total_ano3
+                                              in costos_fijos['total_ano3']],
+                        'costos_fijos_ano4': [total_ano4 for total_ano4
+                                              in costos_fijos['total_ano4']],
+                        'costos_fijos_ano5': [total_ano5 for total_ano5
+                                              in costos_fijos['total_ano5']],
+                        'costos_variables_ano1': [variables_ano1 for variables_ano1
+                                                  in costos_variables['total_ano1']],
+                        'costos_variables_ano2': [variables_ano2 for variables_ano2
+                                                  in costos_variables['total_ano2']],
+                        'costos_variables_ano3': [variables_ano3 for variables_ano3
+                                                  in costos_variables['total_ano3']],
+                        'costos_variables_ano4': [variables_ano4 for variables_ano4
+                                                  in costos_variables['total_ano4']],
+                        'costos_varibales_ano5': [variables_ano5 for variables_ano5
+                                                  in costos_variables['total_ano5']]}
+    punto_equilibrio['costos_totales_ano1'] = [costos_fijos_ano1 + costos_variables_ano1
+                                               for costos_fijos_ano1, costos_variables_ano1
+                                               in zip(punto_equilibrio['costos_fijos_ano1'],
+                                                      punto_equilibrio['costos_varibales_ano1'])]
+    punto_equilibrio['costos_totales_ano2'] = [costos_fijos_ano2 + costos_variables_ano2
+                                               for costos_fijos_ano2, costos_variables_ano2
+                                               in zip(punto_equilibrio['costos_fijos_ano2'],
+                                                      punto_equilibrio['costos_variables_ano2'])]
+    punto_equilibrio['costos_totales_ano3'] = [costos_fijos_ano3 + costos_variables_ano3
+                                               for costos_fijos_ano3, costos_variables_ano3
+                                               in zip(punto_equilibrio['costos_fijos_ano3'],
+                                                      punto_equilibrio['costos_variables_ano3'])]
+    punto_equilibrio['costos_totales_ano4'] = [costos_fijos_ano4 + costos_variables_ano4
+                                               for costos_fijos_ano4, costos_variables_ano4
+                                               in zip(punto_equilibrio['costos_fijos_ano4'],
+                                                      punto_equilibrio['costos_variables_ano4'])]
+    punto_equilibrio['costos_totales_ano5'] = [costos_fijos_ano5 + costos_variables_ano5
+                                               for costos_fijos_ano5, costos_variables_ano5
+                                               in zip(punto_equilibrio['costos_fijos_ano5'],
+                                                      punto_equilibrio['costos_variables_ano5'])]
+    punto_equilibrio['punto_equilibrio_ano1'] = [costos_fijos_ano1 / (1 - costos_variables_ano1 / ventas_ano1)
+                                                 for costos_fijos_ano1, costos_variables_ano1, ventas_ano1
+                                                 in zip(punto_equilibrio['costos_fijos_ano1'],
+                                                        punto_equilibrio['costos_variables_ano1'],
+                                                        punto_equilibrio['ventas_ano1'])]
+    punto_equilibrio['punto_equilibrio_ano2'] = [costos_fijos_ano2 / (1 - costos_variables_ano2 / ventas_ano2)
+                                                 for costos_fijos_ano2, costos_variables_ano2, ventas_ano2
+                                                 in zip(punto_equilibrio['costos_fijos_ano2'],
+                                                        punto_equilibrio['costos_variables_ano2'],
+                                                        punto_equilibrio['ventas_ano2'])]
+    punto_equilibrio['punto_equilibrio_ano3'] = [costos_fijos_ano3 / (1 - costos_variables_ano3 / ventas_ano3)
+                                                 for costos_fijos_ano3, costos_variables_ano3, ventas_ano3
+                                                 in zip(punto_equilibrio['costos_fijos_ano3'],
+                                                        punto_equilibrio['costos_variables_ano3'],
+                                                        punto_equilibrio['ventas_ano3'])]
+    punto_equilibrio['punto_equilibrio_ano4'] = [costos_fijos_ano4 / (1 - costos_variables_ano4 / ventas_ano4)
+                                                 for costos_fijos_ano4, costos_variables_ano4, ventas_ano4
+                                                 in zip(punto_equilibrio['costos_fijos_ano4'],
+                                                        punto_equilibrio['costos_variables_ano4'],
+                                                        punto_equilibrio['ventas_ano4'])]
+    punto_equilibrio['punto_equilibrio_ano5'] = [costos_fijos_ano5 / (1 - costos_variables_ano5 / ventas_ano5)
+                                                 for costos_fijos_ano5, costos_variables_ano5, ventas_ano5
+                                                 in zip(punto_equilibrio['costos_fijos_ano5'],
+                                                        punto_equilibrio['costos_variables_ano5'],
+                                                        punto_equilibrio['ventas_ano5'])]
+    punto_equilibrio['punto_equilibrio_ano1_porcentaje'] = [punto_equilibrio_ano1 / ventas_ano1
+                                                            for punto_equilibrio_ano1, ventas_ano1
+                                                            in zip(punto_equilibrio['punto_equilibrio_ano1'],
+                                                                   punto_equilibrio['ventas_ano1'])]
+    punto_equilibrio['punto_equilibrio_ano2_porcentaje'] = [punto_equilibrio_ano2 / ventas_ano2
+                                                            for punto_equilibrio_ano2, ventas_ano2
+                                                            in zip(punto_equilibrio['punto_equilibrio_ano2'],
+                                                                   punto_equilibrio['ventas_ano2'])]
+    punto_equilibrio['punto_equilibrio_ano3_porcentaje'] = [punto_equilibrio_ano3 / ventas_ano3
+                                                            for punto_equilibrio_ano3, ventas_ano3
+                                                            in zip(punto_equilibrio['punto_equilibrio_ano3'],
+                                                                   punto_equilibrio['ventas_ano3'])]
+    punto_equilibrio['punto_equilibrio_ano4_porcentaje'] = [punto_equilibrio_ano4 / ventas_ano4
+                                                            for punto_equilibrio_ano4, ventas_ano4
+                                                            in zip(punto_equilibrio['punto_equilibrio_ano4'],
+                                                                   punto_equilibrio['ventas_ano4'])]
+    punto_equilibrio['punto_equilibrio_ano5_porcentaje'] = [punto_equilibrio_ano5 / ventas_ano5
+                                                            for punto_equilibrio_ano5, ventas_ano5
+                                                            in zip(punto_equilibrio['punto_equilibrio_ano5'],
+                                                                   punto_equilibrio['ventas_ano5'])]
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # BLOQUE 9: ANALISIS DE RENTABILIDAD
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    analisis_rentabilidad = {'ingresos_ano1': [ingresos_totales_ano1 for ingresos_totales_ano1
+                                               in flujo_efectivo['ingresos_totales_ano1']],
+                             'ingresos_ano2': [ingresos_totales_ano2 for ingresos_totales_ano2
+                                               in flujo_efectivo['ingresos_totales_ano2']],
+                             'ingresos_ano3': [ingresos_totales_ano3 for ingresos_totales_ano3
+                                               in flujo_efectivo['ingresos_totales_ano3']],
+                             'ingresos_ano4': [ingresos_totales_ano4 for ingresos_totales_ano4
+                                               in flujo_efectivo['ingresos_totales_ano4']],
+                             'ingresos_ano5': [ingresos_totales_ano5 for ingresos_totales_ano5
+                                               in flujo_efectivo['ingresos_totales_ano5']],
+                             'costos_ano0': [compra_activo_fijo + compra_activo_diferido + compra_capital_trabajo
+                                             for compra_activo_fijo, compra_activo_diferido, compra_capital_trabajo
+                                             in zip(flujo_efectivo['compra_activo_fijo'],
+                                                    flujo_efectivo['compra_activo_diferido'],
+                                                    flujo_efectivo['compra_capital_trabajo'])],
+                             'costos_ano1': [costos_totales_ano1 for costos_totales_ano1
+                                             in flujo_efectivo['costos_totales_ano1']],
+                             'costos_ano2': [costos_totales_ano2 for costos_totales_ano2
+                                             in flujo_efectivo['costos_totales_ano3']],
+                             'costos_ano3': [costos_totales_ano3 for costos_totales_ano3
+                                             in flujo_efectivo['costos_totales_ano3']],
+                             'costos_ano4': [costos_totales_ano4 for costos_totales_ano4
+                                             in flujo_efectivo['costos_totales_ano4']],
+                             'costos_ano5': [costos_totales_ano5 for costos_totales_ano5
+                                             in flujo_efectivo['costos_totales_ano5']]}
+    analisis_rentabilidad['flujo_efectivo_ano0'] = [costos_ano0 for costos_ano0
+                                                    in analisis_rentabilidad['costos_ano0']]
+    analisis_rentabilidad['flujo_efectivo_ano1'] = [ingresos_ano1 - costos_ano1
+                                                    for ingresos_ano1, costos_ano1
+                                                    in zip(analisis_rentabilidad['ingresos_ano1'],
+                                                           analisis_rentabilidad['costos_ano1'])]
+    analisis_rentabilidad['flujo_efectivo_ano2'] = [ingresos_ano2 - costos_ano2
+                                                    for ingresos_ano2, costos_ano2
+                                                    in zip(analisis_rentabilidad['ingresos_ano2'],
+                                                           analisis_rentabilidad['costos_ano2'])]
+    analisis_rentabilidad['flujo_efectivo_ano3'] = [ingresos_ano3 - costos_ano3
+                                                    for ingresos_ano3, costos_ano3
+                                                    in zip(analisis_rentabilidad['ingresos_ano3'],
+                                                           analisis_rentabilidad['costos_ano3'])]
+    analisis_rentabilidad['flujo_efectivo_ano4'] = [ingresos_ano4 - costos_ano4
+                                                    for ingresos_ano4, costos_ano4
+                                                    in zip(analisis_rentabilidad['ingresos_ano4'],
+                                                           analisis_rentabilidad['costos_ano4'])]
+    analisis_rentabilidad['flujo_efectivo_ano5'] = [ingresos_ano5 - costos_ano5
+                                                    for ingresos_ano5, costos_ano5
+                                                    in zip(analisis_rentabilidad['ingresos_ano5'],
+                                                           analisis_rentabilidad['costos_ano5'])]
+    analisis_rentabilidad['tasa_ano0'] = 1 / (1 + 0.1) ** 0
+    analisis_rentabilidad['tasa_ano1'] = 1 / (1 + 0.1) ** 1
+    analisis_rentabilidad['tasa_ano2'] = 1 / (1 + 0.1) ** 2
+    analisis_rentabilidad['tasa_ano3'] = 1 / (1 + 0.1) ** 3
+    analisis_rentabilidad['tasa_ano4'] = 1 / (1 + 0.1) ** 4
+    analisis_rentabilidad['tasa_ano5'] = 1 / (1 + 0.10) ** 5
+    analisis_rentabilidad['ingresos_actualizados_ano1'] = [tasa_ano1 * ingresos_ano1
+                                                           for tasa_ano1, ingresos_ano1
+                                                           in zip(analisis_rentabilidad['tasa_ano1'],
+                                                                  analisis_rentabilidad['ingresos_ano1'])]
+    analisis_rentabilidad['ingresos_actualizados_ano2'] = [tasa_ano2 * ingresos_ano2
+                                                           for tasa_ano2, ingresos_ano2
+                                                           in zip(analisis_rentabilidad['tasa_ano2'],
+                                                                  analisis_rentabilidad['ingresos_ano2'])]
+    analisis_rentabilidad['ingresos_actualizados_ano3'] = [tasa_ano3 * ingresos_ano3
+                                                           for tasa_ano3, ingresos_ano3
+                                                           in zip(analisis_rentabilidad['tasa_ano3'],
+                                                                  analisis_rentabilidad['ingresos_ano3'])]
+    analisis_rentabilidad['ingresos_actualizados_ano4'] = [tasa_ano4 * ingresos_ano4
+                                                           for tasa_ano4, ingresos_ano4
+                                                           in zip(analisis_rentabilidad['tasa_ano4'],
+                                                                  analisis_rentabilidad['ingresos_ano4'])]
+    analisis_rentabilidad['ingresos_actualizados_ano5'] = [tasa_ano5 * ingresos_ano5
+                                                           for tasa_ano5, ingresos_ano5
+                                                           in zip(analisis_rentabilidad['tasa_ano5'],
+                                                                  analisis_rentabilidad['ingresos_ano5'])]
+    analisis_rentabilidad['egresos_actualizado_ano0'] = [tasa_ano0 * costos_ano0
+                                                         for tasa_ano0, costos_ano0
+                                                         in zip(analisis_rentabilidad['tasa_ano0'],
+                                                                analisis_rentabilidad['costos_ano0'])]
+    analisis_rentabilidad['egresos_actualizados_ano1'] = [tasa_ano1 * costos_ano1
+                                                          for tasa_ano1, costos_ano1
+                                                          in zip(analisis_rentabilidad['tasa_ano1'],
+                                                                 analisis_rentabilidad['costos_ano1'])]
+    analisis_rentabilidad['egresos_actualizados_ano2'] = [tasa_ano2 * costos_ano2
+                                                          for tasa_ano2, costos_ano2
+                                                          in zip(analisis_rentabilidad['tasa_ano2'],
+                                                                 analisis_rentabilidad['costos_ano2'])]
+    analisis_rentabilidad['egresos_actualizados_ano3'] = [tasa_ano3 * costos_ano3
+                                                          for tasa_ano3, costos_ano3
+                                                          in zip(analisis_rentabilidad['tasa_ano3'],
+                                                                 analisis_rentabilidad['costos_ano3'])]
+    analisis_rentabilidad['egresos_actualizados_ano4'] = [tasa_ano4 * costos_ano4
+                                                          for tasa_ano4, costos_ano4
+                                                          in zip(analisis_rentabilidad['tasa_ano4'],
+                                                                 analisis_rentabilidad['costos_ano4'])]
+    analisis_rentabilidad['egresos_actualizados_ano5'] = [tasa_ano5 * costos_ano5
+                                                          for tasa_ano5, costos_ano5
+                                                          in zip(analisis_rentabilidad['tasa_ano5'],
+                                                                 analisis_rentabilidad['costos_ano5'])]
+    analisis_rentabilidad['total_ingresos'] = [sum(analisis_rentabilidad['ingresos_ano1']
+                                                   + analisis_rentabilidad['ingresos_ano2']
+                                                   + analisis_rentabilidad['ingresos_ano3']
+                                                   + analisis_rentabilidad['ingresos_ano4']
+                                                   + analisis_rentabilidad['ingresos_ano5'])]
+    analisis_rentabilidad['total_costos'] = [sum(analisis_rentabilidad['costos_ano1']
+                                                 + analisis_rentabilidad['costos_ano2']
+                                                 + analisis_rentabilidad['costos_ano3']
+                                                 + analisis_rentabilidad['costos_ano4']
+                                                 + analisis_rentabilidad['costos_ano5'])]
+    analisis_rentabilidad['total_flujo_efectivo'] = [sum(analisis_rentabilidad['flujo_efectivo_ano0']
+                                                         + analisis_rentabilidad['flujo_efectivo_ano1']
+                                                         + analisis_rentabilidad['flujo_efectivo_ano2']
+                                                         + analisis_rentabilidad['flujo_efectivo_ano3']
+                                                         + analisis_rentabilidad['flujo_efectivo_ano4']
+                                                         + analisis_rentabilidad['flujo_efectivo_ano5'])]
+    analisis_rentabilidad['total_ingresos_actualizados'] = [sum(analisis_rentabilidad['ingresos_actualizados_ano1']
+                                                                + analisis_rentabilidad['ingresos_actualizados_ano2']
+                                                                + analisis_rentabilidad['ingresos_actualizados_ano3']
+                                                                + analisis_rentabilidad['ingresos_actualizados_ano4']
+                                                                + analisis_rentabilidad['ingresos_actualizados_ano5'])]
+    analisis_rentabilidad['total_egresos_actualizados'] = [sum(analisis_rentabilidad['egresos_actualizados_ano1']
+                                                               + analisis_rentabilidad['egresos_actualizados_ano2']
+                                                               + analisis_rentabilidad['egresos_actualizados_ano3']
+                                                               + analisis_rentabilidad['egresos_actualizados_ano4']
+                                                               + analisis_rentabilidad['egresos_actualizados_ano5'])]
+    van_tir_bc = {'van': [total_ingresos_actualizados - total_egresos_actualizados
+                          for total_ingresos_actualizados, total_egresos_actualizados
+                          in zip(analisis_rentabilidad['total_ingresos_actualizados'],
+                                 analisis_rentabilidad['total_egresos_actualizados'])],
+                  'bc': [total_ingresos_actualizados / total_egresos_actualizados
+                         for total_ingresos_actualizados, total_egresos_actualizados
+                         in zip(analisis_rentabilidad['total_ingresos_actualizados'],
+                                analisis_rentabilidad['total_egresos_actualizados'])]}
 
     return render(request, 'prueba_inegi.html')
