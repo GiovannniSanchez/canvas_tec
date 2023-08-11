@@ -1,0 +1,59 @@
+<form method="post" action="{% url 'financiera' %}">
+    {% csrf_token %}
+    <h3>Activo fijo</h3>
+    <input type="text" name="B1_activo_fijo_concepto" placeholder="concepto"><br>
+    <input type="text" name="B1_activo_fijo_unidad" placeholder="unidad"><br>
+    <input type="number" name="B1_activo_fijo_cantidad" placeholder="cantidad"><br>
+    <input type="number" name="B1_activo_fijo_precio_unitario" placeholder="precio unitario"><br>
+
+    <h3>Activo diferido</h3>
+    <input type="text" name="B1_activo_diferido_concepto" placeholder="concepto"><br>
+    <input type="text" name="B1_activo_diferido_unidad" placeholder="unidad"><br>
+    <input type="number" name="B1_activo_diferido_cantidad" placeholder="cantidad"><br>
+    <input type="number" name="B1_activo_diferido_precio_unitario" placeholder="precio unitario"><br>
+
+    <h3>Mano de obra</h3>
+    <input type="text" name="B1_mano_obra_unidad" placeholder="unidad"><br>
+    <input type="number" name="B1_mano_obra_cantidad" placeholder="cantidad"><br>
+
+    <h3>Presupuesto Servicios</h3>
+    <input type="text" name="B1_servicios_unidad" placeholder="unidad"><br>
+    <input type="number" name="B1_servicios_cantidad" placeholder="cantidad"><br>
+
+    <h3>Servicios Mantto</h3>
+    <input type="text" name="B1_servicios_mantto_unidad" placeholder="unidad"><br>
+    <input type="number" name="B1_servicios_mantto_cantidad" placeholder="cantidad"><br>
+
+    <h3>Memorias Calculo</h3>
+    <input type="text" name="B2_memorias_calculo_concepto" placeholder="concepto"><br>
+    <input type="text" name="B2_memorias_calculo_presentacion" placeholder="presentacion"><br>
+    <input type="number" name="B2_memorias_calculo_ventas_semana" placeholder="venta semanal deseada"><br>
+
+    <h3>Registro Propiedad Intelectual</h3>
+    <input type="text" name="B2_registro_propiedad_intelectual_concepto" placeholder="concepto"><br>
+    <input type="number" name="B2_registro_propiedad_intelectual_cantidad" placeholder="cantidad"><br>
+    <input type="number" name="B2_registro_propiedad_intelectual_precio_unitario" placeholder="precio unitario"><br>
+
+    <h3>Servicios Administrativos</h3>
+    <input type="text" name="B2_servicios_administrativos_concepto" placeholder="concepto"><br>
+    <input type="number" name="B2_servicios_administrativos_cantidad" placeholder="cantidad"><br>
+    <input type="number" name="B2_servicios_administrativos_precio_unitario" placeholder="precio unitario"><br>
+
+    <h3>Servicios</h3>
+    <input type="text" name="B2_servicios_concepto" placeholder="concepto"><br>
+    <input type="number" name="B2_servicios_importe_mensual" placeholder="importe mensual"><br>
+
+    <h3>Servicios Mantto</h3>
+    <input type="text" name="B2_servicios_mantto_concepto" placeholder="concepto"><br>
+    <input type="number" name="B2_servicios_mantto_importe_mensual" placeholder="importe mensual"><br>
+
+    <h3>Salarios</h3>
+    <input type="text" name="B2_salarios_puesto" placeholder="puesto"><br>
+    <input type="number" name="B2_salarios_cantidad" placeholder="cantidad de empleados del puesto"><br>
+    <input type="number" name="B2_Salarios_sueldo_mensual" placeholder="sueldo mensual c/u"><br>
+
+    <h3>Costo Materiales</h3>
+    <input type="text" name="B2_costo_materiales_materiales" placeholder="materiales"><br>
+    <input type="text" name="B2_costo_materiales_unidad" placeholder="unidad"><br>
+    <button type="submit">Guardar</button>
+</form>

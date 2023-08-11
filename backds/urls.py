@@ -9,4 +9,5 @@ urlpatterns = [
     path('canvas/',views.canvas,name='canvas'),
     path('obtener_datos_inegi/',views.obtener_datos_inegi,name='data'),
     path('resultado_inegi/<str:inegi_code>/<str:nombre_indicador>/<str:valor_consulta>/<str:cantidad>/<str:nombres_ids>/', views.resultado_inegi, name='resultado_inegi'),
+    path('corrida_financiera/', views.corrida_financiera, name='financiera')
 ]
