@@ -1,59 +1,174 @@
 <form method="post" action="{% url 'financiera' %}">
     {% csrf_token %}
     <h3>Activo fijo</h3>
-    <input type="text" name="B1_activo_fijo_concepto" placeholder="concepto"><br>
-    <input type="text" name="B1_activo_fijo_unidad" placeholder="unidad"><br>
-    <input type="number" name="B1_activo_fijo_cantidad" placeholder="cantidad"><br>
-    <input type="number" name="B1_activo_fijo_precio_unitario" placeholder="precio unitario"><br>
+    <div id="activo_fijo-container">
+        <input type="text" name="B1_activo_fijo_concepto" placeholder="concepto"><br>
+        <input type="text" name="B1_activo_fijo_unidad" placeholder="unidad"><br>
+        <input type="number" name="B1_activo_fijo_cantidad" placeholder="cantidad"><br>
+        <input type="number" name="B1_activo_fijo_precio_unitario" placeholder="precio unitario"><br>
+    </div>
+    <button type="button" onclick="agregarActivoFijo()">Agregar</button>
 
     <h3>Activo diferido</h3>
-    <input type="text" name="B1_activo_diferido_concepto" placeholder="concepto"><br>
-    <input type="text" name="B1_activo_diferido_unidad" placeholder="unidad"><br>
-    <input type="number" name="B1_activo_diferido_cantidad" placeholder="cantidad"><br>
-    <input type="number" name="B1_activo_diferido_precio_unitario" placeholder="precio unitario"><br>
+    <div id="activo_diferido-container">
+        <input type="text" name="B1_activo_diferido_concepto" placeholder="concepto"><br>
+        <input type="text" name="B1_activo_diferido_unidad" placeholder="unidad"><br>
+        <input type="number" name="B1_activo_diferido_cantidad" placeholder="cantidad"><br>
+        <input type="number" name="B1_activo_diferido_precio_unitario" placeholder="precio unitario"><br>
+
+    </div>
+    <button type="button" onclick="agregarActivoDiferido()">Agregar</button>
 
     <h3>Mano de obra</h3>
-    <input type="text" name="B1_mano_obra_unidad" placeholder="unidad"><br>
-    <input type="number" name="B1_mano_obra_cantidad" placeholder="cantidad"><br>
+    <div id="mano_obra-container">
+        <input type="text" name="B1_mano_obra_unidad" placeholder="unidad"><br>
+        <input type="number" name="B1_mano_obra_cantidad" placeholder="cantidad"><br>
+    </div>
+    <button type="button" onclick="agregarManoObra()">Agregar</button>
 
     <h3>Presupuesto Servicios</h3>
-    <input type="text" name="B1_servicios_unidad" placeholder="unidad"><br>
-    <input type="number" name="B1_servicios_cantidad" placeholder="cantidad"><br>
+    <div id="presupuesto_servicios-container">
+        <input type="text" name="B1_servicios_unidad" placeholder="unidad"><br>
+        <input type="number" name="B1_servicios_cantidad" placeholder="cantidad"><br>
+
+    </div>
 
     <h3>Servicios Mantto</h3>
-    <input type="text" name="B1_servicios_mantto_unidad" placeholder="unidad"><br>
-    <input type="number" name="B1_servicios_mantto_cantidad" placeholder="cantidad"><br>
+    <div id="servicios_mantto-container">
+        <input type="text" name="B1_servicios_mantto_unidad" placeholder="unidad"><br>
+        <input type="number" name="B1_servicios_mantto_cantidad" placeholder="cantidad"><br>
+    </div>
 
     <h3>Memorias Calculo</h3>
-    <input type="text" name="B2_memorias_calculo_concepto" placeholder="concepto"><br>
-    <input type="text" name="B2_memorias_calculo_presentacion" placeholder="presentacion"><br>
-    <input type="number" name="B2_memorias_calculo_ventas_semana" placeholder="venta semanal deseada"><br>
+    <div id="memorias_calculo-container">
+        <input type="text" name="B2_memorias_calculo_concepto" placeholder="concepto"><br>
+        <input type="text" name="B2_memorias_calculo_presentacion" placeholder="presentacion"><br>
+        <input type="number" name="B2_memorias_calculo_ventas_semana" placeholder="venta semanal deseada"><br>
+    </div>
 
     <h3>Registro Propiedad Intelectual</h3>
-    <input type="text" name="B2_registro_propiedad_intelectual_concepto" placeholder="concepto"><br>
-    <input type="number" name="B2_registro_propiedad_intelectual_cantidad" placeholder="cantidad"><br>
-    <input type="number" name="B2_registro_propiedad_intelectual_precio_unitario" placeholder="precio unitario"><br>
+    <div id="registro_propiedad_intelectual-container">
+        <input type="text" name="B2_registro_propiedad_intelectual_concepto" placeholder="concepto"><br>
+        <input type="number" name="B2_registro_propiedad_intelectual_cantidad" placeholder="cantidad"><br>
+        <input type="number" name="B2_registro_propiedad_intelectual_precio_unitario" placeholder="precio unitario"><br>
+    </div>
 
     <h3>Servicios Administrativos</h3>
-    <input type="text" name="B2_servicios_administrativos_concepto" placeholder="concepto"><br>
-    <input type="number" name="B2_servicios_administrativos_cantidad" placeholder="cantidad"><br>
-    <input type="number" name="B2_servicios_administrativos_precio_unitario" placeholder="precio unitario"><br>
+    <div id="servicios_administrativos-container">
+        <input type="text" name="B2_servicios_administrativos_concepto" placeholder="concepto"><br>
+        <input type="number" name="B2_servicios_administrativos_cantidad" placeholder="cantidad"><br>
+        <input type="number" name="B2_servicios_administrativos_precio_unitario" placeholder="precio unitario"><br>
+    </div>
 
     <h3>Servicios</h3>
-    <input type="text" name="B2_servicios_concepto" placeholder="concepto"><br>
-    <input type="number" name="B2_servicios_importe_mensual" placeholder="importe mensual"><br>
+    <div id="servicios-container">
+        <input type="text" name="B2_servicios_concepto" placeholder="concepto"><br>
+        <input type="number" name="B2_servicios_importe_mensual" placeholder="importe mensual"><br>
+    </div>
 
     <h3>Servicios Mantto</h3>
-    <input type="text" name="B2_servicios_mantto_concepto" placeholder="concepto"><br>
-    <input type="number" name="B2_servicios_mantto_importe_mensual" placeholder="importe mensual"><br>
+    <div id="servicios_mantto-container">
+        <input type="text" name="B2_servicios_mantto_concepto" placeholder="concepto"><br>
+        <input type="number" name="B2_servicios_mantto_importe_mensual" placeholder="importe mensual"><br>
+    </div>
 
     <h3>Salarios</h3>
-    <input type="text" name="B2_salarios_puesto" placeholder="puesto"><br>
-    <input type="number" name="B2_salarios_cantidad" placeholder="cantidad de empleados del puesto"><br>
-    <input type="number" name="B2_Salarios_sueldo_mensual" placeholder="sueldo mensual c/u"><br>
+    <div id="salarios-container">
+        <input type="text" name="B2_salarios_puesto" placeholder="puesto"><br>
+        <input type="number" name="B2_salarios_cantidad" placeholder="cantidad de empleados del puesto"><br>
+        <input type="number" name="B2_Salarios_sueldo_mensual" placeholder="sueldo mensual c/u"><br>
+    </div>
 
     <h3>Costo Materiales</h3>
-    <input type="text" name="B2_costo_materiales_materiales" placeholder="materiales"><br>
-    <input type="text" name="B2_costo_materiales_unidad" placeholder="unidad"><br>
+    <div id="costo_materiales-container">
+        <input type="text" name="B2_costo_materiales_materiales" placeholder="materiales"><br>
+        <input type="text" name="B2_costo_materiales_unidad" placeholder="unidad"><br>
+    </div>
+
     <button type="submit">Guardar</button>
+
+
+    <script>
+        function agregarActivoFijo(){
+            var container = document.getElementById('activo_fijo-container');
+            var inputs = document.createElement('div');
+            var conceptoInput = document.createElement('input');
+            var unidadInput = document.createElement('input');
+            var cantidadInput = document.createElement('input');
+            var precioUnitarioInput = document.createElement('input');
+
+            conceptoInput.type = 'text';
+            conceptoInput.name = 'B1_activo_fijo_concepto';
+            conceptoInput.placeholder = 'concepto';
+
+            unidadInput.type = 'text';
+            unidadInput.name = 'B1_activo_fijo_unidad';
+            unidadInput.placeholder = 'unidad';
+
+            cantidadInput.type = 'number';
+            cantidadInput.name = 'B1_activo_fijo_unidad';
+            cantidadInput.placeholder = 'cantidad';
+
+            precioUnitarioInput.type = 'number';
+            precioUnitarioInput.name = 'B1_activo_fijo_precio_unitario';
+            precioUnitarioInput.placeholder = 'precio unitario';
+
+            inputs.appendChild(conceptoInput);
+            inputs.appendChild(unidadInput);
+            inputs.appendChild(cantidadInput);
+            inputs.appendChild(precioUnitarioInput);
+            inputs.appendChild(document.createElement('br'));
+            container.appendChild(inputs);
+        }
+        function agregarActivoDiferido(){
+            var container = document.getElementById('activo_diferido-container');
+            var inputs = document.createElement('div');
+            var conceptoInput = document.createElement('input');
+            var unidadInput = document.createElement('input');
+            var cantidadInput = document.createElement('input');
+            var precioUnitarioInput = document.createElement('input');
+
+            conceptoInput.type = 'text';
+            conceptoInput.name = 'B1_activo_fijo_concepto';
+            conceptoInput.placeholder = 'concepto';
+
+            unidadInput.type = 'text';
+            unidadInput.name = 'B1_activo_fijo_unidad';
+            unidadInput.placeholder = 'unidad';
+
+            cantidadInput.type = 'number';
+            cantidadInput.name = 'B1_activo_fijo_unidad';
+            cantidadInput.placeholder = 'cantidad';
+
+            precioUnitarioInput.type = 'number';
+            precioUnitarioInput.name = 'B1_activo_fijo_precio_unitario';
+            precioUnitarioInput.placeholder = 'precio unitario';
+
+            inputs.appendChild(conceptoInput);
+            inputs.appendChild(unidadInput);
+            inputs.appendChild(cantidadInput);
+            inputs.appendChild(precioUnitarioInput);
+            inputs.appendChild(document.createElement('br'));
+            container.appendChild(inputs);
+        }
+        function agregarManoObra(){
+            var container = document.getElementById('mano_obra-container');
+            var inputs = document.createElement('div');
+            var unidadInput = document.createElement('input');
+            var cantidadInput = document.createElement('input');
+
+            unidadInput.type = 'text';
+            unidadInput.name = 'B1_mano_obra_unidad';
+            unidadInput.placeholder = 'unidad';
+
+            canitdadInput.type = 'number';
+            cantidadInput.name = 'B1_mano_obra_cantidad';
+            cantidadInput.placeholder ='cantidad';
+
+            inputs.appendChild(unidadInput);
+            inputs.appendChild(cantidadInput);
+            inputs.appendChild(document.createElement('br'));
+            container.appendChild(inputs);
+        }
+    </script>
 </form>

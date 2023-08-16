@@ -348,55 +348,17 @@ def resultado_inegi(request, inegi_code=None, nombre_indicador=None, valor_consu
 
 
 def corrida_financiera(request):
-    if request.method == 'GET':
-        return render(request, 'corrida_financiera.html')
-    else:
-
+    if request.method == 'POST':
 
         #INICIALIZACION DE VARIABLES DE ENTRADA
-        B1_Activo_fijo_concepto = request.POST.get('B1_activo_fijo_concepto')
-        B1_Activo_fijo_unidad = request.POST.get('B1_activo_fijo_unidad')
-        B1_Activo_fijo_cantidad = int(request.POST.get('B1_activo_fijo_cantidad'))
-        B1_Activo_fijo_precio_unitario = float(request.POST.get('B1_activo_fijo_precio_unitario'))
 
-        B1_Activo_diferido_concepto = request.POST.get('B1_activo_diferido_concepto')
-        B1_Activo_diferido_unidad = request.POST.get('B1_activo_diferido_unidad')
-        B1_Activo_diferido_cantidad = int(request.POST.get('B1_activo_diferido_cantidad'))
-        B1_Activo_diferido_precio_unitario = float(request.POST.get('B1_activo_diferido_precio_unitario'))
 
-        B1_Capital_trabajo_mano_obra_unidad = request.POST.get('B1_mano_obra_unidad')
-        B1_Capital_trabajo_mano_obra_cantidad = int(request.POST.get('B1_mano_obra_cantidad'))
 
-        B1_Capital_trabajo_servicios_unidad = request.POST.get('B1_servicios_unidad')
-        B1_Capital_trabajo_servicios_cantidad = int(request.POST.get('B1_servicios_cantidad'))
 
-        B1_Capital_trabajo_servicios_mantto_unidad = request.POST.get('B1_servicios_mantto_unidad')
-        B1_Capital_trabajo_servicios_mantto_cantidad = int(request.POST.get('B1_servicios_mantto_cantidad'))
 
-        B2_Memorias_calculo_concepto = request.POST.get('B2_memorias_calculo_concepto')
-        B2_Memorias_calculo_presentacion = request.POST.get('B2_memorias_calculo_presentacion')
-        B2_Memorias_calculo_ventas_semana = int(request.POST.get('B2_memorias_calculo_ventas_semana'))
 
-        B2_Registro_propiedad_intelectual_concepto = request.POST.get('B2_registro_propiedad_intelectual_concepto')
-        B2_Registro_propiedad_intelectual_cantidad = int(request.POST.get('B2_registro_propiedad_intelectual_cantidad'))
-        B2_Registro_propiedad_intelectual_precio_unitario = float(request.POST.get('B2_registro_propiedad_intelectual_precio_unitario'))
 
-        B2_Servicios_administrativos_concepto = request.POST.get('B2_servicios_administrativos_concepto')
-        B2_Servicios_administrativos_cantidad = int(request.POST.get('B2_servicios_administrativos_cantidad'))
-        B2_Servicios_administrativos_precio_unitario = float(request.POST.get('B2_servicios_administrativos_precio_unitario'))
 
-        B2_Servicios_concepto = request.POST.get('B2_servicios_concepto')
-        B2_Servicios_importe_mensual = float(request.POST.get('B2_servicios_importe_mensual'))
-
-        B2_Servicios_mantto_concepto = request.POST.get('B2_servicios_mantto_concepto')
-        B2_Servicios_mantto_importe_mensual = float(request.POST.get('B2_servicios_mantto_importe_mensual'))
-
-        B2_Salarios_puesto = request.POST.get('B2_salarios_puesto')
-        B2_Salarios_cantidad = int(request.POST.get('B2_salarios_cantidad'))
-        B2_Salarios_sueldo_mensual = float(request.POST.get('B2_Salarios_sueldo_mensual'))
-
-        B2_Costo_materiales_materiales = request.POST.get('B2_costo_materiales_materiales')
-        B2_Costo_materiales_unidad = int(request.POST.get('B2_costo_materiales_unidad'))
 
         # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         # //Definicion de diccionarios
@@ -406,10 +368,19 @@ def corrida_financiera(request):
                        'unidad': [],
                        'cantidad': [],
                        'costo_unitario': []}
-        activo_fijo['concepto'].append(B1_Activo_fijo_concepto)
-        activo_fijo['unidad'].append(B1_Activo_fijo_unidad)
-        activo_fijo['cantidad'].append(B1_Activo_fijo_cantidad)
-        activo_fijo['costo_unitario'].append(B1_Activo_fijo_precio_unitario)
+
+        B1_Activo_fijo_concepto = request.POST.getlist('B1_activo_fijo_concepto')
+        B1_Activo_fijo_unidad = request.POST.getlist('B1_activo_fijo_unidad')
+        B1_Activo_fijo_cantidad = request.POST.getlist('B1_activo_fijo_cantidad')
+        B1_Activo_fijo_precio_unitario = request.POST.getlist('B1_activo_fijo_precio_unitario')
+
+        for B1_Activo_fijo_concepto, B1_Activo_fijo_unidad, B1_Activo_fijo_cantidad, B1_Activo_fijo_precio_unitario \
+                in zip(B1_Activo_fijo_concepto, B1_Activo_fijo_unidad, B1_Activo_fijo_cantidad, B1_Activo_fijo_precio_unitario):
+            activo_fijo['concepto'].append(B1_Activo_fijo_concepto)
+            activo_fijo['unidad'].append(B1_Activo_fijo_unidad)
+            activo_fijo['cantidad'].append(int(B1_Activo_fijo_cantidad))
+            activo_fijo['costo_unitario'].append(float(B1_Activo_fijo_precio_unitario))
+
         activo_fijo['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad in
                                  zip(activo_fijo['costo_unitario'], activo_fijo['cantidad'])]
         activo_fijo['programa'] = [montos for montos in activo_fijo['montos']]
@@ -421,10 +392,19 @@ def corrida_financiera(request):
                            'unidad': [],
                            'cantidad': [],
                            'costo_unitario': []}
-        Activo_diferido['concepto'].append(B1_Activo_diferido_concepto)
-        Activo_diferido['unidad'].append(B1_Activo_diferido_unidad)
-        Activo_diferido['cantidad'].append(B1_Activo_diferido_cantidad)
-        Activo_diferido['costo_unitario'].append(B1_Activo_diferido_precio_unitario)
+
+        B1_Activo_diferido_concepto = request.POST.getlist('B1_activo_diferido_concepto')
+        B1_Activo_diferido_unidad = request.POST.getlist('B1_activo_diferido_unidad')
+        B1_Activo_diferido_cantidad = request.POST.getlist('B1_activo_diferido_cantidad')
+        B1_Activo_diferido_precio_unitario = request.POST.getlist('B1_activo_diferido_precio_unitario')
+
+        for B1_Activo_diferido_concepto, B1_Activo_diferido_unidad, B1_Activo_diferido_cantidad, B1_Activo_diferido_precio_unitario \
+                in zip(B1_Activo_diferido_concepto, B1_Activo_diferido_unidad, B1_Activo_diferido_cantidad, B1_Activo_diferido_precio_unitario):
+            Activo_diferido['concepto'].append(B1_Activo_diferido_concepto)
+            Activo_diferido['unidad'].append(B1_Activo_diferido_unidad)
+            Activo_diferido['cantidad'].append(int(B1_Activo_diferido_cantidad))
+            Activo_diferido['costo_unitario'].append(float(B1_Activo_diferido_precio_unitario))
+
         # Calculamos el monto multiplicando cantidad por consumo_unitario
         Activo_diferido['montos'] = [cantidad * consumo_unitario for cantidad, consumo_unitario in
                                      zip(Activo_diferido['cantidad'], Activo_diferido['costo_unitario'])]
@@ -442,9 +422,16 @@ def corrida_financiera(request):
         salarios = {'puesto': [],
                     'cantidad': [],
                     'sueldo_mensual': []}
-        salarios['puesto'].append(B2_Salarios_puesto)
-        salarios['cantidad'].append(B2_Salarios_cantidad)
-        salarios['sueldo_mensual'].append(B2_Salarios_sueldo_mensual)
+
+        B2_Salarios_puesto = request.POST.getlist('B2_salarios_puesto')
+        B2_Salarios_cantidad = request.POST.getlist('B2_salarios_cantidad')
+        B2_Salarios_sueldo_mensual = request.POST.getlist('B2_Salarios_sueldo_mensual')
+        for B2_Salarios_puesto, B2_Salarios_cantidad, B2_Salarios_sueldo_mensual \
+            in zip(B2_Salarios_puesto, B2_Salarios_cantidad, B2_Salarios_sueldo_mensual):
+            salarios['puesto'].append(B2_Salarios_puesto)
+            salarios['cantidad'].append(int(B2_Salarios_cantidad))
+            salarios['sueldo_mensual'].append(float(B2_Salarios_sueldo_mensual))
+
         salarios['sueldo_diario'] = [sueldo_diario / 30 for sueldo_diario
                                      in salarios['sueldo_mensual']]
         salarios['sueldo_anual'] = [sueldo_anual * 12 for sueldo_anual
@@ -456,8 +443,14 @@ def corrida_financiera(request):
 
         servicios = {'concepto': [],
                      'importe_mensual': []}
-        servicios['concepto'].append(B2_Servicios_concepto)
-        servicios['importe_mensual'].append(B2_Servicios_importe_mensual)
+
+        B2_Servicios_concepto = request.POST.getlist('B2_servicios_concepto')
+        B2_Servicios_importe_mensual = request.POST.getlist('B2_servicios_importe_mensual')
+        for B2_Servicios_concepto, B2_Servicios_importe_mensual \
+            in zip(B2_Servicios_concepto, B2_Servicios_importe_mensual):
+            servicios['concepto'].append(B2_Servicios_concepto)
+            servicios['importe_mensual'].append(float(B2_Servicios_importe_mensual))
+
         servicios['importe_2meses'] = [importe_mensual * 2 for importe_mensual in servicios['importe_mensual']]
         servicios['importe_anual'] = [importe_anual * 12 for importe_anual in servicios['importe_mensual']]
         servicios['mensual_total'] = [sum(servicios['importe_mensual'])]
@@ -467,8 +460,14 @@ def corrida_financiera(request):
 
         servicios_mantto = {'concepto': [],
                             'importe_mensual': []}
-        servicios_mantto['concepto'].append(B2_Servicios_mantto_concepto)
-        servicios_mantto['importe_mensual'].append(B2_Servicios_mantto_importe_mensual)
+
+        B2_Servicios_mantto_concepto = request.POST.getlist('B2_servicios_mantto_concepto')
+        B2_Servicios_mantto_importe_mensual = request.POST.getlist('B2_servicios_mantto_importe_mensual')
+        for B2_Servicios_mantto_concepto, B2_Servicios_mantto_importe_mensual \
+            in zip(B2_Servicios_mantto_concepto, B2_Servicios_mantto_importe_mensual):
+            servicios_mantto['concepto'].append(B2_Servicios_mantto_concepto)
+            servicios_mantto['importe_mensual'].append(float(B2_Servicios_mantto_importe_mensual))
+
         servicios_mantto['importe_2meses'] = [importe_mensual * 2 for importe_mensual
                                               in servicios_mantto['importe_mensual']]
         servicios_mantto['importe_anual'] = [importe_anual * 12 for importe_anual
@@ -481,8 +480,15 @@ def corrida_financiera(request):
         capital_trabajo_mano_obra = {'unidad': [],
                                      'cantidad': [],
                                      'costo_unitario': [sum(salarios['sueldo_mensual'])]}
-        capital_trabajo_mano_obra['unidad'].append(B1_Capital_trabajo_mano_obra_unidad)
-        capital_trabajo_mano_obra['cantidad'].append(B1_Capital_trabajo_mano_obra_cantidad)
+
+        B1_Capital_trabajo_mano_obra_unidad = request.POST.getlist('B1_mano_obra_unidad')
+        B1_Capital_trabajo_mano_obra_cantidad = request.POST.getlist('B1_mano_obra_cantidad')
+
+        for B1_Capital_trabajo_mano_obra_unidad, B1_Capital_trabajo_mano_obra_cantidad \
+            in zip (B1_Capital_trabajo_mano_obra_unidad,B1_Capital_trabajo_mano_obra_cantidad):
+            capital_trabajo_mano_obra['unidad'].append(B1_Capital_trabajo_mano_obra_unidad)
+            capital_trabajo_mano_obra['cantidad'].append(int(B1_Capital_trabajo_mano_obra_cantidad))
+
         capital_trabajo_mano_obra['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad in
                                                zip(capital_trabajo_mano_obra['costo_unitario'],
                                                    capital_trabajo_mano_obra['cantidad'])]
@@ -494,8 +500,14 @@ def corrida_financiera(request):
         capital_trabajo_servicios = {'unidad': [],
                                      'cantidad': [],
                                      'costo_unitario': [sum(servicios['importe_mensual'])]}
-        capital_trabajo_servicios['unidad'].append(B1_Capital_trabajo_servicios_unidad)
-        capital_trabajo_servicios['cantidad'].append(B1_Capital_trabajo_servicios_cantidad)
+
+        B1_Capital_trabajo_servicios_unidad = request.POST.getlist('B1_servicios_unidad')
+        B1_Capital_trabajo_servicios_cantidad = request.POST.getlist('B1_servicios_cantidad')
+        for B1_Capital_trabajo_servicios_unidad, B1_Capital_trabajo_servicios_cantidad \
+            in zip(B1_Capital_trabajo_servicios_unidad, B1_Capital_trabajo_servicios_cantidad):
+            capital_trabajo_servicios['unidad'].append(B1_Capital_trabajo_servicios_unidad)
+            capital_trabajo_servicios['cantidad'].append(int(B1_Capital_trabajo_servicios_cantidad))
+
         capital_trabajo_servicios['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad in
                                                zip(capital_trabajo_servicios['costo_unitario'],
                                                    capital_trabajo_servicios['cantidad'])]
@@ -507,8 +519,14 @@ def corrida_financiera(request):
         capital_trabajo_servicios_mantto = {'unidad': [],
                                             'cantidad': [],
                                             'costo_unitario': [sum(servicios_mantto['importe_mensual'])]}
-        capital_trabajo_servicios_mantto['unidad'].append(B1_Capital_trabajo_servicios_mantto_unidad)
-        capital_trabajo_servicios_mantto['cantidad'].append(B1_Capital_trabajo_servicios_mantto_cantidad)
+
+        B1_Capital_trabajo_servicios_mantto_unidad = request.POST.getlist('B1_servicios_mantto_unidad')
+        B1_Capital_trabajo_servicios_mantto_cantidad = request.POST.getlist('B1_servicios_mantto_cantidad')
+        for B1_Capital_trabajo_servicios_mantto_unidad, B1_Capital_trabajo_servicios_mantto_cantidad \
+            in zip(B1_Capital_trabajo_servicios_mantto_unidad, B1_Capital_trabajo_servicios_mantto_cantidad):
+            capital_trabajo_servicios_mantto['unidad'].append(B1_Capital_trabajo_servicios_mantto_unidad)
+            capital_trabajo_servicios_mantto['cantidad'].append(int(B1_Capital_trabajo_servicios_mantto_cantidad))
+
         capital_trabajo_servicios_mantto['montos'] = [costo_unitario * cantidad for costo_unitario, cantidad
                                                       in zip(capital_trabajo_servicios_mantto['costo_unitario'],
                                                           capital_trabajo_servicios_mantto['cantidad'])]
@@ -545,15 +563,27 @@ def corrida_financiera(request):
 
         costo_materiales = {'materiales': [],
                             'unidad': []}
-        costo_materiales['materiales'].append(B2_Costo_materiales_materiales)
-        costo_materiales['unidad'].append(B2_Costo_materiales_unidad)
+
+        B2_Costo_materiales_materiales = request.POST.getlist('B2_costo_materiales_materiales')
+        B2_Costo_materiales_unidad = request.POST.getlist('B2_costo_materiales_unidad')
+        for B2_Costo_materiales_materiales, B2_Costo_materiales_unidad \
+            in zip(B2_Costo_materiales_materiales, B2_Costo_materiales_unidad):
+            costo_materiales['materiales'].append(B2_Costo_materiales_materiales)
+            costo_materiales['unidad'].append(B2_Costo_materiales_unidad)
 
         registro_propiedad_intelectual = {'concepto': [],
                                           'cantidad': [],
                                           'precio_unitario': []}
-        registro_propiedad_intelectual['concepto'].append(B2_Registro_propiedad_intelectual_concepto)
-        registro_propiedad_intelectual['cantidad'].append(B2_Registro_propiedad_intelectual_cantidad)
-        registro_propiedad_intelectual['precio_unitario'].append(B2_Registro_propiedad_intelectual_precio_unitario)
+
+        B2_Registro_propiedad_intelectual_concepto = request.POST.getlist('B2_registro_propiedad_intelectual_concepto')
+        B2_Registro_propiedad_intelectual_cantidad = request.POST.getlist('B2_registro_propiedad_intelectual_cantidad')
+        B2_Registro_propiedad_intelectual_precio_unitario = request.POST.getlist('B2_registro_propiedad_intelectual_precio_unitario')
+        for B2_Registro_propiedad_intelectual_concepto, B2_Registro_propiedad_intelectual_cantidad, B2_Registro_propiedad_intelectual_precio_unitario \
+            in zip(B2_Registro_propiedad_intelectual_concepto, B2_Registro_propiedad_intelectual_cantidad, B2_Registro_propiedad_intelectual_precio_unitario):
+            registro_propiedad_intelectual['concepto'].append(B2_Registro_propiedad_intelectual_concepto)
+            registro_propiedad_intelectual['cantidad'].append(int(B2_Registro_propiedad_intelectual_cantidad))
+            registro_propiedad_intelectual['precio_unitario'].append(float(B2_Registro_propiedad_intelectual_precio_unitario))
+
         registro_propiedad_intelectual['precio_total'] = [cantidad * precio_unitario for cantidad, precio_unitario
                                                           in zip(registro_propiedad_intelectual['cantidad'],
                                                                  registro_propiedad_intelectual['precio_unitario'])]
@@ -562,9 +592,16 @@ def corrida_financiera(request):
         servicios_administrativos = {'concepto': [],
                                      'cantidad': [],
                                      'precio_unitario': []}
-        servicios_administrativos['concepto'].append(B2_Servicios_administrativos_concepto)
-        servicios_administrativos['cantidad'].append(B2_Servicios_administrativos_cantidad)
-        servicios_administrativos['precio_unitario'].append(B2_Servicios_administrativos_precio_unitario)
+
+        B2_Servicios_administrativos_concepto = request.POST.getlist('B2_servicios_administrativos_concepto')
+        B2_Servicios_administrativos_cantidad = request.POST.getlist('B2_servicios_administrativos_cantidad')
+        B2_Servicios_administrativos_precio_unitario = request.POST.getlist('B2_servicios_administrativos_precio_unitario')
+        for B2_Servicios_administrativos_concepto, B2_Servicios_administrativos_cantidad, B2_Servicios_administrativos_precio_unitario \
+            in zip(B2_Servicios_administrativos_concepto, B2_Servicios_administrativos_cantidad, B2_Servicios_administrativos_precio_unitario):
+            servicios_administrativos['concepto'].append(B2_Servicios_administrativos_concepto)
+            servicios_administrativos['cantidad'].append(int(B2_Servicios_administrativos_cantidad))
+            servicios_administrativos['precio_unitario'].append(float(B2_Servicios_administrativos_precio_unitario))
+
         servicios_administrativos['precio_total'] = [cantidad * precio_unitario for cantidad, precio_unitario
                                                      in zip(servicios_administrativos['cantidad'],
                                                             servicios_administrativos['precio_unitario'])]
@@ -584,9 +621,15 @@ def corrida_financiera(request):
                             'ventas_semana': []}
         memorias_calculo['costo_insumo'] = [costo_material_dia for costo_material_dia
                                                     in costo_materiales['por_dia']]
-        memorias_calculo['concepto'].append(B2_Memorias_calculo_concepto)
-        memorias_calculo['presentacion'].append(B2_Memorias_calculo_presentacion)
-        memorias_calculo['ventas_semana'].append(B2_Memorias_calculo_ventas_semana)
+
+        B2_Memorias_calculo_concepto = request.POST.getlist('B2_memorias_calculo_concepto')
+        B2_Memorias_calculo_presentacion = request.POST.getlist('B2_memorias_calculo_presentacion')
+        B2_Memorias_calculo_ventas_semana = request.POST.getlist('B2_memorias_calculo_ventas_semana')
+        for B2_Memorias_calculo_concepto, B2_Memorias_calculo_presentacion, B2_Memorias_calculo_ventas_semana \
+            in zip(B2_Memorias_calculo_concepto, B2_Memorias_calculo_presentacion, B2_Memorias_calculo_ventas_semana):
+            memorias_calculo['concepto'].append(B2_Memorias_calculo_concepto)
+            memorias_calculo['presentacion'].append(B2_Memorias_calculo_presentacion)
+            memorias_calculo['ventas_semana'].append(int(B2_Memorias_calculo_ventas_semana))
         memorias_calculo['costo_semanal'] = [costo_insumo * ventas_semana for costo_insumo, ventas_semana in zip(
             memorias_calculo['costo_insumo'], memorias_calculo['ventas_semana'])]
         memorias_calculo['costo_mensual'] = [costo_semanal * 4 for costo_semanal in memorias_calculo['ventas_semana']]
@@ -1234,5 +1277,6 @@ def corrida_financiera(request):
                              for total_ingresos_actualizados, total_egresos_actualizados
                              in zip(analisis_rentabilidad['total_ingresos_actualizados'],
                                     analisis_rentabilidad['total_egresos_actualizados'])]}
-
-    return render(request, 'canvas.html')
+        print(activo_fijo['concepto'])
+        return render(request, 'canvas.html')
+    return render(request, 'corrida_financiera.html')
