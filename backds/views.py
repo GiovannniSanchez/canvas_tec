@@ -425,9 +425,9 @@ def corrida_financiera(request):
 
         B2_Salarios_puesto = request.POST.getlist('B2_salarios_puesto')
         B2_Salarios_cantidad = request.POST.getlist('B2_salarios_cantidad')
-        B2_Salarios_sueldo_mensual = request.POST.getlist('B2_Salarios_sueldo_mensual')
-        for B2_Salarios_puesto, B2_Salarios_cantidad, B2_Salarios_sueldo_mensual \
-            in zip(B2_Salarios_puesto, B2_Salarios_cantidad, B2_Salarios_sueldo_mensual):
+        B2_Salarios_sueldo_mensual = request.POST.getlist('B2_salarios_sueldo_mensual')
+        for B2_Salarios_puesto, B2_Salarios_cantidad, B2_Salarios_sueldo_mensual in \
+                zip(B2_Salarios_puesto, B2_Salarios_cantidad, B2_Salarios_sueldo_mensual):
             salarios['puesto'].append(B2_Salarios_puesto)
             salarios['cantidad'].append(int(B2_Salarios_cantidad))
             salarios['sueldo_mensual'].append(float(B2_Salarios_sueldo_mensual))
@@ -619,8 +619,7 @@ def corrida_financiera(request):
         memorias_calculo = {'concepto': [],
                             'presentacion': [],
                             'ventas_semana': []}
-        memorias_calculo['costo_insumo'] = [costo_material_dia for costo_material_dia
-                                                    in costo_materiales['por_dia']]
+        memorias_calculo['costo_insumo'] = [1082.93, 1896.93, 18969.28]
 
         B2_Memorias_calculo_concepto = request.POST.getlist('B2_memorias_calculo_concepto')
         B2_Memorias_calculo_presentacion = request.POST.getlist('B2_memorias_calculo_presentacion')
@@ -630,9 +629,10 @@ def corrida_financiera(request):
             memorias_calculo['concepto'].append(B2_Memorias_calculo_concepto)
             memorias_calculo['presentacion'].append(B2_Memorias_calculo_presentacion)
             memorias_calculo['ventas_semana'].append(int(B2_Memorias_calculo_ventas_semana))
-        memorias_calculo['costo_semanal'] = [costo_insumo * ventas_semana for costo_insumo, ventas_semana in zip(
-            memorias_calculo['costo_insumo'], memorias_calculo['ventas_semana'])]
-        memorias_calculo['costo_mensual'] = [costo_semanal * 4 for costo_semanal in memorias_calculo['ventas_semana']]
+
+        memorias_calculo['costo_semanal'] = [costo_insumo * ventas_semana for costo_insumo, ventas_semana
+                                             in zip(memorias_calculo['costo_insumo'], memorias_calculo['ventas_semana'])]
+        memorias_calculo['costo_mensual'] = [costo_semanal * 4 for costo_semanal in memorias_calculo['costo_semanal']]
         memorias_calculo['precio_venta'] = [costo_insumo * 1.35 for costo_insumo in memorias_calculo['costo_insumo']]
         memorias_calculo['ingreso_semanal'] = [precio_venta * ventas_semana for precio_venta, ventas_semana in
                                                zip(memorias_calculo['precio_venta'], memorias_calculo['ventas_semana'])]
@@ -647,9 +647,9 @@ def corrida_financiera(request):
         memorias_calculo['total_ingreso_mensual'] = [sum(memorias_calculo['ingreso_mensual'])]
         memorias_calculo['total_ingreso_anual'] = [sum(memorias_calculo['ingreso_anual'])]
         memorias_calculo['ganacia_semanal'] = [total_ingreso_semanal - total_costo_semana
-                                               for total_ingreso_semanal, total_costo_semana in
-                                               zip(memorias_calculo['total_ingreso_semanal'],
-                                                   memorias_calculo['total_costo_semana'])]
+                                               for total_ingreso_semanal, total_costo_semana
+                                               in zip(memorias_calculo['total_ingreso_semanal'],
+                                                      memorias_calculo['total_costo_semana'])]
         memorias_calculo['ganancia_mensual'] = [ganancia_semanal * 4 for ganancia_semanal in
                                                 memorias_calculo['ganacia_semanal']]
         memorias_calculo['ganancia_anual'] = [ganancia_mensual * 12 for ganancia_mensual in
@@ -661,8 +661,11 @@ def corrida_financiera(request):
         # BLOQUE 3: PROYECCION DE COSTOS
         # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        costos_proyecto1 = {'concepto': [concepto for concepto in servicios['concepto']],
-                            'costo_mensual': [importe_mensual for importe_mensual in servicios['importe_mensual']]}
+        costos_proyecto1 = {'concepto': servicios['concepto'] + servicios_mantto['concepto']
+                                        + servicios_administrativos['concepto'] + salarios['puesto'],
+                            'costo_mensual': servicios['importe_mensual'] + servicios_mantto['importe_mensual'] +
+                                              servicios_administrativos['precio_unitario'] + salarios['sueldo_mensual']}
+
         costos_proyecto1['ano1'] = [costo_mensual * 12 for costo_mensual in costos_proyecto1['costo_mensual']]
         costos_proyecto1['ano2'] = [ano1 * 1.02 for ano1 in costos_proyecto1['ano1']]
         costos_proyecto1['ano3'] = [ano2 * 1.02 for ano2 in costos_proyecto1['ano2']]
@@ -691,7 +694,8 @@ def corrida_financiera(request):
         # BLOQUE 4: COSTOS TOTALES
         # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        costos_fijos = {'concepto': [concepto for concepto in costos_proyecto1['concepto']],
+        costos_fijos = {'concepto': servicios['concepto'] + servicios_administrativos['concepto']
+                                    + servicios_mantto['concepto'] + salarios['puesto'],
                         'ano1': [ano1 for ano1 in costos_proyecto1['ano1']],
                         'ano2': [ano2 for ano2 in costos_proyecto1['ano2']],
                         'ano3': [ano3 for ano3 in costos_proyecto1['ano3']],
@@ -1276,7 +1280,67 @@ def corrida_financiera(request):
                       'bc': [total_ingresos_actualizados / total_egresos_actualizados
                              for total_ingresos_actualizados, total_egresos_actualizados
                              in zip(analisis_rentabilidad['total_ingresos_actualizados'],
-                                    analisis_rentabilidad['total_egresos_actualizados'])]}
-        print(activo_fijo['concepto'])
+                                   analisis_rentabilidad['total_egresos_actualizados'])]}
+
+        print('Igresos actualizados: ', analisis_rentabilidad['total_ingresos_actualizados'])
+        print('Egresos actualizados:', analisis_rentabilidad['total_egresos_actualizados'])
+
+        print('Estes es el BC')
+        print(van_tir_bc['bc'])
+        print('##################')
+        print('Este es el VAN')
+        print(van_tir_bc['van'])
+        print('//////////////////////////////7')
+        print('')
+        print('ingreso anual memoria calculo: ', memorias_calculo['ingreso_anual'])
+        print('')
+        print('ingreso anual total memoria calculo: ',memorias_calculo['total_ingreso_anual'])
+        print('')
+        print('total ganancia anual memoria calculo: ', memorias_calculo['ganancia_anual'])
+        print('')
+        print('precio venta', memorias_calculo['precio_venta'])
+        print('')
+        print('costo proyecto 1 mensual:', costo_proyecto1_mensual['costo_mensual'])
+        print('')
+        print('costos totales año5', costos_totales['costos_totales_ano5'])
+        print('')
+        print('pryeccion de ingresos año5: ', proyeccion_ingresos['total_ano5'])
+        print('')
+        print('estado resultado utilidad año5: ', estado_resultados['utilidad_ejercicio_ano5'])
+        print('')
+        print('flujo de efectivo año5: ', flujo_efectivo['saldo_final_ano5'])
+        print('')
+        print('punto equilibrio año5: ', punto_equilibrio['punto_equilibrio_ano5'])
+        print('')
+        print('punto equilibrio año5 porcentaje: ', punto_equilibrio['punto_equilibrio_ano5_porcentaje'])
+        print('')
+        print('analisis rentabilidad flujo efectivo año5: ', analisis_rentabilidad['flujo_efectivo_ano5'])
+        print('')
+        print('analisis rentabilidad tasa año5: ', analisis_rentabilidad['tasa_ano5'])
+        print('')
+        print('analisis rentabilidad ingreso actualiazdo año5', analisis_rentabilidad['ingresos_actualizados_ano5'])
+        print('')
+        print('analisis rentabilidad egreso actualizado año5', analisis_rentabilidad['egresos_actualizados_ano5'])
+        print('')
+        print('analisis rentabilidad total ingresos: ', analisis_rentabilidad['total_ingresos'] )
+        print('')
+        print('analisis rentabilidad total costos:', analisis_rentabilidad['total_costos'])
+        print('')
+        print('analisis rentabilidad total flujo efectivo: ', analisis_rentabilidad['total_flujo_efectivo'])
+        print('')
+        print('sumatoria')
+        print('')
+        print('costos_fijos concepto', costos_fijos['concepto'])
+        print('costos_fijos_ año1', costos_fijos['ano1'])
+        print('//////////////////////////////////////////////////////////7')
+        print('memorias_calculo concepto: ', memorias_calculo['concepto'])
+        print('memorias_calculo venta semanal', memorias_calculo['ventas_semana'])
+        print('memorias_calculo costos_semana', memorias_calculo['costo_semanal'])
+        print('memorias_calculo costo_mensual', memorias_calculo['costo_mensual'])
+        print('memorias_calculo total_costo_mensual', memorias_calculo['total_costo_mensual'])
+        print('salarios', salarios['sueldo_mensual'])
+
+
+
         return render(request, 'canvas.html')
     return render(request, 'corrida_financiera.html')

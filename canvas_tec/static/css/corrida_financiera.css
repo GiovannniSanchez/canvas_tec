@@ -1,0 +1,14 @@
+body{
+    background-color: #09091e;
+    color: white;
+}
+.bloque{
+    background-color: transparent;
+}
+.form-label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+.form-label{
+    color: white;
+}
