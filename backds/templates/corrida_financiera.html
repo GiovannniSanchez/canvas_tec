@@ -58,6 +58,7 @@
             <div class="bloque" id="memorias_calculo-container">
                 <input type="text" name="B2_memorias_calculo_concepto" placeholder="concepto">
                 <input type="text" name="B2_memorias_calculo_presentacion" placeholder="presentacion">
+                <input type="number" step="any" name="B2_memorias_calculo_costo_insumo" placeholder="costo insumo">
                 <input type="number"  step="any" name="B2_memorias_calculo_ventas_semana" placeholder="venta semanal deseada">
             </div>
             <button type="button" onclick="agregarMemoriasCalculo()">Agregar</button>
@@ -238,6 +239,7 @@
                     var inputs = document.createElement('div');
                     var conceptoInput = document.createElement('input');
                     var presentacionInput = document.createElement('input');
+                    var costo_insumoInput = document.createElement('input');
                     var ventas_semanaInput = document.createElement('input');
 
                     conceptoInput.type = 'text';
@@ -248,12 +250,17 @@
                     presentacionInput.name = 'B2_memorias_calculo_presentacion';
                     presentacionInput.placeholder = 'presentacion';
 
+                    costo_insumoInput.type = 'number';
+                    costo_insumoInput.name = 'B2_memorias_calculo_costo_insumo';
+                    costo_insumoInput.placeholder = 'costo insumo';
+
                     ventas_semanaInput.type = 'number';
                     ventas_semanaInput.name = 'B2_memorias_calculo_ventas_semana';
                     ventas_semanaInput.placeholder = 'ventas semana';
 
                     inputs.appendChild(conceptoInput);
                     inputs.appendChild(presentacionInput);
+                    inputs.appendChild(costo_insumoInput);
                     inputs.appendChild(ventas_semanaInput);
                     inputs.appendChild(document.createElement('br'));
                     container.appendChild(inputs);

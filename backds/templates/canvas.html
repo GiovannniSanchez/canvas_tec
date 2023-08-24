@@ -3,90 +3,110 @@
 {% block content %}
 <!DOCTYPE html>
 <html>
-<head>
-    <link type="text/css" href="{% static "css/canvas.css" %}" rel="stylesheet">
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    <div>
-        <p class="space">"Mfeni" Marca Registrada </p>
-    </div>
-    <div>
-        <h2><br></h2>
-        <h1 class="logo">{{ nombre }}</h1>
-    </div>
-	<div class="container">
-		<div class="col">
-			<h2 class="encabezado">PROBLEMA</h2>
-            <ul>
-                <li>
-                    <p class="p1">{{ respuestas_canvas.0 }}</p>
-                </li>
-            </ul>
-		</div>
-		<div class="col">
-			<h2 class="encabezado">Soluciones</h2>
-			<ul>
-				<li>
-                    <p class="p1">{{ respuestas_canvas.3 }}</p>
-				</li>
-            <h2 class="encabezado">Metricas</h2>
-                <li>
-                     <p class="p1">{{ respuestas_canvas.7 }}</p>
-				</li>
-			</ul>
-		</div>
-		<div class="col">
-			<h2 class="encabezado">Propuesta de valor</h2>
-			<ul>
-				<li>
-					<p class="p1">{{ respuestas_canvas.2 }}</p>
-				</li>
+    <head>
 
-			</ul>
+        <link type="text/css" href="{% static "css/canvas.css" %}" rel="stylesheet">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            th{
+                border: 3px solid white;
+            }
+            td{
+                border: 3px solid white;
+            }
+        </style>
 
-		</div>
-        <div class="col">
-			<h2 class="encabezado">Ventaja diferiencial</h2>
-			<ul>
-				<li>
-					<p class="p1">{{ respuestas_canvas.8 }}</p>
-				</li>
-            <h2 class="encabezado">Canales</h2>
-				<li>
-					<p class="p1">{{ respuestas_canvas.4 }}</p>
-				</li>
-			</ul>
-		</div>
-        <div class="col">
-			<h2 class="encabezado">Cliente ideal</h2>
-            <ul>
-                <li>
-                    <p class="p1">{{ respuestas_canvas.1 }}</p>
-                </li>
-            </ul>
-		</div>
-	</div>
-    <div class="container">
-        <div class="col">
-			<h2 class="encabezado">Estructura de Costes</h2>
-            <ul>
-                <li>
-                    <p class="p1">{{ respuestas_canvas.6 }}</p>
-                </li>
-            </ul>
-		</div>
-        <div class="col">
-			<h2 class="encabezado">Flujo de Ingresos</h2>
-            <ul>
-                <li>
-                    <p class="p1">{{ respuestas_canvas.5 }}</p>
-                </li>
-            </ul>
-		</div>
-    </div>
-</body>
+    </head>
+    <body>
+        <div>
+            <p class="space">"Mfeni" Marca Registrada </p>
+        </div>
+        <div>
+            <h2><br></h2>
+            <h1 class="logo">{{ nombre }}</h1>
+        </div>
+        <div class="container">
+            <div class="col">
+                <h2 class="encabezado">PROBLEMA</h2>
+                <ul>
+                    <li>
+                        <p class="p1">{{ respuestas_canvas.0 }}</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col">
+                <h2 class="encabezado">Soluciones</h2>
+                <ul>
+                    <li>
+                        <p class="p1">{{ respuestas_canvas.3 }}</p>
+                    </li>
+                <h2 class="encabezado">Metricas</h2>
+                    <li>
+                         <p class="p1">{{ respuestas_canvas.7 }}</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col">
+                <h2 class="encabezado">Propuesta de valor</h2>
+                <ul>
+                    <li>
+                        <p class="p1">{{ respuestas_canvas.2 }}</p>
+                    </li>
+
+                </ul>
+
+            </div>
+            <div class="col">
+                <h2 class="encabezado">Ventaja diferiencial</h2>
+                <ul>
+                    <li>
+                        <p class="p1">{{ respuestas_canvas.8 }}</p>
+                    </li>
+                <h2 class="encabezado">Canales</h2>
+                    <li>
+                        <p class="p1">{{ respuestas_canvas.4 }}</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col">
+                <h2 class="encabezado">Cliente ideal</h2>
+                <ul>
+                    <li>
+                        <p class="p1">{{ respuestas_canvas.1 }}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col">
+                <h2 class="encabezado">Estructura de Costes</h2>
+                <table>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Costos</th>
+                    </tr>
+                    <tr>
+                        <td>{{ formatted_content|linebreaksbr|safe }}</td>
+                        <td>{{ formatted_content_costos_str|linebreaksbr|safe }}</td>
+                    </tr>
+                </table>
+            </div>
+
+
+
+
+
+            <div class="col">
+                <h2 class="encabezado">Flujo de Ingresos</h2>
+                <ul>
+                    <li>
+                        <p class="p1">{{ respuestas_canvas.5 }}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
 </html>
 {% endblock %}
 

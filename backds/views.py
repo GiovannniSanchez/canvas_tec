@@ -38,7 +38,7 @@ def prueba(request):
     ]
 
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
@@ -159,13 +159,14 @@ def prueba(request):
     answer_chat.save()
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    return redirect('canvas')
+    return redirect('financiera')
 
 
 @login_required
 def formulario(request):
     if request.method == 'GET':
-        return render(request, 'formulario.html', {'form': RegisterAnswer()})
+        data = {'form': RegisterAnswer()}
+        return render(request, 'formulario.html', data)
     else:
 
         user_id = request.user.id
@@ -188,42 +189,6 @@ def test01(request):
     user = request.user
     answers = answers_user.objects.filter(user=user)
     return render(request, 'test01.html', {'respuestas': answers})
-
-
-@login_required
-def canvas(request):
-    try:
-        user = request.user
-        last = AnswersChatgpt.objects.filter(user=user).last()
-        lastname = answers_user.objects.filter(user=user).last()
-        proyect_name = lastname.name_e_p
-
-        answers_canvas = [
-            last.problema,
-            last.cliente_ideal,
-            last.propuesta_valor,
-            last.soluciones,
-            last.canal,
-            last.flujo_ingresos,
-            last.estructura_costes,
-            last.metricas,
-            last.ventaja_diferencial,
-        ]
-
-        return render(request, 'canvas.html', {
-            'respuestas_canvas': answers_canvas,
-            'nombre': proyect_name
-        })
-
-    except AttributeError:
-        # Manejo del error
-        answers_canvas = []  # O cualquier otra lógica que desees utilizar en caso de error
-        proyect_name = None  # O cualquier otro valor o lógica que desees utilizar en caso de error
-
-        return render(request, 'canvas.html', {
-            'respuestas_canvas': answers_canvas,
-            'nombre': proyect_name
-        })
 
 
 def obtener_datos_inegi(request):
@@ -349,18 +314,6 @@ def resultado_inegi(request, inegi_code=None, nombre_indicador=None, valor_consu
 
 def corrida_financiera(request):
     if request.method == 'POST':
-
-        #INICIALIZACION DE VARIABLES DE ENTRADA
-
-
-
-
-
-
-
-
-
-        # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         # //Definicion de diccionarios
         # BLOQUE 1: PRESUPUESTO DE INVERSION
         # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -618,17 +571,19 @@ def corrida_financiera(request):
 
         memorias_calculo = {'concepto': [],
                             'presentacion': [],
-                            'ventas_semana': []}
-        memorias_calculo['costo_insumo'] = [1082.93, 1896.93, 18969.28]
+                            'ventas_semana': [],
+                            'costo_insumo': []}
 
+        B2_Memorias_calculo_costo_insumo = request.POST.getlist('B2_memorias_calculo_costo_insumo')
         B2_Memorias_calculo_concepto = request.POST.getlist('B2_memorias_calculo_concepto')
         B2_Memorias_calculo_presentacion = request.POST.getlist('B2_memorias_calculo_presentacion')
         B2_Memorias_calculo_ventas_semana = request.POST.getlist('B2_memorias_calculo_ventas_semana')
-        for B2_Memorias_calculo_concepto, B2_Memorias_calculo_presentacion, B2_Memorias_calculo_ventas_semana \
-            in zip(B2_Memorias_calculo_concepto, B2_Memorias_calculo_presentacion, B2_Memorias_calculo_ventas_semana):
+        for B2_Memorias_calculo_concepto, B2_Memorias_calculo_presentacion, B2_Memorias_calculo_ventas_semana, B2_Memorias_calculo_costo_insumo \
+            in zip(B2_Memorias_calculo_concepto, B2_Memorias_calculo_presentacion, B2_Memorias_calculo_ventas_semana, B2_Memorias_calculo_costo_insumo):
             memorias_calculo['concepto'].append(B2_Memorias_calculo_concepto)
             memorias_calculo['presentacion'].append(B2_Memorias_calculo_presentacion)
             memorias_calculo['ventas_semana'].append(int(B2_Memorias_calculo_ventas_semana))
+            memorias_calculo['costo_insumo'].append(float(B2_Memorias_calculo_costo_insumo))
 
         memorias_calculo['costo_semanal'] = [costo_insumo * ventas_semana for costo_insumo, ventas_semana
                                              in zip(memorias_calculo['costo_insumo'], memorias_calculo['ventas_semana'])]
@@ -1291,56 +1246,81 @@ def corrida_financiera(request):
         print('Este es el VAN')
         print(van_tir_bc['van'])
         print('//////////////////////////////7')
-        print('')
-        print('ingreso anual memoria calculo: ', memorias_calculo['ingreso_anual'])
-        print('')
-        print('ingreso anual total memoria calculo: ',memorias_calculo['total_ingreso_anual'])
-        print('')
-        print('total ganancia anual memoria calculo: ', memorias_calculo['ganancia_anual'])
-        print('')
-        print('precio venta', memorias_calculo['precio_venta'])
-        print('')
-        print('costo proyecto 1 mensual:', costo_proyecto1_mensual['costo_mensual'])
-        print('')
-        print('costos totales año5', costos_totales['costos_totales_ano5'])
-        print('')
-        print('pryeccion de ingresos año5: ', proyeccion_ingresos['total_ano5'])
-        print('')
-        print('estado resultado utilidad año5: ', estado_resultados['utilidad_ejercicio_ano5'])
-        print('')
-        print('flujo de efectivo año5: ', flujo_efectivo['saldo_final_ano5'])
-        print('')
-        print('punto equilibrio año5: ', punto_equilibrio['punto_equilibrio_ano5'])
-        print('')
-        print('punto equilibrio año5 porcentaje: ', punto_equilibrio['punto_equilibrio_ano5_porcentaje'])
-        print('')
-        print('analisis rentabilidad flujo efectivo año5: ', analisis_rentabilidad['flujo_efectivo_ano5'])
-        print('')
-        print('analisis rentabilidad tasa año5: ', analisis_rentabilidad['tasa_ano5'])
-        print('')
-        print('analisis rentabilidad ingreso actualiazdo año5', analisis_rentabilidad['ingresos_actualizados_ano5'])
-        print('')
-        print('analisis rentabilidad egreso actualizado año5', analisis_rentabilidad['egresos_actualizados_ano5'])
-        print('')
-        print('analisis rentabilidad total ingresos: ', analisis_rentabilidad['total_ingresos'] )
-        print('')
-        print('analisis rentabilidad total costos:', analisis_rentabilidad['total_costos'])
-        print('')
-        print('analisis rentabilidad total flujo efectivo: ', analisis_rentabilidad['total_flujo_efectivo'])
-        print('')
-        print('sumatoria')
-        print('')
-        print('costos_fijos concepto', costos_fijos['concepto'])
-        print('costos_fijos_ año1', costos_fijos['ano1'])
-        print('//////////////////////////////////////////////////////////7')
-        print('memorias_calculo concepto: ', memorias_calculo['concepto'])
-        print('memorias_calculo venta semanal', memorias_calculo['ventas_semana'])
-        print('memorias_calculo costos_semana', memorias_calculo['costo_semanal'])
-        print('memorias_calculo costo_mensual', memorias_calculo['costo_mensual'])
-        print('memorias_calculo total_costo_mensual', memorias_calculo['total_costo_mensual'])
-        print('salarios', salarios['sueldo_mensual'])
 
+        BC = 0
+        VAN = 0
+        var_total_ingresos_actualizados = 0
+        var_total_egresos_actualizados = 0
+        if not BC:
+            BC = 'null'
+        for x in van_tir_bc['bc']:
+            BC = x
+        print('BC de la variable: ', BC)
+        for y in van_tir_bc['van']:
+            VAN = y
+        print('VAN de la variable: ', VAN)
+        for j in analisis_rentabilidad['total_ingresos_actualizados']:
+            var_total_ingresos_actualizados = j
+        print('total_ingresos: ', var_total_ingresos_actualizados)
+        for k in analisis_rentabilidad['total_egresos_actualizados']:
+            var_total_egresos_actualizados = k
+        var_total_presupuesto_inversion = 0
+        for l in total_presupuesto_inversion['total_B1']:
+            var_total_presupuesto_inversion = l
 
+        var_memorias_calculo = memorias_calculo['concepto']
+        formatted_content = "\n".join(var_memorias_calculo)
 
-        return render(request, 'canvas.html')
+        var_memorias_costos = memorias_calculo['costo_insumo']
+        formatted_content_costos = ', '.join(str(var) for var in var_memorias_costos)
+
+        # Convertir la lista a una cadena con saltos de línea
+        formatted_content_costos_str = '\n'.join(f'${var:.2f}' for var in var_memorias_costos)
+
+        return redirect('canvas', BC = BC, var_total_presupuesto_inversion = var_total_presupuesto_inversion,
+                        formatted_content = formatted_content,
+                        formatted_content_costos_str = formatted_content_costos_str)
+
     return render(request, 'corrida_financiera.html')
+
+
+@login_required
+def canvas(request, BC = None, var_total_presupuesto_inversion = None,
+           formatted_content = None, formatted_content_costos_str = None):
+    try:
+        user = request.user
+        last = AnswersChatgpt.objects.filter(user=user).last()
+        lastname = answers_user.objects.filter(user=user).last()
+        proyect_name = lastname.name_e_p
+
+        answers_canvas = [
+            last.problema,
+            last.cliente_ideal,
+            last.propuesta_valor,
+            last.soluciones,
+            last.canal,
+            last.flujo_ingresos,
+            last.metricas,
+            last.ventaja_diferencial,
+        ]
+        data = {'respuestas_canvas': answers_canvas,
+                'BC': str(BC),
+                'Presupuesto_inversion': str(var_total_presupuesto_inversion),
+                'formatted_content': formatted_content,
+                'formatted_content_costos_str': formatted_content_costos_str,
+                'nombre': proyect_name}
+        print('xdddddddd')
+        print(data['formatted_content_costos_str'])
+
+        return render(request, 'canvas.html',data)
+
+    except AttributeError:
+        # Manejo del error
+        answers_canvas = []  # O cualquier otra lógica que desees utilizar en caso de error
+        proyect_name = None  # O cualquier otro valor o lógica que desees utilizar en caso de error
+
+        return render(request, 'canvas.html', {
+            'respuestas_canvas': answers_canvas,
+            'nombre': proyect_name
+        })
+
