@@ -43,3 +43,27 @@ class AnswersChatgpt(models.Model):
         verbose_name_plural='Respuestas_Chatgpt'
         ordering=['id']
 
+
+class GeneratedImage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
+    segmento_image1 = models.URLField(max_length=1000)
+    segmento_image2 = models.URLField(max_length=1000)
+    propuesta_image1 = models.URLField(max_length=1000)
+    propuesta_image2 = models.URLField(max_length=1000)
+    canales_image = models.URLField(max_length=1000)
+    relaciones_image = models.URLField(max_length=1000)
+    recursos_image = models.URLField(max_length=1000)
+    actividades_image = models.URLField(max_length=1000)
+    socios_image1 = models.URLField(max_length=1000)
+    socios_image2 = models.URLField(max_length=1000)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Generated Image {self.id}"
+
+    class Meta:
+        db_table = 'GeneratedImages'
+        verbose_name = 'GeneratedImage'
+        verbose_name_plural = 'GeneratedImages'
+        ordering = ['id']
+

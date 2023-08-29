@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import answers_user, AnswersChatgpt
+from .models import answers_user, AnswersChatgpt, GeneratedImage
 from .forms import RegisterAnswer
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
@@ -25,7 +25,7 @@ def prueba(request):
     last = answers_user.objects.filter(user=user).last()
 
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
@@ -105,6 +105,36 @@ def prueba(request):
     respuesta6 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
     respuesta_socios = respuesta6.choices[0].message.content
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #GENERACION DE PROMPT PARA IMAGENES
+    palabras_clave = [str(last.segmento), str(last.segmento), str(last.propuesta),
+                      str(last.propuesta), str(last.canales), str(last.relaciones), str(last.recursos),
+                      str(last.actividades), str(last.socios), str(last.socios)]
+    prompts = []
+    for clave in palabras_clave:
+        prompt = '¿Puedes descibir lo siguiente  y resumirlo?: '+ clave
+        prompts.append(prompt)
+
+    chatgpt_prompts_images=[]
+    for i in prompts:
+        contenido = i
+
+        messages.append({"role": "user", "content": contenido})
+        respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
+        respuesta_image = respuesta.choices[0].message.content
+        chatgpt_prompts_images.append(respuesta_image)
+    # /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #GENERACIÓN DE IMAGENES
+
+    urls_images = []
+
+    for prompt in chatgpt_prompts_images:
+        response = openai.Image.create(
+            prompt = prompt + 'sin texto grande',
+            n = 1,
+            size = "256x256"
+        )
+        urls_images.append(response['data'][0]['url'])
+
 
     # Guardar la respuesta en la base de datos
     answer_chat = AnswersChatgpt.objects.create(user=user,
@@ -117,6 +147,20 @@ def prueba(request):
                                                 socios_gpt=respuesta_socios
                                                 )
     answer_chat.save()
+    #Guardar las urls de imagenes en la base de datos
+    images_save = GeneratedImage.objects.create(user=user,
+                                                segmento_image1=urls_images[0],
+                                                segmento_image2=urls_images[1],
+                                                propuesta_image1=urls_images[2],
+                                                propuesta_image2=urls_images[3],
+                                                canales_image=urls_images[4],
+                                                relaciones_image=urls_images[5],
+                                                recursos_image=urls_images[6],
+                                                actividades_image=urls_images[7],
+                                                socios_image1=urls_images[8],
+                                                socios_image2=urls_images[9])
+    images_save.save()
+
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return redirect('financiera')
@@ -1252,10 +1296,13 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
            formatted_content = None, formatted_content_costos_str = None,
            formatted_content_venta_str = None):
     try:
+        openai.api_key = "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"
         user = request.user
         last = AnswersChatgpt.objects.filter(user=user).last()
         last_name = answers_user.objects.filter(user=user).last()
         proyect_name = last_name.name_e_p
+        last_image = GeneratedImage.objects.filter(user=user).last()
+
 
         answers_canvas = [
             last.segmento_gpt,
@@ -1266,7 +1313,20 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
             last.actividades_gpt,
             last.socios_gpt,
         ]
+        images = [
+            last_image.segmento_image1,
+            last_image.segmento_image2,
+            last_image.propuesta_image1,
+            last_image.propuesta_image2,
+            last_image.canales_image,
+            last_image.relaciones_image,
+            last_image.recursos_image,
+            last_image.actividades_image,
+            last_image.socios_image1,
+            last_image.socios_image2
+        ]
         data = {'respuestas_canvas': answers_canvas,
+                'image': images,
                 'BC': str(BC),
                 'Presupuesto_inversion': str(var_total_presupuesto_inversion),
                 'formatted_content': formatted_content,
