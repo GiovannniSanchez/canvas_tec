@@ -7,20 +7,21 @@ class CreateNewTask(forms.Form):
     description = forms.CharField(label="Descripcion de la tarea", widget=forms.Textarea(attrs={'class': 'input'}))
 
 
-class CreateNewProject(forms.Form):
-    name = forms.CharField(label="nombre del proyecto", max_length=200,
-                           widget=forms.TextInput(attrs={'class': 'input'}))
-
 
 class RegisterAnswer(forms.Form):
     name_e_p = forms.CharField(label="¿Como se llama tu proyecto/empresa?", max_length=30, widget=forms.Textarea(attrs={'class':'input'}))
-    answer1 = forms.CharField(label="¿Que vas a ofrecer al mercado?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
-    answer2 = forms.CharField(label="¿Sabes como elaborarlo?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
-    answer3 = forms.CharField(label="¿Como te daras a conocer a tus clientes?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
-    answer4 = forms.CharField(label="¿Que problema resuelve?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
-    answer5 = forms.CharField(label="¿Cuanto va a costar?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
-    answer6 = forms.CharField(label="¿Como lo vas a vender?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
-    answer7 = forms.CharField(label="¿A quien se lo vas a vender?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
-    answer8 = forms.CharField(label="Existen alternativas a tu producto/servicio?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
-    answer9 = forms.CharField(label="¿que hace a tu producto diferente a los demas?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
-    answer10 = forms.CharField(label="¿Cual es la razon por la cual los clientes comprarán lo que ofreces?:", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+    segmento_propuesta = forms.CharField(label="¿De qué se trata tu proyecto o negocio? ¿Qué quieres lograr? ",
+                                         max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+    segmento = forms.CharField(label="¿Para quiénes son tus productos o servicios? ¿Cómo son esas personas u organizaciones?: ",
+                               max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+    propuesta = forms.CharField(label="¿Qué problema resuelves o qué necesidad cubres para tus clientes? ", max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+    canales = forms.CharField(label="¿Cómo llegarán tus productos o servicios a tus clientes? ¿Cómo los encontrarán? ",
+                              max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+    relaciones = forms.CharField(label="¿Cómo te relacionarás con tus clientes? ¿Cómo los tratarás? ",
+                                 max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+    recursos = forms.CharField(label="¿Qué cosas necesitas para hacer que tu proyecto funcione? ¿Qué es esencial? ",
+                               max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+    actividades = forms.CharField(label="¿Qué cosas tendrás que hacer todos los días para que tu proyecto funcione bien? ",
+                                  max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+    socios = forms.CharField(label="¿Trabajarás con otras personas o empresas en tu proyecto? ",
+                             max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))

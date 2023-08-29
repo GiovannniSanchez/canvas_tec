@@ -9,11 +9,30 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
+            body{
+                background-color: #09091e;
+            }
             th{
                 border: 3px solid white;
             }
             td{
                 border: 3px solid white;
+            }
+            .container{
+                background-color: white;
+            }
+            .col{
+                background-color: white;
+                border: solid #12d0f3;
+                color: black;
+            }
+            .encabezado{
+                background-color: white;
+                color: #002aff;
+                font-size: x-large;
+            }
+            .p1{
+                color: black;
             }
         </style>
 
@@ -28,22 +47,22 @@
         </div>
         <div class="container">
             <div class="col">
-                <h2 class="encabezado">PROBLEMA</h2>
+                <h2 class="encabezado">Socios Clave</h2>
                 <ul>
                     <li>
-                        <p class="p1">{{ respuestas_canvas.0 }}</p>
+                        <p class="p1">{{ respuestas_canvas.6 }}</p>
                     </li>
                 </ul>
             </div>
             <div class="col">
-                <h2 class="encabezado">Soluciones</h2>
+                <h2 class="encabezado">Actividades Clave</h2>
                 <ul>
                     <li>
-                        <p class="p1">{{ respuestas_canvas.3 }}</p>
+                        <p class="p1">{{ respuestas_canvas.5 }}</p>
                     </li>
-                <h2 class="encabezado">Metricas</h2>
+                <h2 class="encabezado">Recursos Clave</h2>
                     <li>
-                         <p class="p1">{{ respuestas_canvas.7 }}</p>
+                         <p class="p1">{{ respuestas_canvas.4 }}</p>
                     </li>
                 </ul>
             </div>
@@ -51,29 +70,29 @@
                 <h2 class="encabezado">Propuesta de valor</h2>
                 <ul>
                     <li>
-                        <p class="p1">{{ respuestas_canvas.2 }}</p>
+                        <p class="p1">{{ respuestas_canvas.1 }}</p>
                     </li>
 
                 </ul>
 
             </div>
             <div class="col">
-                <h2 class="encabezado">Ventaja diferiencial</h2>
+                <h2 class="encabezado">Relaciones con Clientes</h2>
                 <ul>
                     <li>
-                        <p class="p1">{{ respuestas_canvas.8 }}</p>
+                        <p class="p1">{{ respuestas_canvas.3 }}</p>
                     </li>
                 <h2 class="encabezado">Canales</h2>
                     <li>
-                        <p class="p1">{{ respuestas_canvas.4 }}</p>
+                        <p class="p1">{{ respuestas_canvas.2 }}</p>
                     </li>
                 </ul>
             </div>
             <div class="col">
-                <h2 class="encabezado">Cliente ideal</h2>
+                <h2 class="encabezado">Segmento de Cliente</h2>
                 <ul>
                     <li>
-                        <p class="p1">{{ respuestas_canvas.1 }}</p>
+                        <p class="p1">{{ respuestas_canvas.0 }}</p>
                     </li>
                 </ul>
             </div>
@@ -81,9 +100,11 @@
         <div class="container">
             <div class="col">
                 <h2 class="encabezado">Estructura de Costes</h2>
+                <p>Considerando una inversion inicial de: </p>
+                <p>${{ Presupuesto_inversion }}</p>
                 <table>
                     <tr>
-                        <th>Concepto</th>
+                        <th>Presentacion</th>
                         <th>Costos</th>
                     </tr>
                     <tr>
@@ -94,16 +115,18 @@
             </div>
 
 
-
-
-
             <div class="col">
                 <h2 class="encabezado">Flujo de Ingresos</h2>
-                <ul>
-                    <li>
-                        <p class="p1">{{ respuestas_canvas.5 }}</p>
-                    </li>
-                </ul>
+                <table>
+                    <tr>
+                        <th>Presentación</th>
+                        <th>Precio Venta</th>
+                    </tr>
+                    <tr>
+                        <th>{{ formatted_content|linebreaksbr|safe }}</th>
+                        <th>{{ formatted_content_venta_str|linebreaksbr|safe }}</th>
+                    </tr>
+                </table>
             </div>
         </div>
     </body>

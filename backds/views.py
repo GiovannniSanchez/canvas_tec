@@ -24,137 +24,97 @@ def prueba(request):
 
     last = answers_user.objects.filter(user=user).last()
 
-    answers_list = [
-        last.answer1,
-        last.answer2,
-        last.answer3,
-        last.answer4,
-        last.answer5,
-        last.answer6,
-        last.answer7,
-        last.answer8,
-        last.answer9,
-        last.answer10
-    ]
-
     # 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
     openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
 
-    preguntas = [
-        '¿Que ofreces al mercado?: ',
-        '¿Sabes como elaborarlo?: ',
-        '¿Como te conoceran tus clientes?: ',
-        '¿Que problema resuelve?: ',
-        '¿Cuanto va a costar?: ',
-        '¿Como lo vas a vender?: ',
-        '¿A quien lo vas a vender?: ',
-        '¿Existen alternativas a tu producto o servicio?: ',
-        '¿Que hace a tu producto diferente?: ',
-        '¿porque los clientes compraran lo que ofreces?: '
-    ]
+    segmento = '¿Para quiénes son tus productos o servicios? ¿Cómo son esas personas u organizaciones?: ', last.segmento
+    propuesta = '¿Qué problema resuelves o qué necesidad cubres para tus clientes?: ', last.propuesta
+    canales = '¿Cómo llegarán tus productos o servicios a tus clientes? ¿Cómo los encontrarán?: ', last.canales
+    relaciones = '¿Cómo te relacionarás con tus clientes? ¿Cómo los tratarás?: ', last.relaciones
+    recursos = '¿Qué cosas necesitas para hacer que tu proyecto funcione? ¿Qué es esencial?: ', last.recursos
+    actividades = '¿Qué cosas tendrás que hacer todos los días para que tu proyecto funcione bien?: ', last.actividades
+    socios = '¿Trabajarás con otras personas o empresas en tu proyecto?: ', last.socios
 
-    prompt_default = 'una herramienta de planificación empresarial lean canvas que consta de nueve bloques:' \
-                     'problema,' \
-                     ' soluciones,' \
-                     ' propuesta de valor,' \
-                     ' ventaja diferiencial,' \
-                     ' métricas,' \
-                     ' cliente ideal,' \
-                     ' canales' \
-                     ' estructura de costos y' \
-                     'flujo de ingresos'
+    prompt_default = 'Tomando en cuenta la estructura del modelo canvas '
 
-    prompt_default1 = 'puedes darme el segmento de clientes segun tu interpretacion como experto en modelo de negocios' \
-                      'haciendo referencia a las siguientes preguntas con sus respectivas respuestas y me lo puedes dar en un formato corto y en forma de lista en caso de llevar' \
-                      'varios puntos?: '
+    prompt_default1 = 'puedes darme el "Segmento de clientes" segun tu interpretacion como experto en modelo de negocios ' \
+                      'haciendo referencia a '+ str(segmento)+' , con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta '
 
-    prompt_default2 = 'Ahora segun la estructura anterior puedes darme el  "problema"?'
+    prompt_default2 = 'puedes darme la "Propuesta de valor" segun tu interpretacion como experto en modelo de negocios' \
+                      'haciendo referencia a '+str(propuesta)+', con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta'
 
-    prompt_default3 = 'Ahora segun la estructura anterior, puedes darme la "Propuesta de valor"?'
+    prompt_default3 = 'puedes darme los "Canales de distribución" segun tu interpretacion como experto en modelo de negocios' \
+                      'haciendo referencia a ' +str(canales) +', con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta'
 
-    prompt_default4 = 'Ahora segun la estrctura anterior puedes darme las "soluciones"?'
+    prompt_default4 = 'puedes darme las "Relaciones con los clientes" segun tu interpretacion como experto en modelo de negocios' \
+                      'haciendo referencia a '+str(relaciones)+', con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta'
 
-    prompt_default5 = 'Ahora segun la estrctura anterior puedes darme los "canales"?'
+    prompt_default5 = 'puedes darme los "Recursos clave" segun tu interpretacion como experto en modelo de negocios' \
+                      'haciendo referencia a '+str(recursos) +', con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta'
 
-    prompt_default6 = 'Ahora segun la estrctura anterior puedes darme el "flujo de ingresos"?'
+    prompt_default6 = 'puedes darme las "Actividades clave" segun tu interpretacion como experto en modelo de negocios' \
+                      'haciendo referencia a '+str(actividades)+', con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta'
 
-    prompt_default7 = 'Ahora segun la estrctura anterior puedes darme la "estructura de costes"?'
+    prompt_default7 = 'puedes darme los "Socios clave" segun tu interpretacion como experto en modelo de negocios' \
+                      'haciendo referencia a '+str(socios) +', con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta'
 
-    prompt_default8 = 'Ahora segun la estrctura anterior puedes darme las "metricas"'
 
-    prompt_default9 = 'Ahora segun la estrctura anterior puedes darme la "ventaja diferencial"?'
 
-    preg_resp = '\n'.join([
-        f"{preguntas[i]}{str(answers_list[i])}"
-        for i in range(len(preguntas))
-    ])
     # ////////////////////////////////////////////////////////////////////////////////////////
-    contenido = prompt_default + prompt_default1 + preg_resp
+    contenido = prompt_default + prompt_default1
     messages.append({"role": "user", "content": contenido})
     respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
-    contenido_respuesta = respuesta.choices[0].message.content
+    respuesta_segmento = respuesta.choices[0].message.content
     # ///////////////////////////////////////////////////////////////////////////////////////////
-    contenido1 = prompt_default + prompt_default2 + preg_resp
-
+    contenido1 = prompt_default + prompt_default2
     messages.append({"role": "user", "content": contenido1})
-    respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
-    contenido_respuesta1 = respuesta1.choices[0].message.content
+    respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
+    respuesta_propuesta = respuesta1.choices[0].message.content
     # ////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido2 = prompt_default + prompt_default3 + preg_resp
+    contenido2 = prompt_default + prompt_default3
 
     messages.append({"role": "user", "content": contenido2})
-    respuesta2 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
-    contenido_respuesta2 = respuesta2.choices[0].message.content
+    respuesta2 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
+    respuesta_canales = respuesta2.choices[0].message.content
     # Guardar la respuesta en la base de datos
     # ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido3 = prompt_default + prompt_default4 + preg_resp
+    contenido3 = prompt_default + prompt_default4
 
     messages.append({"role": "user", "content": contenido3})
-    respuesta3 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
-    contenido_respuesta3 = respuesta3.choices[0].message.content
+    respuesta3 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
+    respuesta_relaciones = respuesta3.choices[0].message.content
     # /////////////////////////////////////////////////////////////////////////////////////////////////////7
-    contenido4 = prompt_default + prompt_default5 + preg_resp
+    contenido4 = prompt_default + prompt_default5
 
     messages.append({"role": "user", "content": contenido4})
-    respuesta4 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
-    contenido_respuesta4 = respuesta4.choices[0].message.content
+    respuesta4 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
+    respuesta_recursos = respuesta4.choices[0].message.content
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido5 = prompt_default + prompt_default6 + preg_resp
+    contenido5 = prompt_default + prompt_default6
 
     messages.append({"role": "user", "content": contenido5})
-    respuesta5 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
-    contenido_respuesta5 = respuesta5.choices[0].message.content
+    respuesta5 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
+    respuesta_actividades = respuesta5.choices[0].message.content
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido6 = prompt_default + prompt_default7 + preg_resp
+    contenido6 = prompt_default + prompt_default7
 
     messages.append({"role": "user", "content": contenido6})
-    respuesta6 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
-    contenido_respuesta6 = respuesta6.choices[0].message.content
+    respuesta6 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
+    respuesta_socios = respuesta6.choices[0].message.content
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido7 = prompt_default + prompt_default8 + preg_resp
 
-    messages.append({"role": "user", "content": contenido7})
-    respuesta7 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
-    contenido_respuesta7 = respuesta7.choices[0].message.content
-    # /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    contenido8 = prompt_default + prompt_default9 + preg_resp
-    messages.append({"role": "user", "content": contenido8})
-    respuesta8 = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=300)
-    contenido_respuesta8 = respuesta8.choices[0].message.content
     # Guardar la respuesta en la base de datos
     answer_chat = AnswersChatgpt.objects.create(user=user,
-                                                cliente_ideal=contenido_respuesta,
-                                                problema=contenido_respuesta1,
-                                                propuesta_valor=contenido_respuesta2,
-                                                soluciones=contenido_respuesta3,
-                                                canal=contenido_respuesta4,
-                                                flujo_ingresos=contenido_respuesta5,
-                                                estructura_costes=contenido_respuesta6,
-                                                metricas=contenido_respuesta7,
-                                                ventaja_diferencial=contenido_respuesta8
+                                                segmento_gpt=respuesta_segmento,
+                                                propuesta_gpt=respuesta_propuesta,
+                                                canales_gpt=respuesta_canales,
+                                                relaciones_gpt=respuesta_relaciones,
+                                                recursos_gpt=respuesta_recursos,
+                                                actividades_gpt=respuesta_actividades,
+                                                socios_gpt=respuesta_socios
                                                 )
     answer_chat.save()
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,16 +131,14 @@ def formulario(request):
 
         user_id = request.user.id
         answers_user.objects.create(name_e_p=request.POST['name_e_p'],
-                                    answer1=request.POST['answer1'],
-                                    answer2=request.POST['answer2'],
-                                    answer3=request.POST['answer3'],
-                                    answer4=request.POST['answer4'],
-                                    answer5=request.POST['answer5'],
-                                    answer6=request.POST['answer6'],
-                                    answer7=request.POST['answer7'],
-                                    answer8=request.POST['answer8'],
-                                    answer9=request.POST['answer9'],
-                                    answer10=request.POST['answer10'], user_id=user_id)
+                                    segmento=request.POST['segmento'],
+                                    propuesta=request.POST['propuesta'],
+                                    canales=request.POST['canales'],
+                                    relaciones=request.POST['relaciones'],
+                                    recursos=request.POST['recursos'],
+                                    actividades=request.POST['actividades'],
+                                    socios=request.POST['socios'],
+                                     user_id=user_id)
         return redirect('Chatgpt')
 
 
@@ -515,14 +473,17 @@ def corrida_financiera(request):
         # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         costo_materiales = {'materiales': [],
-                            'unidad': []}
+                            'unidad': [],
+                            'costo_unitario': []}
 
         B2_Costo_materiales_materiales = request.POST.getlist('B2_costo_materiales_materiales')
         B2_Costo_materiales_unidad = request.POST.getlist('B2_costo_materiales_unidad')
-        for B2_Costo_materiales_materiales, B2_Costo_materiales_unidad \
-            in zip(B2_Costo_materiales_materiales, B2_Costo_materiales_unidad):
+        B2_Costo_materiales_costo_unitario = request.POST.getlist('B2_costo_materiales_costo_unitario')
+        for B2_Costo_materiales_materiales, B2_Costo_materiales_unidad, B2_Costo_materiales_costo_unitario \
+            in zip(B2_Costo_materiales_materiales, B2_Costo_materiales_unidad, B2_Costo_materiales_costo_unitario):
             costo_materiales['materiales'].append(B2_Costo_materiales_materiales)
             costo_materiales['unidad'].append(B2_Costo_materiales_unidad)
+            costo_materiales['costo_unitario'].append(float(B2_Costo_materiales_costo_unitario))
 
         registro_propiedad_intelectual = {'concepto': [],
                                           'cantidad': [],
@@ -1272,42 +1233,45 @@ def corrida_financiera(request):
         formatted_content = "\n".join(var_memorias_calculo)
 
         var_memorias_costos = memorias_calculo['costo_insumo']
-        formatted_content_costos = ', '.join(str(var) for var in var_memorias_costos)
 
         # Convertir la lista a una cadena con saltos de línea
         formatted_content_costos_str = '\n'.join(f'${var:.2f}' for var in var_memorias_costos)
+        var_memorias_venta = memorias_calculo['precio_venta']
+        formatted_content_venta_str = '\n'.join(f'${var:2f}' for var in var_memorias_venta)
 
         return redirect('canvas', BC = BC, var_total_presupuesto_inversion = var_total_presupuesto_inversion,
                         formatted_content = formatted_content,
-                        formatted_content_costos_str = formatted_content_costos_str)
+                        formatted_content_costos_str = formatted_content_costos_str,
+                        formatted_content_venta_str = formatted_content_venta_str)
 
     return render(request, 'corrida_financiera.html')
 
 
 @login_required
 def canvas(request, BC = None, var_total_presupuesto_inversion = None,
-           formatted_content = None, formatted_content_costos_str = None):
+           formatted_content = None, formatted_content_costos_str = None,
+           formatted_content_venta_str = None):
     try:
         user = request.user
         last = AnswersChatgpt.objects.filter(user=user).last()
-        lastname = answers_user.objects.filter(user=user).last()
-        proyect_name = lastname.name_e_p
+        last_name = answers_user.objects.filter(user=user).last()
+        proyect_name = last_name.name_e_p
 
         answers_canvas = [
-            last.problema,
-            last.cliente_ideal,
-            last.propuesta_valor,
-            last.soluciones,
-            last.canal,
-            last.flujo_ingresos,
-            last.metricas,
-            last.ventaja_diferencial,
+            last.segmento_gpt,
+            last.propuesta_gpt,
+            last.canales_gpt,
+            last.relaciones_gpt,
+            last.recursos_gpt,
+            last.actividades_gpt,
+            last.socios_gpt,
         ]
         data = {'respuestas_canvas': answers_canvas,
                 'BC': str(BC),
                 'Presupuesto_inversion': str(var_total_presupuesto_inversion),
                 'formatted_content': formatted_content,
                 'formatted_content_costos_str': formatted_content_costos_str,
+                'formatted_content_venta_str': formatted_content_venta_str,
                 'nombre': proyect_name}
         print('xdddddddd')
         print(data['formatted_content_costos_str'])

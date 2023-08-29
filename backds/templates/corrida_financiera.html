@@ -105,6 +105,7 @@
             <div class="bloque" id="costo_materiales-container">
                 <input type="text" name="B2_costo_materiales_materiales" placeholder="materiales">
                 <input type="text" name="B2_costo_materiales_unidad" placeholder="unidad">
+                <input type="text" name="B2_costo_materiales_costo_unitario" placeholder="Costo Unitario">
             </div>
             <button type="button" onclick="agregarCostoMateriales()">Agregar</button>
 
@@ -373,7 +374,7 @@
                     cantidadInput.name = 'B2_salarios_cantidad';
                     cantidadInput.placeholder = 'cantidad';
 
-                    sueldoInput.type = 'number';
+                    sueldoInput.type = 'float';
                     sueldoInput.name = 'B2_salarios_sueldo_mensual';
                     sueldoInput.placeholder = 'sueldo mensual';
 
@@ -389,6 +390,7 @@
                     var inputs = document.createElement('div');
                     var materialesInput = document.createElement('input');
                     var unidadInput = document.createElement('input');
+                    var costoInput = document.createElement('input');
 
                     materialesInput.type = 'text';
                     materialesInput.name = 'B2_costo_materiales_materiales';
@@ -398,8 +400,13 @@
                     unidadInput.name = 'B2_costo_materiales_unidad';
                     unidadInput.placeholder = 'unidad';
 
+                    costoInput.type = 'float';
+                    costoInput.name = 'B2_costo_materiales_costo_unitario';
+                    costoInput.placeholder = 'Costo_unitario';
+
                     inputs.appendChild(materialesInput);
                     inputs.appendChild(unidadInput);
+                    inputs.appendChild(costoInput);
                     inputs.appendChild(document.createElement('br'));
                     container.appendChild(inputs);
                 }
