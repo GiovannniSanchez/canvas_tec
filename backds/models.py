@@ -35,7 +35,7 @@ class AnswersChatgpt(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.problema
+        return f"Generated {self.id}"
 
     class Meta:
         db_table='answer_chatgpt'
@@ -67,3 +67,34 @@ class GeneratedImage(models.Model):
         verbose_name_plural = 'GeneratedImages'
         ordering = ['id']
 
+class LogoProyect(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
+    logo = models.ImageField(upload_to='logo_images')
+    load_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.logo.url
+
+    class Meta:
+        db_table = 'logo_proyect'
+        verbose_name = 'logo_proyect'
+        verbose_name_plural = 'logos_proyects'
+        ordering = ['id']
+
+class data_corrida_financiera(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
+    data_activo_fijo = models.JSONField(null=True)
+    data_activo_diferido = models.JSONField(null=True)
+    data_capital_trabajo_mano_obra = models.JSONField(null=True)
+    data_capital_trabajo_servicios = models.JSONField(null=True)
+    data_capital_trabajo_servicios_mantto = models.JSONField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Generated  {self.id}"
+
+    class Meta:
+        db_table = 'corrida_financiera'
+        verbose_name = 'corrida_financiera'
+        verbose_name_plural = 'corridas_financieras'
+        ordering = ['id']

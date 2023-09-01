@@ -16,12 +16,17 @@
         <h1><br></h1>
         <h3>Contesta estas preguntas para generar tu canvas</h3>
         <h1><br></h1>
-        <form method="POST" class="register-form" onsubmit="return validateForm()">
+        <h3>Subir Logotipo de la empresa o proyecto</h3>
+        <h3>Subir Logotipo de la empresa o proyecto</h3>
+
+        <form method="POST" enctype="multipart/form-data" class="register-form" onsubmit="return validateForm()">
           {% csrf_token %}
+
           <div class="form-row">
               <div class="form-col" style="width: auto">
                   <label class="form-label" for="{{ form.name_e_p.id_for_label }}">{{ form.name_e_p.label }}</label>
                   {{ form.name_e_p }}
+                  {{ logo_form.image }}
               </div>
           </div>
           <div class="form-row">

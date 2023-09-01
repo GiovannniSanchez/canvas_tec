@@ -21,19 +21,70 @@
             .container{
                 background-color: white;
             }
-            .col{
+              .col{
                 background-color: white;
-                border: solid #12d0f3;
-                color: black;
+                color: rgba(0, 0, 0, 0.85);
             }
+
             .encabezado{
-                background-color: white;
-                color: #002aff;
+                background-color: transparent;
+                color: saddlebrown;
                 font-size: x-large;
             }
             .p1{
                 color: black;
             }
+            .logo{
+
+                width: 50%;
+                height: auto;
+                border: solid 1px transparent;
+                margin-top: 0.3%;
+                margin-bottom: auto;
+                margin-left: 27%;
+                margin-right: auto;
+            }
+            .name{
+                margin-top: 1px;
+                margin-left: 55%;
+                width: 50%;
+            }
+            #one{
+                background-color: rgba(255, 255, 0, 0.24);
+                border: solid 5px transparent;
+            }
+            #two{
+                background-color: rgba(99, 146, 239, 0.31);
+                border: solid 5px transparent;
+            }
+            #three{
+                background-color: rgba(0, 128, 0, 0.25);
+                border: solid 5px transparent;
+            }
+            .leyenda{
+                margin-left: 43%;
+                margin-right: auto;
+                margin-bottom: 1px;
+                margin-top: 1px;
+                width: 50%;
+                color: saddlebrown;
+
+            }
+            .canvasTop{
+                background-color: rgba(99, 146, 239, 0.31);
+                width: 100%;
+                border-radius: 3%;
+                border: solid 1px transparent;
+
+            }
+            .leyendaT{
+                width: 80%;
+                border: solid 1px transparent;
+            }
+            .nameT{
+                border: solid 1px transparent;
+            }
+
         </style>
 
     </head>
@@ -41,12 +92,26 @@
         <div>
             <p class="space">"Mfeni" Marca Registrada </p>
         </div>
-        <div>
-            <h2><br></h2>
-            <h1 class="logo">{{ nombre }}</h1>
+
+        <div class="canvasTop">
+            <table>
+                <tr>
+                    <th class="leyendaT">
+                        <h1 class="leyenda">MODELO CANVAS</h1>
+                        <h1 class="name"> {{ nombre }}</h1>
+                    </th>
+                    <th class="nameT">
+                        {% if logo %}
+
+                            <img class="logo" src="{{ logo.logo.url }}"  alt="Logo Proyecto">
+
+                        {% endif %}
+                    </th>
+                </tr>
+            </table>
         </div>
         <div class="container">
-            <div class="col">
+            <div class="col" id="one">
                 <h2 class="encabezado">Socios Clave</h2>
                 <ul>
                     <li>
@@ -56,7 +121,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="col">
+            <div class="col" id="one">
                 <h2 class="encabezado">Actividades Clave</h2>
                 <ul>
                     <li>
@@ -66,11 +131,11 @@
                 <h2 class="encabezado">Recursos Clave</h2>
                     <li>
                          <p class="p1">{{ respuestas_canvas.4 }}</p>
-                         <img src="{{ image.0 }}" alt="Imagen generada por DALL-E" width="128" height="128">
+                         <img src="{{ image.6 }}" alt="Imagen generada por DALL-E" width="128" height="128">
                     </li>
                 </ul>
             </div>
-            <div class="col">
+            <div class="col" id="two">
                 <h2 class="encabezado">Propuesta de valor</h2>
                 <ul>
                     <li>
@@ -82,7 +147,7 @@
                 </ul>
 
             </div>
-            <div class="col">
+            <div class="col" id="three">
                 <h2 class="encabezado">Relaciones con Clientes</h2>
                 <ul>
                     <li>
@@ -96,7 +161,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="col">
+            <div class="col" id="three">
                 <h2 class="encabezado">Segmento de Cliente</h2>
                 <ul>
                     <li>
@@ -108,7 +173,7 @@
             </div>
         </div>
         <div class="container">
-            <div class="col">
+            <div class="col" id="one">
                 <h2 class="encabezado">Estructura de Costes</h2>
                 <p>Considerando una inversion inicial de: </p>
                 <p>${{ Presupuesto_inversion }}</p>
@@ -125,9 +190,9 @@
             </div>
 
 
-            <div class="col">
+            <div class="col" id="three">
                 <h2 class="encabezado">Flujo de Ingresos</h2>
-                <table>
+                <table >
                     <tr>
                         <th>Presentación</th>
                         <th>Precio Venta</th>

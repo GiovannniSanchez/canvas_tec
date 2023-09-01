@@ -1,16 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import answers_user, AnswersChatgpt, GeneratedImage
-from .forms import RegisterAnswer
-from django.contrib.auth.models import User
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from .models import answers_user, AnswersChatgpt, GeneratedImage, LogoProyect,data_corrida_financiera
+from .forms import RegisterAnswer, LoadLogo
 import openai
-import pandas as pd
 import requests
 import json
 from fuzzywuzzy import fuzz
 from urllib.parse import urlencode
 from django.urls import reverse
+import time
 
 
 
@@ -25,18 +23,18 @@ def prueba(request):
     last = answers_user.objects.filter(user=user).last()
 
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
 
-    segmento = '¿Para quiénes son tus productos o servicios? ¿Cómo son esas personas u organizaciones?: ', last.segmento
-    propuesta = '¿Qué problema resuelves o qué necesidad cubres para tus clientes?: ', last.propuesta
-    canales = '¿Cómo llegarán tus productos o servicios a tus clientes? ¿Cómo los encontrarán?: ', last.canales
-    relaciones = '¿Cómo te relacionarás con tus clientes? ¿Cómo los tratarás?: ', last.relaciones
-    recursos = '¿Qué cosas necesitas para hacer que tu proyecto funcione? ¿Qué es esencial?: ', last.recursos
+    segmento = ' ¿Para quiénes son tus productos o servicios? ¿Cómo son esas personas u organizaciones?: ', last.segmento
+    propuesta = ' ¿Qué problema resuelves o qué necesidad cubres para tus clientes?: ', last.propuesta
+    canales = ' ¿Cómo llegarán tus productos o servicios a tus clientes? ¿Cómo los encontrarán?: ', last.canales
+    relaciones = ' ¿Cómo te relacionarás con tus clientes? ¿Cómo los tratarás?: ', last.relaciones
+    recursos = ' ¿Qué cosas necesitas para hacer que tu proyecto funcione? ¿Qué es esencial?: ', last.recursos
     actividades = '¿Qué cosas tendrás que hacer todos los días para que tu proyecto funcione bien?: ', last.actividades
-    socios = '¿Trabajarás con otras personas o empresas en tu proyecto?: ', last.socios
+    socios = ' ¿Trabajarás con otras personas o empresas en tu proyecto?: ', last.socios
 
     prompt_default = 'Tomando en cuenta la estructura del modelo canvas '
 
@@ -55,11 +53,11 @@ def prueba(request):
     prompt_default5 = 'puedes darme los "Recursos clave" segun tu interpretacion como experto en modelo de negocios' \
                       'haciendo referencia a '+str(recursos) +', con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta'
 
-    prompt_default6 = 'puedes darme las "Actividades clave" segun tu interpretacion como experto en modelo de negocios' \
-                      'haciendo referencia a '+str(actividades)+', con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta'
+    prompt_default6 = ' puedes darme las "Actividades clave" segun tu interpretacion como experto en modelo de negocios' \
+                      ' haciendo referencia a '+str(actividades)+', con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta'
 
-    prompt_default7 = 'puedes darme los "Socios clave" segun tu interpretacion como experto en modelo de negocios' \
-                      'haciendo referencia a '+str(socios) +', con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta'
+    prompt_default7 = ' puedes darme los "Socios clave" segun tu interpretacion como experto en modelo de negocios' \
+                      ' haciendo referencia a '+str(socios) +', con un maximo de 40 palabras, unicamente en forma de lista y sin repetir la pregunta'
 
 
 
@@ -68,47 +66,55 @@ def prueba(request):
     messages.append({"role": "user", "content": contenido})
     respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
     respuesta_segmento = respuesta.choices[0].message.content
+    time.sleep(5)
     # ///////////////////////////////////////////////////////////////////////////////////////////
     contenido1 = prompt_default + prompt_default2
     messages.append({"role": "user", "content": contenido1})
     respuesta1 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
     respuesta_propuesta = respuesta1.choices[0].message.content
+    time.sleep(5)
     # ////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido2 = prompt_default + prompt_default3
 
     messages.append({"role": "user", "content": contenido2})
     respuesta2 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
     respuesta_canales = respuesta2.choices[0].message.content
-    # Guardar la respuesta en la base de datos
+    time.sleep(5)
+    #
     # ///////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido3 = prompt_default + prompt_default4
 
     messages.append({"role": "user", "content": contenido3})
     respuesta3 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
     respuesta_relaciones = respuesta3.choices[0].message.content
+    time.sleep(5)
     # /////////////////////////////////////////////////////////////////////////////////////////////////////7
     contenido4 = prompt_default + prompt_default5
 
     messages.append({"role": "user", "content": contenido4})
     respuesta4 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
     respuesta_recursos = respuesta4.choices[0].message.content
+    time.sleep(5)
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido5 = prompt_default + prompt_default6
 
     messages.append({"role": "user", "content": contenido5})
     respuesta5 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
     respuesta_actividades = respuesta5.choices[0].message.content
+    time.sleep(5)
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
     contenido6 = prompt_default + prompt_default7
 
     messages.append({"role": "user", "content": contenido6})
     respuesta6 = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
     respuesta_socios = respuesta6.choices[0].message.content
+    time.sleep(5)
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
     #GENERACION DE PROMPT PARA IMAGENES
-    palabras_clave = [str(last.segmento), str(last.segmento), str(last.propuesta),
-                      str(last.propuesta), str(last.canales), str(last.relaciones), str(last.recursos),
-                      str(last.actividades), str(last.socios), str(last.socios)]
+    palabras_clave = [respuesta_segmento, respuesta_segmento, respuesta_propuesta,
+                      respuesta_propuesta, respuesta_canales, respuesta_relaciones, respuesta_recursos,
+                      respuesta_actividades, respuesta_socios, respuesta_socios]
+    """"
     prompts = []
     for clave in palabras_clave:
         prompt = '¿Puedes descibir lo siguiente  y resumirlo?: '+ clave
@@ -122,17 +128,19 @@ def prueba(request):
         respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
         respuesta_image = respuesta.choices[0].message.content
         chatgpt_prompts_images.append(respuesta_image)
+        time.sleep(5)"""
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
     #GENERACIÓN DE IMAGENES
 
     urls_images = []
 
-    for prompt in chatgpt_prompts_images:
+    for prompt in palabras_clave:
         response = openai.Image.create(
-            prompt = prompt + 'sin texto grande',
-            n = 1,
+            prompt=prompt + 'sin texto grande',
+            n=1,
             size = "256x256"
         )
+        time.sleep(5)
         urls_images.append(response['data'][0]['url'])
 
 
@@ -169,21 +177,31 @@ def prueba(request):
 @login_required
 def formulario(request):
     if request.method == 'GET':
-        data = {'form': RegisterAnswer()}
+        data = {'form': RegisterAnswer(), 'logo_form': LoadLogo()}
         return render(request, 'formulario.html', data)
     else:
 
         user_id = request.user.id
-        answers_user.objects.create(name_e_p=request.POST['name_e_p'],
-                                    segmento=request.POST['segmento'],
-                                    propuesta=request.POST['propuesta'],
-                                    canales=request.POST['canales'],
-                                    relaciones=request.POST['relaciones'],
-                                    recursos=request.POST['recursos'],
-                                    actividades=request.POST['actividades'],
-                                    socios=request.POST['socios'],
-                                     user_id=user_id)
-        return redirect('Chatgpt')
+        form = RegisterAnswer(request.POST)
+        logo = LoadLogo(request.POST, request.FILES)
+        if form.is_valid() and logo.is_valid():
+            answers_user.objects.create(name_e_p=form.cleaned_data['name_e_p'],
+                                        segmento=form.cleaned_data['segmento'],
+                                        propuesta=form.cleaned_data['propuesta'],
+                                        canales=form.cleaned_data['canales'],
+                                        relaciones=form.cleaned_data['relaciones'],
+                                        recursos=form.cleaned_data['recursos'],
+                                        actividades=form.cleaned_data['actividades'],
+                                        socios=form.cleaned_data['socios'],
+                                         user_id=user_id)
+            save_logo = LogoProyect.objects.create(user_id = user_id,
+                                       logo = request.FILES['image'])
+            save_logo.save()
+
+            return redirect('Chatgpt')
+        else:
+            data = {'form': answers_user, 'logo_form': LoadLogo}
+            return render(request, 'formulario.html', data)
 
 
 @login_required
@@ -316,6 +334,7 @@ def resultado_inegi(request, inegi_code=None, nombre_indicador=None, valor_consu
 
 def corrida_financiera(request):
     if request.method == 'POST':
+        user = request.user
         # //Definicion de diccionarios
         # BLOQUE 1: PRESUPUESTO DE INVERSION
         # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1283,6 +1302,14 @@ def corrida_financiera(request):
         var_memorias_venta = memorias_calculo['precio_venta']
         formatted_content_venta_str = '\n'.join(f'${var:2f}' for var in var_memorias_venta)
 
+        instance = data_corrida_financiera.objects.create(user=user,
+                                                          data_activo_fijo=activo_fijo,
+                                                          data_activo_diferido=Activo_diferido,
+                                                          data_capital_trabajo_mano_obra=capital_trabajo_mano_obra,
+                                                          data_capital_trabajo_servicios=capital_trabajo_servicios,
+                                                          data_capital_trabajo_servicios_mantto=capital_trabajo_servicios_mantto)
+        instance.save()
+
         return redirect('canvas', BC = BC, var_total_presupuesto_inversion = var_total_presupuesto_inversion,
                         formatted_content = formatted_content,
                         formatted_content_costos_str = formatted_content_costos_str,
@@ -1296,12 +1323,12 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
            formatted_content = None, formatted_content_costos_str = None,
            formatted_content_venta_str = None):
     try:
-        openai.api_key = "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"
         user = request.user
         last = AnswersChatgpt.objects.filter(user=user).last()
         last_name = answers_user.objects.filter(user=user).last()
         proyect_name = last_name.name_e_p
         last_image = GeneratedImage.objects.filter(user=user).last()
+        last_logo = LogoProyect.objects.filter(user=user).last()
 
 
         answers_canvas = [
@@ -1332,6 +1359,7 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
                 'formatted_content': formatted_content,
                 'formatted_content_costos_str': formatted_content_costos_str,
                 'formatted_content_venta_str': formatted_content_venta_str,
+                'logo':last_logo,
                 'nombre': proyect_name}
         print('xdddddddd')
         print(data['formatted_content_costos_str'])

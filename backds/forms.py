@@ -25,3 +25,7 @@ class RegisterAnswer(forms.Form):
                                   max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
     socios = forms.CharField(label="¿Trabajarás con otras personas o empresas en tu proyecto? ",
                              max_length=1000, widget=forms.Textarea(attrs={'class': 'input'}))
+
+class LoadLogo(forms.Form):
+    image = forms.ImageField()
+
