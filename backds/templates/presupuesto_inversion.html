@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <style>
+                body{
+                    background-color: white;
+                }
+                th{
+                    border: solid 3px black;
+                    background-color: rgba(0, 0, 255, 0.25);
+                    width: 0%;
+                    height: 0%;
+                }
+                td{
+                    border: solid 3px black;
+                    white-space: nowrap;
+                }
+                .relleno{
+                    background-color: rgba(0, 0, 255, 0.25);
+                }
+                .total{
+                    background-color: white;
+                }
+                table{
+                    width: 50%;
+                    height: 50%;
+                    margin-left: 25%;
+                    margin-right: 40%;
+                }
+            </style>
+        </head>
+        <body>
+            <p></p>
+            <table>
+                <tr>
+                   <th>Concepto</th>
+                    <th>Unidad</th>
+                    <th>Cantidad</th>
+                    <th>Costo Unitario</th>
+                    <th>Montos</th>
+                    <th>Total</th>
+                </tr>
+               <tr>
+                   <th>Activo Fijo</th>
+                   <td class="relleno"></td>
+                   <td class="relleno"></td>
+                   <td class="relleno"></td>
+                   <td class="relleno"></td>
+                   <td class="relleno"></td>
+               </tr>
+                <tr>
+                    <td>{{ list.activo_fijo_concepto|linebreaksbr|safe }}   </td>
+                    <td>{{ list.activo_fijo_unidad|linebreaksbr|safe }}</td>
+                    <td>{{ list.activo_fijo_cantidad|linebreaksbr|safe }}</td>
+                    <td>{{ list.activo_fijo_costo_unitario|linebreaksbr|safe }}</td>
+                    <td>{{ list.activo_fijo_montos|linebreaksbr|safe }}</td>
+                    <td>{{ list.activo_fijo_total|linebreaksbr|safe }}</td>
+                </tr>
+                <tr>
+                    <th>Activo Diferido</th>
+                    <td class="relleno"></td>
+                    <td class="relleno"></td>
+                    <td class="relleno"></td>
+                    <td class="relleno"></td>
+                    <td class="relleno"></td>
+                </tr>
+                <tr>
+                    <td>{{ list.activo_diferido_concepto|linebreaksbr|safe  }}</td>
+                    <td>{{ list.activo_diferido_unidad|linebreaksbr|safe  }}</td>
+                    <td>{{ list.activo_diferido_cantidad|linebreaksbr|safe  }}</td>
+                    <td>{{ list.activo_diferido_costo_unitario|linebreaksbr|safe  }}</td>
+                    <td>{{ list.activo_diferido_montos|linebreaksbr|safe  }}</td>
+                    <td>{{ list.activo_diferido_total|linebreaksbr|safe  }}</td>
+                </tr>
+                <tr>
+                   <th>Capital Trabajo</th>
+                    <td class="relleno"></td>
+                    <td class="relleno"></td>
+                    <td class="relleno"></td>
+                    <td class="relleno"></td>
+                    <td class="relleno"></td>
+               </tr>
+                <tr>
+                    <td>Mano de Obra </td>
+                    <td>{{ list.mano_obra_unidad }}</td>
+                    <td>{{ list.mano_obra_cantidad }}</td>
+                    <td>{{ list.mano_obra_costo_unitario }}</td>
+                    <td>{{ list.mano_obra_montos }}</td>
+                    <td>{{ list.mano_obra_total }}</td>
+
+                </tr>
+                <tr>
+                    <td>Servicios </td>
+                    <td>{{ list.trabajo_servicios_unidad }}</td>
+                    <td>{{ list.trabajo_servicios_cantidad }}</td>
+                    <td>{{ list.trabajo_servicios_costo_unitario }}</td>
+                    <td>{{ list.trabajo_servicios_montos }}</td>
+                    <td>{{ list.trabajo_servicios_total }}</td>
+                </tr>
+                <tr>
+                    <td>Servicos Mantto </td>
+                    <td>{{ list.servicios_mantto_unidad }}</td>
+                    <td>{{ list.servicios_mantto_cantidad }}</td>
+                    <td>{{ list.servicios_mantto_costo_unitario }}</td>
+                    <td>{{ list.servicios_mantto_montos }}</td>
+                    <td>{{ list.servicios_mantto_total }}</td>
+                </tr>
+                <tr>
+                    <th>Total</th>
+                    <td class="relleno"> </td>
+                    <td class="relleno"> </td>
+                    <td class="relleno"> </td>
+                    <td>{{ list.total_montos }}</td>
+                    <td>{{ list.total_inversion }}</td>
+
+                </tr>
+            </table>
+        </body>
+    </html>
+{% endblock %}

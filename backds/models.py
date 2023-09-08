@@ -88,6 +88,7 @@ class data_corrida_financiera(models.Model):
     data_capital_trabajo_mano_obra = models.JSONField(null=True)
     data_capital_trabajo_servicios = models.JSONField(null=True)
     data_capital_trabajo_servicios_mantto = models.JSONField(null=True)
+    data_total_inversion = models.JSONField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -98,3 +99,17 @@ class data_corrida_financiera(models.Model):
         verbose_name = 'corrida_financiera'
         verbose_name_plural = 'corridas_financieras'
         ordering = ['id']
+
+    class EmailCredential(models.Model):
+        user = models.ForeignKey(User, on_delete=models.CASCADE, null=True,  blank=False)
+        email = models.EmailField(unique=True)
+        password = models.CharField(max_length=100)
+
+        def __str__(self):
+            return f"Generated {self.id}"
+
+        class Meta:
+            db_table = 'email_credential'
+            verbose_name = 'EmailCredential'
+            verbose_name_plural = 'EmailCredentials'
+            ordering = ['id']

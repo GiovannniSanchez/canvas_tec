@@ -14,5 +14,6 @@ urlpatterns = [
     path('obtener_datos_inegi/',views.obtener_datos_inegi,name='data'),
     path('resultado_inegi/<str:inegi_code>/<str:nombre_indicador>/<str:valor_consulta>/<str:cantidad>/<str:nombres_ids>/',
          views.resultado_inegi, name='resultado_inegi'),
-    path('corrida_financiera/', views.corrida_financiera, name='financiera')
+    path('corrida_financiera/', views.corrida_financiera, name='financiera'),
+    path('presupuesto_inversion/', views.presupuesto_inversion, name='inversion')
 ]

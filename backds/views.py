@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import answers_user, AnswersChatgpt, GeneratedImage, LogoProyect,data_corrida_financiera
-from .forms import RegisterAnswer, LoadLogo
+from .forms import RegisterAnswer, LoadLogo, CorreoForm
 import openai
 import requests
 import json
@@ -9,12 +9,30 @@ from fuzzywuzzy import fuzz
 from urllib.parse import urlencode
 from django.urls import reverse
 import time
+from django.core.mail import send_mail
+from django.http import HttpResponse
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 
 def about(request):
-    return render(request, 'about.html')
+    if request.method == 'POST':
+        form = CorreoForm(request.POST)
+        if form.is_valid():
+            remitente = form.cleaned_data['remitente']
+            asunto = form.cleaned_data['asunto']
+            contenido = form.cleaned_data['contenido']
 
+            # Enviar correo electrónico
+            send_mail(asunto, contenido, remitente, ['l20590316@sjuanrio.tecnm.mx'], fail_silently=False)
+            # Redireccionamos a la página de inicio para confirmar el envío
+            return redirect('Usuario')
+    else:
+        form = CorreoForm()
+
+    return render(request, 'about.html', {'form': form})
 
 @login_required
 def prueba(request):
@@ -23,7 +41,7 @@ def prueba(request):
     last = answers_user.objects.filter(user=user).last()
 
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]
@@ -378,7 +396,10 @@ def corrida_financiera(request):
             Activo_diferido['unidad'].append(B1_Activo_diferido_unidad)
             Activo_diferido['cantidad'].append(int(B1_Activo_diferido_cantidad))
             Activo_diferido['costo_unitario'].append(float(B1_Activo_diferido_precio_unitario))
-
+        print('xdddddddd')
+        print(Activo_diferido['concepto'])
+        print('Fijo', activo_fijo['concepto'])
+        print('xdddddddd')
         # Calculamos el monto multiplicando cantidad por consumo_unitario
         Activo_diferido['montos'] = [cantidad * consumo_unitario for cantidad, consumo_unitario in
                                      zip(Activo_diferido['cantidad'], Activo_diferido['costo_unitario'])]
@@ -1261,15 +1282,6 @@ def corrida_financiera(request):
                              in zip(analisis_rentabilidad['total_ingresos_actualizados'],
                                    analisis_rentabilidad['total_egresos_actualizados'])]}
 
-        print('Igresos actualizados: ', analisis_rentabilidad['total_ingresos_actualizados'])
-        print('Egresos actualizados:', analisis_rentabilidad['total_egresos_actualizados'])
-
-        print('Estes es el BC')
-        print(van_tir_bc['bc'])
-        print('##################')
-        print('Este es el VAN')
-        print(van_tir_bc['van'])
-        print('//////////////////////////////7')
 
         BC = 0
         VAN = 0
@@ -1279,13 +1291,13 @@ def corrida_financiera(request):
             BC = 'null'
         for x in van_tir_bc['bc']:
             BC = x
-        print('BC de la variable: ', BC)
+
         for y in van_tir_bc['van']:
             VAN = y
-        print('VAN de la variable: ', VAN)
+
         for j in analisis_rentabilidad['total_ingresos_actualizados']:
             var_total_ingresos_actualizados = j
-        print('total_ingresos: ', var_total_ingresos_actualizados)
+
         for k in analisis_rentabilidad['total_egresos_actualizados']:
             var_total_egresos_actualizados = k
         var_total_presupuesto_inversion = 0
@@ -1307,13 +1319,15 @@ def corrida_financiera(request):
                                                           data_activo_diferido=Activo_diferido,
                                                           data_capital_trabajo_mano_obra=capital_trabajo_mano_obra,
                                                           data_capital_trabajo_servicios=capital_trabajo_servicios,
-                                                          data_capital_trabajo_servicios_mantto=capital_trabajo_servicios_mantto)
+                                                          data_capital_trabajo_servicios_mantto=capital_trabajo_servicios_mantto,
+                                                          data_total_inversion=total_presupuesto_inversion)
         instance.save()
 
         return redirect('canvas', BC = BC, var_total_presupuesto_inversion = var_total_presupuesto_inversion,
                         formatted_content = formatted_content,
                         formatted_content_costos_str = formatted_content_costos_str,
                         formatted_content_venta_str = formatted_content_venta_str)
+
 
     return render(request, 'corrida_financiera.html')
 
@@ -1361,8 +1375,8 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
                 'formatted_content_venta_str': formatted_content_venta_str,
                 'logo':last_logo,
                 'nombre': proyect_name}
-        print('xdddddddd')
-        print(data['formatted_content_costos_str'])
+
+
 
         return render(request, 'canvas.html',data)
 
@@ -1376,3 +1390,182 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
             'nombre': proyect_name
         })
 
+def presupuesto_inversion(request):
+    user = request.user
+    last_inversion = data_corrida_financiera.objects.filter(user=user).last()
+    activo_fijo = last_inversion.data_activo_fijo
+    activo_diferido = last_inversion.data_activo_diferido
+    capital_trabajo_mano_obra = last_inversion.data_capital_trabajo_mano_obra
+    capital_trabajo_servicios = last_inversion.data_capital_trabajo_servicios
+    capital_trabajo_servicios_mantto = last_inversion.data_capital_trabajo_servicios_mantto
+    inversion_total = last_inversion.data_total_inversion
+    print("#############################")
+    print(capital_trabajo_servicios)
+
+    #Declaración de variables tipo lista para implementar el objects filter obtenido
+    lista_activo_fijo=[]
+    activo_fijo_unidad = []
+    activo_fijo_cantidad = []
+    activo_fijo_costo_unitario =[]
+    activo_fijo_montos = []
+    activo_fijo_total = []
+
+    lista_activo_diferido = []
+    activo_diferido_unidad = []
+    activo_diferido_cantidad = []
+    activo_diferido_costo_unitario = []
+    activo_diferido_montos = []
+    activo_diferido_total = []
+
+    lista_capital_mano_obra = []
+    capital_mano_obra_cantidad = []
+    capital_mano_obra_costo_unitario = []
+    capital_mano_obra_montos = []
+    capital_mano_obra_total = []
+
+    lista_capital_trabajo_servicios = []
+    capital_trabajo_servicios_cantidad = []
+    capital_trabajo_servicios_costo_unitario = []
+    capital_trabajo_servicios_montos = []
+    capital_trabajo_servicios_total = []
+
+    lista_capital_trabjo_servicios_mantto = []
+    capital_trabajo_servicios_mantto_cantidad = []
+    capital_trabajo_servicios_mantto_costo_unitario = []
+    capital_trabajo_servicios_mantto_montos = []
+    capital_trabajo_servicios_mantto_total = []
+
+    total_montos = []
+    total_inversion = []
+
+    for i, j, k, l,m,n in zip(activo_fijo['concepto'], activo_fijo['unidad'],
+                          activo_fijo['cantidad'], activo_fijo['costo_unitario'],
+                          activo_fijo['montos'], activo_fijo['total']):
+        lista_activo_fijo.append(i)
+        activo_fijo_unidad.append(j)
+        activo_fijo_cantidad.append(k)
+        activo_fijo_costo_unitario.append(l)
+        activo_fijo_montos.append(m)
+        activo_fijo_total.append(n)
+
+    lista_activo_fijo_print = '\n'.join(lista_activo_fijo)
+    activo_fijo_unidad_print="\n".join(activo_fijo_unidad)
+    activo_fijo_cantidad_print = "\n".join(f'{var}' for var in activo_fijo_cantidad)
+    activo_fijo_costo_unitario_print = '\n'.join(f'${var:.2f}' for var in activo_fijo_costo_unitario)
+    activo_fijo_montos_print = '\n'.join(f'${var:.2f}' for var in activo_fijo_montos)
+    activo_fijo_total_print = '\n'.join(f'${var:.2f}' for var in activo_fijo_total)
+
+    for i,j,k,l,m,n in zip(activo_diferido['concepto'], activo_fijo['unidad'],
+                                       activo_fijo['cantidad'], activo_diferido['costo_unitario'],
+                                       activo_diferido['montos'], activo_diferido['total']):
+        lista_activo_diferido.append(i)
+        activo_diferido_unidad.append(j)
+        activo_diferido_cantidad.append(k)
+        activo_diferido_costo_unitario.append(l)
+        activo_diferido_montos.append(m)
+        activo_diferido_total.append(n)
+
+    lista_activo_diferido_print='\n'.join(lista_activo_diferido)
+    activo_diferido_unidad_print = '\n'.join(activo_diferido_unidad)
+    activo_diferido_cantidad_print = '\n'.join(f'{var}' for var in activo_diferido_cantidad)
+    activo_diferido_costo_unitario_print = '\n'.join(f'${var:.2f}' for var in activo_diferido_costo_unitario)
+    activo_diferido_montos_print = '\n'.join(f'${var:.2f}' for var in activo_diferido_montos)
+    activo_diferido_total_print = '\n'.join(f'${var:.2f}' for var in activo_diferido_total)
+
+    for i,j,k,l,m in zip(capital_trabajo_mano_obra['unidad'],
+                           capital_trabajo_mano_obra['cantidad'],
+                           capital_trabajo_mano_obra['costo_unitario'],
+                           capital_trabajo_mano_obra['montos'],
+                           capital_trabajo_mano_obra['total']):
+        lista_capital_mano_obra.append(i)
+        capital_mano_obra_cantidad.append(j)
+        capital_mano_obra_costo_unitario.append(k)
+        capital_mano_obra_montos.append(l)
+        capital_mano_obra_total.append(m)
+
+    capital_mano_obra_unidad_print = '\n'.join(lista_capital_mano_obra)
+    capital_mano_obra_cantidad_print = '\n'.join(f'{var}' for var in capital_mano_obra_cantidad)
+    capital_mano_obra_costo_unitario_print = '\n'.join(f'${var:.2f}' for var in capital_mano_obra_costo_unitario)
+    capital_mano_obra_montos_print = '\n'.join(f'${var:.2f}' for var in capital_mano_obra_montos)
+    capital_mano_obra_total_print = '\n'.join(f'${var:.2f}' for var in capital_mano_obra_total)
+
+    for i,j,k,l,m in zip(capital_trabajo_servicios['unidad'],
+                         capital_trabajo_servicios['cantidad'],
+                         capital_trabajo_servicios['costo_unitario'],
+                         capital_trabajo_servicios['montos'],
+                         capital_trabajo_servicios['total']):
+
+        lista_capital_trabajo_servicios.append(i)
+        capital_trabajo_servicios_cantidad.append(j)
+        capital_trabajo_servicios_costo_unitario.append(k)
+        capital_trabajo_servicios_montos.append(l)
+        capital_trabajo_servicios_total.append(m)
+
+    capital_trabajo_servicios_unidad_print = '\n'.join(lista_capital_trabajo_servicios)
+    capital_trabajo_servicios_cantidad_print = '\n'.join(f'{var}' for var in capital_trabajo_servicios_cantidad)
+    capital_trabajo_servicios_costo_unitario_print = '\n'.join(f'${var:.2f}' for var in capital_trabajo_servicios_costo_unitario)
+    capital_trabajo_servicios_montos_print = '\n'.join(f'${var:.2f}' for var in capital_trabajo_servicios_montos)
+    capital_trabajo_servicios_tota_print = '\n'.join(f'${var:.2f}' for var in capital_trabajo_servicios_total)
+
+    for i,j,k,l,m in zip(capital_trabajo_servicios_mantto['unidad'],
+                         capital_trabajo_servicios_mantto['cantidad'],
+                         capital_trabajo_servicios_mantto['costo_unitario'],
+                         capital_trabajo_servicios_mantto['montos'],
+                         capital_trabajo_servicios_mantto['total']):
+
+        lista_capital_trabjo_servicios_mantto.append(i)
+        capital_trabajo_servicios_mantto_cantidad.append(j)
+        capital_trabajo_servicios_mantto_costo_unitario.append(k)
+        capital_trabajo_servicios_mantto_montos.append(l)
+        capital_trabajo_servicios_mantto_total.append(m)
+
+    capital_trabajo_servicios_mantto_unidad_print = '\n'.join(lista_capital_trabjo_servicios_mantto)
+    capital_trabajo_servicios_mantto_cantidad_print = '\n'.join(f'{var}' for var in capital_trabajo_servicios_mantto_cantidad)
+    capital_trabajo_servicios_mantto_costo_unitario_print = '\n'.join(f'${var:.2f}' for var in
+                                                                      capital_trabajo_servicios_mantto_costo_unitario)
+    capital_trabajo_servicios_mantto_montos_print = '\n'.join(f'${var:.2f}' for var in capital_trabajo_servicios_mantto_montos)
+    capital_trabajo_servicios_mantto_total_print = '\n'.join(f'${var:.2f}' for var in capital_trabajo_servicios_mantto_total)
+
+    for i, j in zip(inversion_total['total_monto'], inversion_total['total_B1']):
+        total_montos.append(i)
+        total_inversion.append(j)
+    total_montos_print = '\n'.join(f'${var:.2f}' for var in total_montos)
+    total_inversion_print = '\n'.join(f'${var:.2f}' for var in total_inversion)
+
+
+    listas_print = {'activo_fijo_concepto': lista_activo_fijo_print,
+                    'activo_fijo_unidad': activo_fijo_unidad_print,
+                    'activo_fijo_cantidad': activo_fijo_cantidad_print,
+                    'activo_fijo_costo_unitario': activo_fijo_costo_unitario_print,
+                    'activo_fijo_montos': activo_fijo_montos_print,
+                    'activo_fijo_total': activo_fijo_total_print,
+
+                    'activo_diferido_concepto': lista_activo_diferido_print,
+                    'activo_diferido_unidad': activo_diferido_unidad_print,
+                    'activo_diferido_cantidad': activo_diferido_cantidad_print,
+                    'activo_diferido_costo_unitario': activo_diferido_costo_unitario_print,
+                    'activo_diferido_montos': activo_diferido_montos_print,
+                    'activo_diferido_total': activo_diferido_total_print,
+
+                    'mano_obra_unidad': capital_mano_obra_unidad_print,
+                    'mano_obra_cantidad': capital_mano_obra_cantidad_print,
+                    'mano_obra_costo_unitario': capital_mano_obra_costo_unitario_print,
+                    'mano_obra_montos': capital_mano_obra_montos_print,
+                    'mano_obra_total': capital_mano_obra_total_print,
+
+                    'trabajo_servicios_unidad': capital_trabajo_servicios_unidad_print,
+                    'trabajo_servicios_cantidad': capital_trabajo_servicios_cantidad_print,
+                    'trabajo_servicios_costo_unitario': capital_trabajo_servicios_costo_unitario_print,
+                    'trabajo_servicios_montos': capital_trabajo_servicios_montos_print,
+                    'trabajo_servicios_total': capital_trabajo_servicios_tota_print,
+
+                    'servicios_mantto_unidad': capital_trabajo_servicios_mantto_unidad_print,
+                    'servicios_mantto_cantidad': capital_trabajo_servicios_mantto_cantidad_print,
+                    'servicios_mantto_costo_unitario': capital_trabajo_servicios_mantto_costo_unitario_print,
+                    'servicios_mantto_montos': capital_trabajo_servicios_mantto_montos_print,
+                    'servicios_mantto_total': capital_trabajo_servicios_mantto_total_print,
+
+                    'total_montos': total_montos_print,
+                    'total_inversion': total_inversion_print
+                    }
+    return render(request, 'presupuesto_inversion.html', {'list': listas_print})

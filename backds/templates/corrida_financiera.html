@@ -18,17 +18,17 @@
                     <input type="number" name="B1_activo_fijo_cantidad" placeholder="cantidad">
                     <input type="float" step="any" name="B1_activo_fijo_precio_unitario" placeholder="precio unitario">
                 </label>
-
             </div>
             <button type="button" onclick="agregarActivoFijo()">Agregar</button>
 
             <h3>Activo diferido</h3>
             <div class="bloque" id="activo_diferido-container">
-                <input type="text" name="B1_activo_diferido_concepto" placeholder="concepto">
-                <input type="text" name="B1_activo_diferido_unidad" placeholder="unidad">
-                <input type="number" name="B1_activo_diferido_cantidad" placeholder="cantidad">
-                <input type="number" step="any" name="B1_activo_diferido_precio_unitario" placeholder="precio unitario">
-
+                <label class="form-label">
+                    <input type="text" name="B1_activo_diferido_concepto" placeholder="concepto">
+                    <input type="text" name="B1_activo_diferido_unidad" placeholder="unidad">
+                    <input type="number" name="B1_activo_diferido_cantidad" placeholder="cantidad">
+                    <input type="number" step="any" name="B1_activo_diferido_precio_unitario" placeholder="precio unitario">
+                </label>
             </div>
             <button type="button" onclick="agregarActivoDiferido()">Agregar</button>
 
@@ -37,22 +37,21 @@
                 <input type="text" name="B1_mano_obra_unidad" placeholder="unidad">
                 <input type="number" name="B1_mano_obra_cantidad" placeholder="cantidad">
             </div>
-            <button type="button" onclick="agregarManoObra()">Agregar</button>
+
 
             <h3>Presupuesto Servicios</h3>
             <div class="bloque" id="presupuesto_servicios-container">
                 <input type="text" name="B1_servicios_unidad" placeholder="unidad">
                 <input type="number" name="B1_servicios_cantidad" placeholder="cantidad">
-
             </div>
-            <button type="button" onclick="agregarPresupuestoServicios()">Agregar</button>
+
 
             <h3>Servicios Mantto</h3>
             <div class="bloque" id="servicios_mantto-container">
                 <input type="text" name="B1_servicios_mantto_unidad" placeholder="unidad">
                 <input type="number" name="B1_servicios_mantto_cantidad" placeholder="cantidad">
             </div>
-            <button type="button" onclick="agregarServiciosMantto()">Agregar</button>
+
 
             <h3>Memorias Calculo</h3>
             <div class="bloque" id="memorias_calculo-container">
@@ -144,7 +143,7 @@
                     inputs.appendChild(document.createElement('br'));
                     container.appendChild(inputs);
                 }
-                function agregarActivoDiferido(){
+                function agregarActivoDiferido() {
                     var container = document.getElementById('activo_diferido-container');
                     var inputs = document.createElement('div');
                     var conceptoInput = document.createElement('input');
@@ -153,84 +152,25 @@
                     var precioUnitarioInput = document.createElement('input');
 
                     conceptoInput.type = 'text';
-                    conceptoInput.name = 'B1_activo_fijo_concepto';
+                    conceptoInput.name = 'B1_activo_diferido_concepto';
                     conceptoInput.placeholder = 'concepto';
 
                     unidadInput.type = 'text';
-                    unidadInput.name = 'B1_activo_fijo_unidad';
+                    unidadInput.name = 'B1_activo_diferido_unidad';
                     unidadInput.placeholder = 'unidad';
 
                     cantidadInput.type = 'number';
-                    cantidadInput.name = 'B1_activo_fijo_cantidad';
+                    cantidadInput.name = 'B1_activo_diferido_cantidad';
                     cantidadInput.placeholder = 'cantidad';
 
                     precioUnitarioInput.type = 'number';
-                    precioUnitarioInput.name = 'B1_activo_fijo_precio_unitario';
+                    precioUnitarioInput.name = 'B1_activo_diferido_precio_unitario';
                     precioUnitarioInput.placeholder = 'precio unitario';
 
                     inputs.appendChild(conceptoInput);
                     inputs.appendChild(unidadInput);
                     inputs.appendChild(cantidadInput);
                     inputs.appendChild(precioUnitarioInput);
-                    inputs.appendChild(document.createElement('br'));
-                    container.appendChild(inputs);
-                }
-                function agregarManoObra(){
-                    var container = document.getElementById('mano_obra-container');
-                    var inputs = document.createElement('div');
-                    var unidadInput = document.createElement('input');
-                    var cantidadInput = document.createElement('input');
-
-                    unidadInput.type = 'text';
-                    unidadInput.name = 'B1_activo_fijo_unidad';
-                    unidadInput.placeholder = 'unidad';
-
-                    cantidadInput.type = 'number';
-                    cantidadInput.name = 'B1_activo_fijo_unidad';
-                    cantidadInput.placeholder = 'cantidad';
-
-
-                    inputs.appendChild(unidadInput);
-                    inputs.appendChild(cantidadInput);
-                    inputs.appendChild(document.createElement('br'));
-                    container.appendChild(inputs);
-                }
-                function agregarPresupuestoServicios(){
-                    var container = document.getElementById('presupuesto_servicios-container');
-                    var inputs = document.createElement('div');
-                    var unidadInput = document.createElement('input');
-                    var cantidadInput = document.createElement('input');
-
-                    unidadInput.type = 'text';
-                    unidadInput.name = 'B1_activo_fijo_unidad';
-                    unidadInput.placeholder = 'unidad';
-
-                    cantidadInput.type = 'number';
-                    cantidadInput.name = 'B1_activo_fijo_cantidad';
-                    cantidadInput.placeholder = 'cantidad';
-
-
-                    inputs.appendChild(unidadInput);
-                    inputs.appendChild(cantidadInput);
-                    inputs.appendChild(document.createElement('br'));
-                    container.appendChild(inputs);
-                }
-                function agregarServiciosMantto(){
-                    var container = document.getElementById('servicios_mantto-container');
-                    var inputs = document.createElement('div');
-                    var unidadInput = document.createElement('input');
-                    var cantidadInput = document.createElement('input');
-
-                    unidadInput.type = 'text';
-                    unidadInput.name = 'B1_servicios_mantto_unidad';
-                    unidadInput.placeholder = 'unidad';
-
-                    cantidadInput.type = 'number';
-                    cantidadInput.name = 'B1_servicios_mantto_cantidad'
-                    cantidadInput.placeholder = 'cantidad';
-
-                    inputs.appendChild(unidadInput);
-                    inputs.appendChild(cantidadInput);
                     inputs.appendChild(document.createElement('br'));
                     container.appendChild(inputs);
                 }

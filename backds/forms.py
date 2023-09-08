@@ -29,3 +29,8 @@ class RegisterAnswer(forms.Form):
 class LoadLogo(forms.Form):
     image = forms.ImageField()
 
+class CorreoForm(forms.Form):
+    remitente = forms.EmailField(label='Ingresa tu correo')
+    asunto = forms.CharField(max_length=100)
+    contenido = forms.CharField(widget=forms.Textarea)
+
