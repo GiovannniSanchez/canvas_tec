@@ -1,12 +1,6 @@
 from django import forms
 
 
-class CreateNewTask(forms.Form):
-    title = forms.CharField(label="Titulo de tarea", max_length=250,
-                            widget=forms.TextInput(attrs={'class': 'input'}))
-    description = forms.CharField(label="Descripcion de la tarea", widget=forms.Textarea(attrs={'class': 'input'}))
-
-
 
 class RegisterAnswer(forms.Form):
     name_e_p = forms.CharField(label="¿Como se llama tu proyecto/empresa?", max_length=30, widget=forms.Textarea(attrs={'class':'input'}))
@@ -29,8 +23,5 @@ class RegisterAnswer(forms.Form):
 class LoadLogo(forms.Form):
     image = forms.ImageField()
 
-class CorreoForm(forms.Form):
-    remitente = forms.EmailField(label='Ingresa tu correo')
-    asunto = forms.CharField(max_length=100)
-    contenido = forms.CharField(widget=forms.Textarea)
+
 

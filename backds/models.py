@@ -46,16 +46,18 @@ class AnswersChatgpt(models.Model):
 
 class GeneratedImage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
-    segmento_image1 = models.URLField(max_length=1000)
-    segmento_image2 = models.URLField(max_length=1000)
-    propuesta_image1 = models.URLField(max_length=1000)
-    propuesta_image2 = models.URLField(max_length=1000)
-    canales_image = models.URLField(max_length=1000)
-    relaciones_image = models.URLField(max_length=1000)
-    recursos_image = models.URLField(max_length=1000)
-    actividades_image = models.URLField(max_length=1000)
-    socios_image1 = models.URLField(max_length=1000)
-    socios_image2 = models.URLField(max_length=1000)
+    segmento_image1 = models.URLField(max_length=1000, null=True)
+    segmento_image2 = models.URLField(max_length=1000, null=True)
+    propuesta_image1 = models.URLField(max_length=1000, null=True)
+    propuesta_image2 = models.URLField(max_length=1000, null=True)
+    canales_image = models.URLField(max_length=1000, null=True)
+    relaciones_image = models.URLField(max_length=1000, null=True)
+    recursos_image = models.URLField(max_length=1000, null=True)
+    actividades_image = models.URLField(max_length=1000, null=True)
+    socios_image1 = models.URLField(max_length=1000, null=True)
+    socios_image2 = models.URLField(max_length=1000, null=True)
+    ingresos_image = models.URLField(max_length=1000, null=True)
+    costos_image = models.URLField(max_length=1000, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -88,6 +90,7 @@ class data_corrida_financiera(models.Model):
     data_capital_trabajo_mano_obra = models.JSONField(null=True)
     data_capital_trabajo_servicios = models.JSONField(null=True)
     data_capital_trabajo_servicios_mantto = models.JSONField(null=True)
+    data_memorias_calculo = models.JSONField(null=True)
     data_total_inversion = models.JSONField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -100,16 +103,3 @@ class data_corrida_financiera(models.Model):
         verbose_name_plural = 'corridas_financieras'
         ordering = ['id']
 
-    class EmailCredential(models.Model):
-        user = models.ForeignKey(User, on_delete=models.CASCADE, null=True,  blank=False)
-        email = models.EmailField(unique=True)
-        password = models.CharField(max_length=100)
-
-        def __str__(self):
-            return f"Generated {self.id}"
-
-        class Meta:
-            db_table = 'email_credential'
-            verbose_name = 'EmailCredential'
-            verbose_name_plural = 'EmailCredentials'
-            ordering = ['id']

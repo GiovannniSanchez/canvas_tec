@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import answers_user, AnswersChatgpt, GeneratedImage, LogoProyect,data_corrida_financiera
-from .forms import RegisterAnswer, LoadLogo, CorreoForm
+from .forms import RegisterAnswer, LoadLogo
 import openai
 import requests
 import json
@@ -9,30 +9,11 @@ from fuzzywuzzy import fuzz
 from urllib.parse import urlencode
 from django.urls import reverse
 import time
-from django.core.mail import send_mail
-from django.http import HttpResponse
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-
 
 
 def about(request):
-    if request.method == 'POST':
-        form = CorreoForm(request.POST)
-        if form.is_valid():
-            remitente = form.cleaned_data['remitente']
-            asunto = form.cleaned_data['asunto']
-            contenido = form.cleaned_data['contenido']
 
-            # Enviar correo electrónico
-            send_mail(asunto, contenido, remitente, ['l20590316@sjuanrio.tecnm.mx'], fail_silently=False)
-            # Redireccionamos a la página de inicio para confirmar el envío
-            return redirect('Usuario')
-    else:
-        form = CorreoForm()
-
-    return render(request, 'about.html', {'form': form})
+    return render(request, 'about.html')
 
 @login_required
 def prueba(request):
@@ -131,22 +112,9 @@ def prueba(request):
     #GENERACION DE PROMPT PARA IMAGENES
     palabras_clave = [respuesta_segmento, respuesta_segmento, respuesta_propuesta,
                       respuesta_propuesta, respuesta_canales, respuesta_relaciones, respuesta_recursos,
-                      respuesta_actividades, respuesta_socios, respuesta_socios]
-    """"
-    prompts = []
-    for clave in palabras_clave:
-        prompt = '¿Puedes descibir lo siguiente  y resumirlo?: '+ clave
-        prompts.append(prompt)
+                      respuesta_actividades, respuesta_socios, respuesta_socios, 'genera una imagen de una mano recibiendo dinero',
+                      'genera una imagen representativa de costos de empresa']
 
-    chatgpt_prompts_images=[]
-    for i in prompts:
-        contenido = i
-
-        messages.append({"role": "user", "content": contenido})
-        respuesta = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages, max_tokens=300)
-        respuesta_image = respuesta.choices[0].message.content
-        chatgpt_prompts_images.append(respuesta_image)
-        time.sleep(5)"""
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
     #GENERACIÓN DE IMAGENES
 
@@ -184,7 +152,10 @@ def prueba(request):
                                                 recursos_image=urls_images[6],
                                                 actividades_image=urls_images[7],
                                                 socios_image1=urls_images[8],
-                                                socios_image2=urls_images[9])
+                                                socios_image2=urls_images[9],
+                                                ingresos_image=urls_images[10],
+                                                costos_image=urls_images[11]
+                                                )
     images_save.save()
 
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1320,13 +1291,11 @@ def corrida_financiera(request):
                                                           data_capital_trabajo_mano_obra=capital_trabajo_mano_obra,
                                                           data_capital_trabajo_servicios=capital_trabajo_servicios,
                                                           data_capital_trabajo_servicios_mantto=capital_trabajo_servicios_mantto,
+                                                          data_memorias_calculo=memorias_calculo,
                                                           data_total_inversion=total_presupuesto_inversion)
         instance.save()
 
-        return redirect('canvas', BC = BC, var_total_presupuesto_inversion = var_total_presupuesto_inversion,
-                        formatted_content = formatted_content,
-                        formatted_content_costos_str = formatted_content_costos_str,
-                        formatted_content_venta_str = formatted_content_venta_str)
+        return redirect('canvas')
 
 
     return render(request, 'corrida_financiera.html')
@@ -1343,7 +1312,36 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
         proyect_name = last_name.name_e_p
         last_image = GeneratedImage.objects.filter(user=user).last()
         last_logo = LogoProyect.objects.filter(user=user).last()
+        last_memorias_calculo = data_corrida_financiera.objects.filter(user=user).last()
 
+        memorias_calculo = last_memorias_calculo.data_memorias_calculo
+        inversion = last_memorias_calculo.data_total_inversion
+
+        memorias_concepto = []
+        memorias_costo = []
+        memorias_venta = []
+        total_inversion = []
+
+        for i, j, k, l in zip(memorias_calculo['concepto'], memorias_calculo['costo_insumo'],
+                              memorias_calculo['ventas_semana'], inversion['total_B1']):
+            memorias_concepto.append(i)
+            memorias_costo.append(j)
+            memorias_venta.append(k)
+            total_inversion.append(l)
+
+        memorias_concepto_print = '\n'.join(memorias_concepto)
+        memorias_costo_print = '\n'.join(f'${var:.2f}' for var in memorias_costo)
+        memorias_venta_print = '\n'.join(f'${var:.2f}' for var in memorias_venta)
+        total_inversion_print = '\n'.join(f'{var:.2f}' for var in total_inversion)
+
+        costos_ingresos = [
+            memorias_concepto_print,
+            memorias_costo_print,
+            memorias_venta_print,
+            total_inversion_print
+        ]
+        print('##################')
+        print(costos_ingresos[0])
 
         answers_canvas = [
             last.segmento_gpt,
@@ -1364,7 +1362,9 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
             last_image.recursos_image,
             last_image.actividades_image,
             last_image.socios_image1,
-            last_image.socios_image2
+            last_image.socios_image2,
+            last_image.ingresos_image,
+            last_image.costos_image
         ]
         data = {'respuestas_canvas': answers_canvas,
                 'image': images,
@@ -1373,7 +1373,8 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
                 'formatted_content': formatted_content,
                 'formatted_content_costos_str': formatted_content_costos_str,
                 'formatted_content_venta_str': formatted_content_venta_str,
-                'logo':last_logo,
+                'logo': last_logo,
+                'costos_ingresos': costos_ingresos,
                 'nombre': proyect_name}
 
 
@@ -1389,7 +1390,6 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
             'respuestas_canvas': answers_canvas,
             'nombre': proyect_name
         })
-
 def presupuesto_inversion(request):
     user = request.user
     last_inversion = data_corrida_financiera.objects.filter(user=user).last()
@@ -1399,8 +1399,7 @@ def presupuesto_inversion(request):
     capital_trabajo_servicios = last_inversion.data_capital_trabajo_servicios
     capital_trabajo_servicios_mantto = last_inversion.data_capital_trabajo_servicios_mantto
     inversion_total = last_inversion.data_total_inversion
-    print("#############################")
-    print(capital_trabajo_servicios)
+
 
     #Declaración de variables tipo lista para implementar el objects filter obtenido
     lista_activo_fijo=[]

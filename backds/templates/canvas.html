@@ -12,12 +12,7 @@
             body{
                 background-color: #09091e;
             }
-            th{
-                border: 3px solid white;
-            }
-            td{
-                border: 3px solid white;
-            }
+
             .container{
                 background-color: white;
             }
@@ -46,19 +41,19 @@
             }
             .name{
                 margin-top: 1px;
-                margin-left: 55%;
+                margin-left: 61%;
                 width: 50%;
             }
             #one{
-                background-color: rgba(255, 255, 0, 0.24);
+                background-color: rgba(255, 255, 0, 0.35);
                 border: solid 5px transparent;
             }
             #two{
-                background-color: rgba(99, 146, 239, 0.31);
+                background-color: rgba(99, 146, 239, 0.35);
                 border: solid 5px transparent;
             }
             #three{
-                background-color: rgba(0, 128, 0, 0.25);
+                background-color: rgba(0, 128, 0, 0.35);
                 border: solid 5px transparent;
             }
             .leyenda{
@@ -83,6 +78,36 @@
             }
             .nameT{
                 border: solid 1px transparent;
+                margin-left: 40%;
+            }
+            .ingcost{
+                border: 3px solid rgba(0, 0, 0, 0.5);
+                background-color: rgba(0, 0, 255, 0.25);
+
+            }
+            .ingcostd{
+                border: 3px solid rgba(0, 0, 0, 0.5);
+                background-color: #ffffff;
+            }
+            .TopCanvas{
+                margin-left: 7%;
+            }
+            .Cost{
+                margin-left: 200%;
+            }
+            .In{
+                margin-left: 10%;
+                margin-top: 10%;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .costoimage{
+                margin-left: 100px;
+            }
+            .ingreso_image{
+                margin-left: 100%;
             }
 
         </style>
@@ -94,7 +119,7 @@
         </div>
 
         <div class="canvasTop">
-            <table>
+            <table class = "TopCanvas">
                 <tr>
                     <th class="leyendaT">
                         <h1 class="leyenda">MODELO CANVAS</h1>
@@ -174,34 +199,53 @@
         </div>
         <div class="container">
             <div class="col" id="one">
-                <h2 class="encabezado">Estructura de Costes</h2>
+                <a href="/presupuesto_inversion/"><h2 class="encabezado">Estructura de Costes</h2></a>
                 <p>Considerando una inversion inicial de: </p>
                 <p>${{ Presupuesto_inversion }}</p>
+
                 <table>
-                    <tr>
-                        <th>Presentacion</th>
-                        <th>Costos</th>
-                    </tr>
-                    <tr>
-                        <td>{{ formatted_content|linebreaksbr|safe }}</td>
-                        <td>{{ formatted_content_costos_str|linebreaksbr|safe }}</td>
-                    </tr>
+                    <th>
+                        <a href="/presupuesto_inversion/">
+                            <table class="Cost">
+                                <tr>
+                                    <th class="ingcost">Presentacion</th>
+                                    <th class="ingcost">Costos</th>
+                                </tr>
+                                <tr>
+                                    <td class="ingcostd">{{ costos_ingresos.0|linebreaksbr|safe }}</td>
+                                    <td class="ingcostd">{{ costos_ingresos.1|linebreaksbr|safe }}</td>
+                                </tr>
+                            </table>
+                        </a>
+                    </th>
+                    <th class="costoimage">
+                         <img src="{{ image.9 }}" alt="Imagen generada por DALL-E" width="128" height="128">
+                    </th>
+
                 </table>
+
             </div>
 
 
             <div class="col" id="three">
                 <h2 class="encabezado">Flujo de Ingresos</h2>
-                <table >
-                    <tr>
-                        <th>Presentación</th>
-                        <th>Precio Venta</th>
-                    </tr>
-                    <tr>
-                        <th>{{ formatted_content|linebreaksbr|safe }}</th>
-                        <th>{{ formatted_content_venta_str|linebreaksbr|safe }}</th>
+                <table>
+                    <th>
+                        <table class="In">
+                            <tr >
+                                <th class="ingcost">Presentación</th>
+                                <th class="ingcost">Precio Venta</th>
+                            </tr>
+                            <tr>
+                                <td class="ingcostd">{{ costos_ingresos.0|linebreaksbr|safe }}</td>
+                                <td class="ingcostd">{{ costos_ingresos.2|linebreaksbr|safe }}</td>
 
-                    </tr>
+                            </tr>
+                        </table>
+                    </th>
+                    <th class="ingreso_image">
+                         <img src="{{ image.9 }}" alt="Imagen generada por DALL-E" width="128" height="128">
+                    </th>
                 </table>
             </div>
         </div>
