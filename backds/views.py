@@ -22,7 +22,7 @@ def prueba(request):
     last = answers_user.objects.filter(user=user).last()
 
     # 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
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     # Contexto del asistente
     messages = [{"role": "system", "content": "Eres un experto en modelos de negocio"}]

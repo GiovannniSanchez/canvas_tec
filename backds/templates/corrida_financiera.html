@@ -6,6 +6,42 @@
 <html>
     <head>
         <link type="text/css" href="{% static "css/corrida_financiera.css" %}" rel="stylesheet">
+        <style>
+            .botonAgregar{
+                    margin-top: 0%;
+                    padding: 1% 2%;
+                    border-radius: 0.5rem;
+                    background-color: #ffffff;
+                    color: black;
+                    font-size: small;
+                    border: 1px solid black;
+                    cursor: pointer;
+            }
+            .botonAgregar:hover{
+                background-color:transparent;
+                border: 2px solid #ffffff;
+                color: #ffffff;
+            }
+            .guardar{
+                margin-top: 0%;
+                margin-left: 40%;
+                padding: 2% 8%;
+                border-radius: 0.5rem;
+                background-color: #ffffff;
+                color: black;
+                font-size: large;
+                cursor: pointer;
+            }
+            .guardar:hover{
+                background-color:transparent;
+                border: 2px solid #ffffff;
+                color: #ffffff;
+            }
+            input{
+                border-radius: 0.5rem;
+                padding: 1% 1%;
+            }
+        </style>
     </head>
     <body>
         <form method="post" action="{% url 'financiera' %}">
@@ -19,7 +55,8 @@
                     <input type="float" step="any" name="B1_activo_fijo_precio_unitario" placeholder="precio unitario">
                 </label>
             </div>
-            <button type="button" onclick="agregarActivoFijo()">Agregar</button>
+            <button type="button" class="botonAgregar" onclick="agregarActivoFijo()">Agregar</button>
+            <h1><br></h1>
 
             <h3>Activo diferido</h3>
             <div class="bloque" id="activo_diferido-container">
@@ -30,13 +67,15 @@
                     <input type="number" step="any" name="B1_activo_diferido_precio_unitario" placeholder="precio unitario">
                 </label>
             </div>
-            <button type="button" onclick="agregarActivoDiferido()">Agregar</button>
+            <button type="button" class="botonAgregar" onclick="agregarActivoDiferido()">Agregar</button>
+            <h1><br></h1>
 
             <h3>Mano de obra</h3>
             <div class="bloque" id="mano_obra-container">
                 <input type="text" name="B1_mano_obra_unidad" placeholder="unidad">
                 <input type="number" name="B1_mano_obra_cantidad" placeholder="cantidad">
             </div>
+            <h1><br></h1>
 
 
             <h3>Presupuesto Servicios</h3>
@@ -44,6 +83,7 @@
                 <input type="text" name="B1_servicios_unidad" placeholder="unidad">
                 <input type="number" name="B1_servicios_cantidad" placeholder="cantidad">
             </div>
+            <h1><br></h1>
 
 
             <h3>Servicios Mantto</h3>
@@ -51,6 +91,7 @@
                 <input type="text" name="B1_servicios_mantto_unidad" placeholder="unidad">
                 <input type="number" name="B1_servicios_mantto_cantidad" placeholder="cantidad">
             </div>
+            <h1><br></h1>
 
 
             <h3>Memorias Calculo</h3>
@@ -60,7 +101,8 @@
                 <input type="number" step="any" name="B2_memorias_calculo_costo_insumo" placeholder="costo insumo">
                 <input type="number"  step="any" name="B2_memorias_calculo_ventas_semana" placeholder="venta semanal deseada">
             </div>
-            <button type="button" onclick="agregarMemoriasCalculo()">Agregar</button>
+            <button type="button" class="botonAgregar" onclick="agregarMemoriasCalculo()">Agregar</button>
+            <h1><br></h1>
 
             <h3>Registro Propiedad Intelectual</h3>
             <div class="bloque" id="registro_propiedad_intelectual-container">
@@ -68,7 +110,8 @@
                 <input type="number" name="B2_registro_propiedad_intelectual_cantidad" placeholder="cantidad">
                 <input type="number" step="any" name="B2_registro_propiedad_intelectual_precio_unitario" placeholder="precio unitario">
             </div>
-            <button type="button" onclick="agregarPropiedadIntelectual()">Agregar</button>
+            <button type="button" class="botonAgregar" onclick="agregarPropiedadIntelectual()">Agregar</button>
+            <h1><br></h1>
 
             <h3>Servicios Administrativos</h3>
             <div class="bloque" id="servicios_administrativos-container">
@@ -76,21 +119,24 @@
                 <input type="number" name="B2_servicios_administrativos_cantidad" placeholder="cantidad">
                 <input type="number" step="any" name="B2_servicios_administrativos_precio_unitario" placeholder="precio unitario">
             </div>
-            <button type="button" onclick="agregarServiciosAdministrativos()">Agregar</button>
+            <button type="button" class="botonAgregar" onclick="agregarServiciosAdministrativos()">Agregar</button>
+            <h1><br></h1>
 
             <h3>Servicios</h3>
             <div class="bloque" id="servicios-container">
                 <input type="text" name="B2_servicios_concepto" placeholder="concepto">
                 <input type="number" step="any" name="B2_servicios_importe_mensual" placeholder="importe mensual">
             </div>
-            <button type="button" onclick="agregarServicios()">Agregar</button>
+            <button type="button" class="botonAgregar" onclick="agregarServicios()">Agregar</button>
+            <h1><br></h1>
 
             <h3>Mantto</h3>
             <div class="bloque" id="mantto-container">
                 <input type="text" name="B2_servicios_mantto_concepto" placeholder="concepto">
                 <input type="number" step="any" name="B2_servicios_mantto_importe_mensual" placeholder="importe mensual">
             </div>
-            <button type="button" onclick="agregarMantto()">Agregar</button>
+            <button type="button" class="botonAgregar" onclick="agregarMantto()">Agregar</button>
+            <h1><br></h1>
 
             <h3>Salarios</h3>
             <div class="bloque" id="salarios-container">
@@ -98,7 +144,8 @@
                 <input type="number" name="B2_salarios_cantidad" placeholder="cantidad de empleados del puesto">
                 <input type="number" step="any" name="B2_salarios_sueldo_mensual" placeholder="sueldo mensual c/u">
             </div>
-            <button type="button" onclick="agregarSalarios()">Agregar</button>
+            <button type="button" class="botonAgregar" onclick="agregarSalarios()">Agregar</button>
+            <h1><br></h1>
 
             <h3>Costo Materiales</h3>
             <div class="bloque" id="costo_materiales-container">
@@ -106,9 +153,19 @@
                 <input type="text" name="B2_costo_materiales_unidad" placeholder="unidad">
                 <input type="text" name="B2_costo_materiales_costo_unitario" placeholder="Costo Unitario">
             </div>
-            <button type="button" onclick="agregarCostoMateriales()">Agregar</button>
+            <button type="button" class="botonAgregar" onclick="agregarCostoMateriales()">Agregar</button>
+            <h1><br></h1>
+            <div>
+               <h1><br></h1>
+            </div>
+            <div>
+               <p><br></p>
+            </div>
 
-            <button type="submit">Guardar</button>
+            <button type="submit" class = "guardar" >Guardar</button>
+            <div>
+               <h1><br></h1>
+            </div>
 
 
             <script>

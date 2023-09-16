@@ -8,20 +8,60 @@
         <link type="text/css" href="{% static "css/formulario.css" %}" rel="stylesheet">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            /* Estilos para el overlay de carga */
+            .overlay {
+                position: fixed;
+                display: none;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+                z-index: 9999; /* Z-index alto para que aparezca encima del contenido */
+            }
+
+            /* Estilos para el cargador */
+            .loader {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border: 5px solid #f3f3f3;
+                border-top: 5px solid #007BFF; /* Color del cargador */
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                animation: spin 2s linear infinite; /* Animación de giro */
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
     </head>
+
     <body>
+
+        <div id="overlay" class="overlay">
+            <div class="loader"></div>
+            <p>Cargando...</p>
+        </div>
+
+
         <h1><br></h1>
         <h1><br></h1>
         <h1>Formulario</h1>
         <h1><br></h1>
         <h3>Contesta estas preguntas para generar tu canvas</h3>
         <h1><br></h1>
-        <h3>Subir Logotipo de la empresa o proyecto</h3>
-        <h3>Subir Logotipo de la empresa o proyecto</h3>
+
 
         <form method="POST" enctype="multipart/form-data" class="register-form" onsubmit="return validateForm()">
           {% csrf_token %}
 
+        <h3>Subir Logotipo de la empresa o proyecto</h3>
           <div class="form-row">
               <div class="form-col" style="width: auto">
                   <label class="form-label" for="{{ form.name_e_p.id_for_label }}">{{ form.name_e_p.label }}</label>
@@ -69,7 +109,7 @@
               {{ form.socios }}
             </div>
           </div>
-          <button type="submit" class="submit-button">Continuar</button>
+          <button type="submit" class="submit-button"  target="_blank">Continuar</button>
         </form>
 
         <script>
@@ -86,6 +126,17 @@
           }
           return formValid;
         }
+        document.getElementById('overlay').style.display = 'none';
+
+        function showLoadingOverlay() {
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('overlay').querySelector('p').innerText = 'Cargando...';
+        }
+
+        // Agrega este evento en tu botón de "Continuar"
+        document.querySelector('.submit-button').addEventListener('click', function () {
+            showLoadingOverlay();
+        });
         </script>
 
     </body>
