@@ -1322,11 +1322,13 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
         memorias_venta = []
         total_inversion = []
 
-        for i, j, k, l in zip(memorias_calculo['concepto'], memorias_calculo['costo_insumo'],
-                              memorias_calculo['ventas_semana'], inversion['total_B1']):
+        for i, j, k in zip(memorias_calculo['concepto'], memorias_calculo['costo_insumo'],
+                              memorias_calculo['ventas_semana']):
             memorias_concepto.append(i)
             memorias_costo.append(j)
             memorias_venta.append(k)
+
+        for l in inversion['total_B1']:
             total_inversion.append(l)
 
         memorias_concepto_print = '\n'.join(memorias_concepto)
@@ -1340,8 +1342,8 @@ def canvas(request, BC = None, var_total_presupuesto_inversion = None,
             memorias_venta_print,
             total_inversion_print
         ]
-        print('##################')
-        print(costos_ingresos[0])
+        print('##################xddd')
+        print(memorias_concepto)
 
         answers_canvas = [
             last.segmento_gpt,

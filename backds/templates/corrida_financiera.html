@@ -46,6 +46,9 @@
     <body>
         <form method="post" action="{% url 'financiera' %}">
             {% csrf_token %}
+            <div>
+               <h1><br></h1>
+            </div>
             <h3>Activo fijo</h3>
             <div class="bloque" id="activo_fijo-container">
                 <label class="form-label">
@@ -158,10 +161,6 @@
             <div>
                <h1><br></h1>
             </div>
-            <div>
-               <p><br></p>
-            </div>
-
             <button type="submit" class = "guardar" >Guardar</button>
             <div>
                <h1><br></h1>

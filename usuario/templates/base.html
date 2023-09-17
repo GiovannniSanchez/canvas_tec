@@ -9,22 +9,21 @@
     <link type="text/css" href="{% static 'css/base.css' %}" rel="stylesheet">
     <title>Aplicación</title>
 </head>
-    <style>
-       .container-fluid{
-            background-color: #09091e;
-            color: white;
-            font-size: 1.25rem;
-       }
-       .btn.btn-outline-warning{
-            background-color: #e5c60a;
-            color: black;
-
-       }
-       .btn.btn-outline-warning:hover{
-            background-color: transparent;
-            color: #e5c60a;
-       }
-    </style>
+<style>
+   .container-fluid {
+        background-color: #09091e;
+        color: white;
+        font-size: 1.25rem;
+   }
+   .btn.btn-outline-warning {
+        background-color: #e5c60a;
+        color: black;
+   }
+   .btn.btn-outline-warning:hover {
+        background-color: transparent;
+        color: #e5c60a;
+   }
+</style>
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
@@ -32,6 +31,7 @@
           <h3><img src="{% static 'images/logoreal.png' %}" style="width: 50px; height: auto"></h3>
           <h3><br> </h3>
           <h3>&nbsp;&nbsp;MFENI </h3>
+            <!-- Agrega el botón del navbar-toggler para dispositivos móviles -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -47,32 +47,28 @@
                   <a class="nav-link" href={% url 'Formulario' %}>Formulario</a>
                 </li>
                <li class="nav-item">
-                  <a class="nav-link"
-                     href={% url 'canvas'  %}>Canvas</a>
+                  <a class="nav-link" href={% url 'canvas'  %}>Canvas</a>
                 </li>
-
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href={% url 'logout' %}>Salir</a>
                     </li>
-
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href={% url 'login' %}>Ingresar</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="btn btn-outline-warning btn-sm w-100" href={% url 'register' %}>Registrarse</a>
-
                     </li>
-
                 {% endif %}
-
               </ul>
             </div>
           </div>
         </nav>
     {% block content %}{% endblock %}
     </div>
+    <!-- Agrega los scripts de Bootstrap y jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

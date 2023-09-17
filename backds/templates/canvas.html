@@ -32,16 +32,16 @@
             .logo{
 
                 width: 50%;
-                height: auto;
+                height: 60%;
                 border: solid 1px transparent;
                 margin-top: 0.3%;
-                margin-bottom: auto;
+                margin-bottom: 0.2rem;
                 margin-left: 27%;
                 margin-right: auto;
             }
             .name{
-                margin-top: 1px;
-                margin-left: 61%;
+                margin-top: 0%;
+                margin-left: 50%;
                 width: 50%;
             }
             #one{
@@ -57,7 +57,7 @@
                 border: solid 5px transparent;
             }
             .leyenda{
-                margin-left: 43%;
+                margin-left: 35%;
                 margin-right: auto;
                 margin-bottom: 1px;
                 margin-top: 1px;
@@ -94,17 +94,18 @@
             }
             .Cost{
                 margin-left: 200%;
+                margin-bottom: 10%;
             }
             .In{
                 margin-left: 10%;
-                margin-top: 10%;
+                margin-top: 20%;
             }
             a{
                 text-decoration: none;
                 color: black;
             }
             .costoimage{
-                margin-left: 100px;
+                margin-left: 100%   ;
             }
             .ingreso_image{
                 margin-left: 100%;
@@ -201,7 +202,7 @@
             <div class="col" id="one">
                 <a href="/presupuesto_inversion/"><h2 class="encabezado">Estructura de Costes</h2></a>
                 <p>Considerando una inversion inicial de: </p>
-                <p>${{ Presupuesto_inversion }}</p>
+                <p>${{ costos_ingresos.3|linebreaksbr|safe }}</p>
 
                 <table>
                     <th>
