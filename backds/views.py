@@ -12,7 +12,6 @@ import time
 
 
 def about(request):
-
     return render(request, 'about.html')
 
 @login_required
